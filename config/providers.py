@@ -2,10 +2,11 @@
 
 from masonite.providers import (
     AppProvider,
+    AuthenticationProvider,
     SessionProvider,
     RouteProvider,
     StatusCodeProvider,
-    SassProvider,
+    # SassProvider,
     WhitenoiseProvider,
     MailProvider,
     UploadProvider,
@@ -33,10 +34,11 @@ from masonite.providers import (
 PROVIDERS = [
     # Framework Providers
     AppProvider,
+    AuthenticationProvider,
     SessionProvider,
     RouteProvider,
     StatusCodeProvider,
-    # WhitenoiseProvider,
+    WhitenoiseProvider,
     ViewProvider,
 
     # Optional Framework Providers

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/tailwind.css">
+    <link rel="stylesheet" href="/static/css/prism.css">
+</head>
+<body class="bg-gray-300">
+    <!-- Exception Header -->
+    <section class="flex justify-center">
+        <div class="bg-gray-900 px-8 py-8 flex-1">
+            <div class="text-red-600 font-bold">{{ exception.namespace() }}</div>
+            <div class="text-white text-2xl">{{ exception.message() }}</div>
+        </div>
+        <div class="bg-gray-900 px-8 py-8 flex-1">
+            <div class="text-red-600 font-bold">{{ exception.namespace() }}</div>
+            <div class="text-white text-2xl">{{ exception.message() }}</div>
+        </div>
+    </section>
+
+    <section class="flex justify-start">
+        <div class="bg-white px-4 py-2 w-1/2 bg-gray-400">
+            Stack Trace ({{ exception.count() }})
+        </div>
+    </section>
+
+    {% for stack in exception.stacktrace() %}
+        <section class="flex justify-start">
+            <div class="bg-white px-4 py-4 w-full">
+                <div class="text-gray-600 text-sm">
+                    {{ loop.index - 1 }}
+                    {{ stack.file }}:{{stack.lineno }}
+                </div>
+                <div class="">
+                    {{ stack.parent_statement }}
+                </div>
+                <div class="w-1/2">
+                    <pre>
+                        <code class="language-python">
+                        {% for lineno, content in stack.file_contents.items() %}
+                            
+                            {{ lineno }}: {{ content|safe }}
+    
+                        {% endfor %}
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+
+
+<script src="/static/js/prism.js"></script>
+</body>
+</html>
