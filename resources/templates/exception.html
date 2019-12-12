@@ -7,6 +7,12 @@
     <title>Document</title>
     <link rel="stylesheet" href="/static/css/tailwind.css">
     <link rel="stylesheet" href="/static/css/prism.css">
+
+    <style>
+        .line-highlight {
+            background: linear-gradient(to right, #f12e2e6b 70%, hsla(357, 93%, 57%, 0.65));
+        }
+    </style>
 </head>
 <body class="bg-gray-300">
     <!-- Exception Header -->
@@ -15,42 +21,82 @@
             <div class="text-red-600 font-bold">{{ exception.namespace() }}</div>
             <div class="text-white text-2xl">{{ exception.message() }}</div>
         </div>
-        <div class="bg-gray-900 px-8 py-8 flex-1">
+        <!-- <div class="bg-gray-900 px-8 py-8 flex-1">
             <div class="text-red-600 font-bold">{{ exception.namespace() }}</div>
             <div class="text-white text-2xl">{{ exception.message() }}</div>
-        </div>
+        </div> -->
     </section>
 
     <section class="flex justify-start">
-        <div class="bg-white px-4 py-2 w-1/2 bg-gray-400">
+        <div class="bg-white px-4 py-2 w-full bg-gray-400">
             Stack Trace ({{ exception.count() }})
         </div>
     </section>
 
-    {% for stack in exception.stacktrace() %}
-        <section class="flex justify-start">
-            <div class="bg-white px-4 py-4 w-full">
+
+    <section class="flex justify-start">
+        <div class="w-1/2">
+            {% for stack in exception.stacktrace() %}
+                <div class="bg-white mb-2 px-4 py-4 w-full">
+                    <div class="text-gray-600 text-sm">
+                        #{{ loop.index }}
+                        {{ stack.file }}:{{stack.lineno }}
+                    </div>
+                    <div><pre class="line-numbers" data-line="{{ stack.lineno }}" data-start="{{ stack.start_line }}"><code class="language-python">{% for lineno, content in stack.file_contents.items() %}
+{{ content|safe }} {% endfor %}</code></pre>
+                    </div>
+                    {% for variable, value in stack.variables.items() %}
+                    <div class="flex items-center border-b-2 border-gray-200 pb-2">
+
+                        <div class="mr-8 w-1/6 text-right pl-2">
+                            {{ variable }}
+                        </div>
+                        <div class="mr-8 w-1/2 border-l-2 pl-2 py-2">
+                            {{ value }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="w-1/2">
+            <div class="bg-white pl-4">
+                <h1 class="text-2xl border-b-2 border-red-600 p-2">
+                    Environment & Details
+                </h1>
+                <div class="p-2">
+                    Python Version: {{ exception.python_version }}
+                </div>
+                <div class="p-2">
+                    Runtime Name: Cython
+                </div>
+                <div class="p-2">
+                    Platform: {{ exception.platform }}
+                </div>
+                <div class="p-2">
+                    File System Encoding: {{ exception.file_system_encoding }}
+                </div>
+                <div class="p-2">
+                    Default Encoding: {{ exception.default_encoding }}
+                </div>
+            </div>
+        </div>
+    </section>
+       
+    <!-- <section class="flex justify-start">
+        {% for stack in exception.stacktrace() %}
+            <div class="bg-white mb-2 px-4 py-4 w-1/2">
                 <div class="text-gray-600 text-sm">
-                    {{ loop.index - 1 }}
+                    #{{ loop.index }}
                     {{ stack.file }}:{{stack.lineno }}
                 </div>
                 <div class="">
-                    {{ stack.parent_statement }}
-                </div>
-                <div class="w-1/2">
-                    <pre>
-                        <code class="language-python">
-                        {% for lineno, content in stack.file_contents.items() %}
-                            
-                            {{ lineno }}: {{ content|safe }}
-    
-                        {% endfor %}
-                        </code>
-                    </pre>
+                </div><div ><pre class="line-numbers" data-line="{{ stack.lineno }}" data-start="{{ stack.start_line }}"><code class="language-python">{% for lineno, content in stack.file_contents.items() %}
+{{ content|safe }} {% endfor %}</code></pre>
                 </div>
             </div>
-        </section>
-    {% endfor %}
+        {% endfor %}
+    </section> -->
 
 
 <script src="/static/js/prism.js"></script>
