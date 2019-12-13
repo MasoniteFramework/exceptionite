@@ -19,12 +19,21 @@ class PackageController:
     """Controller For Welcoming The User
     """
 
-    def show(self, view: View):
+    def show(self, view: View, request: Request):
         try:
             Throw(view)
         except Exception as e:
             print(e.__class__.__module__)
             exception = Handler(e)
+        
+        exception.context({
+            'WSGI': {
+                'Path': request.path,
+                'Input': request.all()
+            }
+        })
+
+        return exception.render()
             
         return view.render('exception', {'exception': exception})
         # return 'Hello World'
