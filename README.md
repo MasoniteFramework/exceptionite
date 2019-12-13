@@ -5,6 +5,8 @@
 
 # Introduction
 
+**Using this library does not require Masonite.**
+
 This library is a way to easily interact with exception classes. You can easily pass in an exception into the `Handler` class (usage docs below) and you can get so much information from the exception in an elegant fashion.
 
 You can even render it into a beautiful HTML exception page. 
@@ -15,7 +17,7 @@ Masonite strives to have extremely comprehensive documentation. All documentatio
 
 Also be sure to join the [Slack channel](https://masoniteframework.gitbooks.io/docs/content/)!
 
-## Setting up
+## Setting up this repository for development
 
 To setup the package to get your package up and running, you should first take a look at `setup.py` and make any packages specific changes there. These include the classifiers and package name.
 
@@ -48,7 +50,24 @@ In order to use this class you will first need to install it:
 $ pip install masonite-errors
 ```
 
-Then you can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
+## Usage for Masonite
+
+If you are installing this library in your Masonite application you can simply add the Service Provider to your `config/providers.py` file:
+
+```python
+from masonite.errors.providers import ErrorProvider
+
+PROVIDERS = [
+    # ...
+    ErrorProvider,
+]
+```
+
+You will now have a beautiful new exception screen!
+
+## Usage Outside of Masonite
+
+If you are not using Masonite you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
 
 ```python
 from masonite.errors import Handler
