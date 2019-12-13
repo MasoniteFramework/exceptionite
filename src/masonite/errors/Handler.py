@@ -69,7 +69,7 @@ class Handler:
 
     def render(self):
         loader = ChoiceLoader(
-            [PackageLoader('src', 'masonite/errors/templates')]
+            [PackageLoader('masonite', 'errors/templates')]
         )
 
         environment = Environment(
@@ -77,16 +77,14 @@ class Handler:
             autoescape=select_autoescape(['html', 'xml'])
         )
 
-        print(self.get_contexts())
-
         return environment.get_template('exception.html').render({'exception': self})
-        return 'hi'
 
 
 class StackLine:
 
     def __init__(self, frame_summary, variables={}):
         self.file = frame_summary[0]
+        self.language = self.get_language(self.file)
 
         # Cut off 30% of the string
         self.file_short = '..' + self.file[math.floor(len(self.file) * .30):]
@@ -95,24 +93,31 @@ class StackLine:
         self.statement = frame_summary[3]
         self.start_line = self.lineno - 5
         self.end_line = self.lineno + 5
-        self.language = self.get_language(self.file)
         # print('setting variables', variables)
         self.variables = variables
 
         with open(self.file) as fp:
             printer = pprint.PrettyPrinter(indent=4)
+
             self.file_contents = printer.pformat(fp.read()).split('\\n')[
                 self.start_line:self.end_line]
+
+            if self.language == 'html':
+                pass
+                # print(self.file_contents)
 
         formatted_contents = {}
         read_line = self.start_line + 1
         for content in self.file_contents:
-            formatted_line = (content
-                              .replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
-                              .replace("'\n '", '')
-                              .replace('\'\n "', '')
-                              .replace('"\n \'', '<br>')
-                              )
+            if self.language == 'python':
+                formatted_line = (content
+                                  .replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
+                                  .replace("'\n '", '')
+                                  .replace('\'\n "', '')
+                                  .replace('"\n \'', '<br>')
+                                  )
+            else:
+                formatted_line = content.replace("'\n '", '')
 
             formatted_contents.update({read_line: formatted_line})
             read_line += 1
@@ -123,6 +128,6 @@ class StackLine:
         if file.endswith('.py'):
             return 'python'
         elif file.endswith('.html'):
-            return html
+            return 'html'
 
         return 'python'
