@@ -60,14 +60,7 @@ setup(
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=find_packages(exclude=[
-        'tests*',
-        'app',
-        'bootstrap',
-        'config',
-        'databases',
-        'resources',
-        'routes',
-        'storage'
+        'masonite.errors',
         ]),
 
     # List run-time dependencies here.  These will be installed by pip when

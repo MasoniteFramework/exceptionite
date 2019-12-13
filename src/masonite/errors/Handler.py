@@ -4,7 +4,7 @@ import jinja2
 import pprint
 import inspect
 from jinja2 import ChoiceLoader, Environment, PackageLoader, select_autoescape
-
+import math
 class Handler:
 
     def __init__(self, e=False):
@@ -73,13 +73,14 @@ class Handler:
     
     def render(self):
         loader = ChoiceLoader(
-            [PackageLoader('resources', 'templates')]
+            [PackageLoader('src', 'masonite/errors/templates')]
         )
 
         environment = Environment(
             loader=loader,
             autoescape=select_autoescape(['html', 'xml'])
         )
+
         return environment.get_template('exception.html').render({'exception': self})
         return 'hi'
 
@@ -87,11 +88,13 @@ class StackLine:
 
     def __init__(self, frame_summary, variables = {}):
         self.file = frame_summary[0]
+        self.file_short = '..' + self.file[math.floor(len(self.file) / 4):]
         self.lineno = frame_summary[1]
         self.parent_statement = frame_summary[2]
         self.statement = frame_summary[3]
         self.start_line = self.lineno - 5
         self.end_line = self.lineno + 5
+        self.language = self.get_language(self.file)
         # print('setting variables', variables)
         self.variables = variables
 
@@ -122,3 +125,11 @@ class StackLine:
             read_line += 1
         # print(formatted_contents)
         self.file_contents = formatted_contents
+
+    def get_language(self, file):
+        if file.endswith('.py'):
+            return 'python'
+        elif file.endswith('.html'):
+            return html
+        
+        return 'python'

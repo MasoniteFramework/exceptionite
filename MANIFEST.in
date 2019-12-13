@@ -1,0 +1,2 @@
+include src/masonite/errors/templates/*
+include src/masonite/errors/templates/css/*
