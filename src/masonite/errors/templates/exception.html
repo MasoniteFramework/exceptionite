@@ -50,11 +50,10 @@
                     </div>
                     {% for variable, value in stack.variables.items() %}
                     <div class="flex items-center border-b-2 border-gray-200 pb-2">
-
-                        <div class="mr-8 w-1/6 text-right pl-2">
+                        <div class="mr-4 w-1/4 text-right pl-2 overflow-x-auto">
                             {{ variable }}
                         </div>
-                        <div class="mr-8 w-1/2 border-l-2 pl-2 py-2">
+                        <div class=" w-3/4 border-l-2 pl-2 py-2 overflow-x-auto">
                             {{ value }}
                         </div>
                     </div>

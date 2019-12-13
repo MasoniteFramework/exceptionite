@@ -1,19 +1,20 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='masonite-api',
+    name='masonite-errors',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='2.2.2',
+    version='0.1',
     package_dir={'': 'src'},
 
-    description='Masonite API Package',
-    long_description='Masonite API Package',
+    description='Exception Handling Made Easy',
+    long_description='Exception Handling Made Easy',
+    include_package_data=True,
 
     # The project's main homepage.
-    url='https://github.com/masoniteframework/api',
+    url='https://github.com/masoniteframework/exceptions',
 
     # Author details
     author='The Masonite Community',
@@ -59,16 +60,16 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=[
+    packages=[
         'masonite.errors',
-        ]),
+    ],
 
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'pyjwt>=1.7.1'
+        'jinja2'
     ],
 
     # List additional groups of dependencies here (e.g. development

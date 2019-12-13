@@ -1,17 +1,19 @@
-import traceback
-import sys
-import jinja2
-import pprint
 import inspect
-from jinja2 import ChoiceLoader, Environment, PackageLoader, select_autoescape
 import math
+import pprint
+import sys
+import traceback
+
+import jinja2
+from jinja2 import ChoiceLoader, Environment, PackageLoader, select_autoescape
+
+
 class Handler:
 
     def __init__(self, e=False):
         self.e = e
         self._contexts = {}
-        self.scoped_variables = inspect.trace()[-1][0].f_locals
-        self.type, self.value, self.tb  = exc_type, exc_value, exc_traceback = sys.exc_info()
+        self.type, self.value, self.tb = exc_type, exc_value, exc_traceback = sys.exc_info()
         self.traceback = traceback.TracebackException(
             self.type, self.value, self.tb, capture_locals=True)
         self.trace = self.create_trace()
@@ -47,30 +49,24 @@ class Handler:
         return self.e.__class__.__module__ + '.' + self.exception()
 
     def stacktrace(self):
-        traceback = []
-        for tb in self.traceback.stack:
-            traceback.append(StackLine(tb, tb.locals))
+        traceback = self.trace
         traceback.reverse()
         return traceback
-    
-    def context(self, context: dict):
-        self._contexts.update(context)
-        return self
-        
+
     def context(self, context: dict):
         self._contexts.update(context)
         return self
 
     def get_contexts(self):
         return self._contexts
-    
+
     def create_trace(self):
         traceback = []
         for tb in self.traceback.stack:
             traceback.append(StackLine(tb, tb.locals))
 
         return traceback
-    
+
     def render(self):
         loader = ChoiceLoader(
             [PackageLoader('src', 'masonite/errors/templates')]
@@ -81,14 +77,19 @@ class Handler:
             autoescape=select_autoescape(['html', 'xml'])
         )
 
+        print(self.get_contexts())
+
         return environment.get_template('exception.html').render({'exception': self})
         return 'hi'
 
+
 class StackLine:
 
-    def __init__(self, frame_summary, variables = {}):
+    def __init__(self, frame_summary, variables={}):
         self.file = frame_summary[0]
-        self.file_short = '..' + self.file[math.floor(len(self.file) / 4):]
+
+        # Cut off 30% of the string
+        self.file_short = '..' + self.file[math.floor(len(self.file) * .30):]
         self.lineno = frame_summary[1]
         self.parent_statement = frame_summary[2]
         self.statement = frame_summary[3]
@@ -100,30 +101,22 @@ class StackLine:
 
         with open(self.file) as fp:
             printer = pprint.PrettyPrinter(indent=4)
-            self.file_contents = printer.pformat(fp.read()).split('\\n')[self.start_line:self.end_line]
+            self.file_contents = printer.pformat(fp.read()).split('\\n')[
+                self.start_line:self.end_line]
 
         formatted_contents = {}
         read_line = self.start_line + 1
         for content in self.file_contents:
             formatted_line = (content
-                    .replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
-                    .replace("'\n '", '')
-                    .replace('\'\n "', '')
-                    .replace('"\n \'', '<br>')
-                )
+                              .replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
+                              .replace("'\n '", '')
+                              .replace('\'\n "', '')
+                              .replace('"\n \'', '<br>')
+                              )
 
-            for variable, value in variables.items():
-                split = content.split(' ')
-                if variable in split:
-                    try:
-                        formatted_line += " # {} == {}".format(variable, value)
-                    except TypeError:
-                        pass
-
-            # print('finally adding', formatted_line)
             formatted_contents.update({read_line: formatted_line})
             read_line += 1
-        # print(formatted_contents)
+
         self.file_contents = formatted_contents
 
     def get_language(self, file):
@@ -131,5 +124,5 @@ class StackLine:
             return 'python'
         elif file.endswith('.html'):
             return html
-        
+
         return 'python'

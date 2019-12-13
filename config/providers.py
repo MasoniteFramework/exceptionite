@@ -18,6 +18,8 @@ from masonite.providers import (
     CsrfProvider,
 )
 
+from app.MasoniteErrorsProvider import MasoniteErrorsProvider
+
 """
 |--------------------------------------------------------------------------
 | Providers List
@@ -53,6 +55,7 @@ PROVIDERS = [
     # HelpersProvider,
 
     # Third Party Providers
+    MasoniteErrorsProvider,
 
     # Application Providers
 
