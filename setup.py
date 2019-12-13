@@ -6,7 +6,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1',
+    version='0.3',
     package_dir={'': 'src'},
 
     description='Exception Handling Made Easy',
@@ -62,6 +62,7 @@ setup(
     # simple. Or you can use find_packages().
     packages=[
         'masonite.errors',
+        'masonite.errors.providers',
     ],
 
     # List run-time dependencies here.  These will be installed by pip when

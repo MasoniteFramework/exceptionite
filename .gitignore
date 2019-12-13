@@ -3,3 +3,5 @@ venv
 .vscode
 package.db
 .env
+dist/*
+src/masonite_errors.egg-info

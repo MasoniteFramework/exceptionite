@@ -16,11 +16,22 @@ class MasoniteHandler:
         handler.context({
             'WSGI': {
                 'Path': request.path,
-                'Input': request.all()
-            }
+                'Input': request.all() or None,
+                'Parameters': request.url_params,
+                'Request Method': request.get_request_method()
+            },
+            'Headers': self.get_headers(request)
         })
-        response.view(handler.render(), status=500)
 
+        return response.view(handler.render(), status=500)
+
+    def get_headers(self, request):
+        headers = {}
+        for header, value in request.environ.items():
+            if header.startswith('HTTP_'):
+                headers.update({header: value})
+
+        return headers
 
 class ErrorProvider(ServiceProvider):
 
