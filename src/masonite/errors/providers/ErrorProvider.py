@@ -2,7 +2,7 @@
 
 
 from masonite.provider import ServiceProvider
-from masonite.errors import Handler
+from .. import Handler
 
 
 class MasoniteHandler:
