@@ -65,7 +65,42 @@ PROVIDERS = [
 
 You will now have a beautiful new exception screen!
 
-## Usage Outside of Masonite
+## Usage for Flask
+
+If you are using flask you can also use this package! Here is an example for a flask application:
+
+```python
+from flask import Flask, request
+from werkzeug.exceptions import HTTPException
+
+app = Flask(__name__)
+
+from masonite.errors import Handler
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    handler = Handler(e)
+    handler.context({
+        'WSGI': {
+            'Path': request.path,
+            'Input': dict(request.args),
+            'Request Method': request.method,
+        }
+    })
+    return handler.render()
+
+@app.route('/<world>')
+def hello(world):
+    x = 'Hello World'
+    return 2/0
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+You'll now see the beautiful exception page
+
+## Usage for Python
 
 If you are not using Masonite you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
 
