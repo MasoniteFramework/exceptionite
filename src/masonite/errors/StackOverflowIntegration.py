@@ -10,18 +10,24 @@ class StackOverflowIntegration:
 
     name = "StackOverflow"
 
+    def __init__(self, tags=[], only_tags=[]):
+        if only_tags:
+            self.tags = only_tags
+        else:
+            self.tags = tags + ['python']
+
     def content(self, handler):
         response = requests.get(
-            'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged=python&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
-                handler.message())
+            'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged={}&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
+                handler.message(), ';'.join(self.tags))
         ).json()
 
         accepted_answer_ids = []
 
         if not response['items']:
             response = requests.get(
-                'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged=python&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
-                    handler.exception())
+                'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged={}&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
+                    handler.exception(), ';'.join(self.tags))
             ).json()
 
         for question in response.get('items', []):
