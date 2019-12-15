@@ -183,3 +183,7 @@ handler.context({
 ```
 
 Now this information will be displayed on the right hand side of the exception page.
+
+
+<img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70866053-b1cc3f00-1f32-11ea-9d4f-33805b16ecde.png">
+
