@@ -7,6 +7,9 @@
 
 **Using this library does not require Masonite.**
 
+<img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70865942-328a3b80-1f31-11ea-8106-cbc9969491d0.png">
+
+
 This library is a way to easily interact with exception classes. You can easily pass in an exception into the `Handler` class (usage docs below) and you can get so much information from the exception in an elegant fashion.
 
 You can even render it into a beautiful HTML exception page. 
