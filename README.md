@@ -1,8 +1,4 @@
 
-<p align="center">
-<img src="https://i.imgur.com/rEXcoMn.png" width="160px"> 
-</p>
-
 # Introduction
 
 **Using this library does not require Masonite.**
