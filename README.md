@@ -6,7 +6,7 @@
 
 This library is a way to easily interact with exception classes. You can easily pass in an exception into the `Handler` class (usage docs below) and you can get so much information from the exception in an elegant fashion.
 
-You can even render it into a beautiful HTML exception page. 
+You can even render it into a beautiful HTML exception page!
 
 ## Setting up this repository for development
 
