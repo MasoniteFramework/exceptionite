@@ -8,12 +8,6 @@ This library is a way to easily interact with exception classes. You can easily 
 
 You can even render it into a beautiful HTML exception page. 
 
-## Learning Masonite
-
-Masonite strives to have extremely comprehensive documentation. All documentation can be [Found Here](https://masoniteframework.gitbooks.io/docs/content/) and would be wise to go through the tutorials there. If you find any discrepencies or anything that doesn't make sense, be sure to comment directly on the documentation to start a discussion!
-
-Also be sure to join the [Slack channel](https://masoniteframework.gitbooks.io/docs/content/)!
-
 ## Setting up this repository for development
 
 To setup the package to get your package up and running, you should first take a look at `setup.py` and make any packages specific changes there. These include the classifiers and package name.
@@ -99,7 +93,7 @@ You'll now see the beautiful exception page
 
 ## Usage for Python
 
-If you are not using Masonite you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
+If you are not using Masonite or Flask you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
 
 ```python
 from masonite.errors import Handler
