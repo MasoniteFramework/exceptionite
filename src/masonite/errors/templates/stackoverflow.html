@@ -1,0 +1,54 @@
+<!-- Stack Overflow -->
+<div class="bg-white mb-2 ml-2">
+    {% for question in questions %}
+        <div class="container border-b-2 border-gray-300 pb-4">
+            <div class="p-2 text-xl text-blue-600">
+                <a href="{{ question['link'] }}" target="_blank">
+                    Q: {{ question['title'] }}
+                </a>
+            </div>
+            <div class="pl-2 flex">
+                {% for tag in question['tags'] %}
+                <button type="button"
+                    class="rounded-sm mr-2 px-4 bg-green-600 text-white p-1 rounded  leading-none flex items-center">
+                    {{ tag }}
+                </button>
+                {% endfor %}
+            </div>
+            {% if question['accepted_answer_id'] %}
+                {% for answer in question['answers'] %}
+                    {% if answer['is_accepted'] %}
+                        <div class="flex justify-center">
+                            <div class="pt-2 cursor-pointer text-gray-700" onClick="showAnswer('{{ answer['answer_id'] }}')">
+                                Show Answer
+                            </div>
+                        </div>
+                        <div id="{{ answer['answer_id'] }}" class="px-8 mt-2 py-2 flex bg-gray-200 hidden">
+                            <div>
+                                <div class="text-2xl">
+                                    Accepted Answer:
+                                </div>
+                                <div class="pt-2">
+                                    {{ answer['body']|safe  }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            <div class="px-8 pt-2 mt-2 flex justify-center bg-white text-gray-600">
+                <div class="">
+                    No Accepted Answer
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+function showAnswer(answerId) {
+    var element = document.getElementById(answerId);
+    element.classList.toggle("hidden");
+}
+</script>

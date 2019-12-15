@@ -25,15 +25,8 @@ class PackageController:
         except Exception as e:
             print(e.__class__.__module__)
             exception = Handler(e)
-        
-        # exception.context({
-        #     'WSGI': {
-        #         'Path': request.path,
-        #         'Input': request.all()
-        #     }
-        # })
 
-        # return exception.render()
-            
-        return view.render('exception', {'exception': exception})
-        # return 'Hello World'
+        
+        return view.render('woh')
+
+        
