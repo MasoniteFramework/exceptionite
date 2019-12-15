@@ -85,7 +85,7 @@
         <div class="w-1/2">
 
             {% for title, value in exception.get_integrations().items() %}
-            <div id="integration-{{ title }}" class="bg-white pl-4 mb-2 ml-2">
+            <div id="integration-{{ title }}" class="bg-white pl-4 mb-2 ml-2 hidden">
                 <h1 class="text-2xl border-b-2 border-red-600 p-2">
                     {{ title }}
                 </h1>

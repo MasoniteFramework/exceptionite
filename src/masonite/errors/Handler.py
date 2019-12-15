@@ -9,6 +9,7 @@ import jinja2
 from jinja2 import ChoiceLoader, Environment, PackageLoader, select_autoescape, DictLoader
 
 import requests
+from .StackOverflowIntegration import StackOverflowIntegration
 
 
 class Handler:
@@ -22,6 +23,7 @@ class Handler:
         self.traceback = traceback.TracebackException(
             self.type, self.value, self.tb, capture_locals=True)
         self.trace = self.create_trace()
+        self.integrate(StackOverflowIntegration())
 
         # self.stack_overflow()
 
@@ -43,50 +45,50 @@ class Handler:
     def any(self):
         return bool(self.e)
 
-    def stack_overflow(self):
-        response = requests.get(
-            'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged=python&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
-                self.message())
-        ).json()
+    # def stack_overflow(self):
+    #     response = requests.get(
+    #         'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged=python&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
+    #             self.message())
+    #     ).json()
 
-        accepted_answer_ids = []
+    #     accepted_answer_ids = []
 
-        if not response['items']:
-            response = requests.get(
-                'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged=python&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
-                    self.exception())
-            ).json()
+    #     if not response['items']:
+    #         response = requests.get(
+    #             'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&intitle={}&site=stackoverflow&filter=!-*jbN-(0_ynL&tagged=python&key=k7C3UwXDt3J0xOpri8RPgA(('.format(
+    #                 self.exception())
+    #         ).json()
 
-        for question in response.get('items', []):
-            if 'accepted_answer_id' in question:
-                accepted_answer_ids.append(str(question['accepted_answer_id']))
+    #     for question in response.get('items', []):
+    #         if 'accepted_answer_id' in question:
+    #             accepted_answer_ids.append(str(question['accepted_answer_id']))
 
-        answers = requests.get(
-            'https://api.stackexchange.com/2.2/answers/{}?order=desc&sort=activity&site=stackoverflow'.format(
-                ';'.join(accepted_answer_ids))
-        ).json()
+    #     answers = requests.get(
+    #         'https://api.stackexchange.com/2.2/answers/{}?order=desc&sort=activity&site=stackoverflow'.format(
+    #             ';'.join(accepted_answer_ids))
+    #     ).json()
 
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(current_path, 'templates/stackoverflow.html'), 'r') as f:
-            overflow_exception = f.read()
+    #     current_path = os.path.dirname(os.path.abspath(__file__))
+    #     with open(os.path.join(current_path, 'templates/stackoverflow.html'), 'r') as f:
+    #         overflow_exception = f.read()
 
-        loader = DictLoader({
-            'stackoverflow.html': overflow_exception,
-        })
+    #     loader = DictLoader({
+    #         'stackoverflow.html': overflow_exception,
+    #     })
 
-        environment = Environment(
-            loader=loader,
-            autoescape=select_autoescape(['html', 'xml'])
-        )
+    #     environment = Environment(
+    #         loader=loader,
+    #         autoescape=select_autoescape(['html', 'xml'])
+    #     )
 
-        content = environment.get_template('stackoverflow.html').render({
-            'questions': response['items'], 'answers': answers})
+    #     content = environment.get_template('stackoverflow.html').render({
+    #         'questions': response['items'], 'answers': answers})
 
-        self.integrate({
-            'StackOverflow': {
-                'content': content
-            }
-        })      
+    #     self.integrate({
+    #         'StackOverflow': {
+    #             'content': content
+    #         }
+    #     })      
 
     def count(self):
         return len(self.trace)
@@ -109,8 +111,15 @@ class Handler:
         self._contexts.update(context)
         return self
 
-    def integrate(self, integrations: dict):
-        self._integrations.update(integrations)
+    def integrate(self, integration):
+        if isinstance(integration, dict):
+            self._integrations.update(integration)
+        else:
+            self.integrate({
+                integration.name: {
+                    'content': integration.content(self)
+                }
+            })
         return self
 
     def get_contexts(self):

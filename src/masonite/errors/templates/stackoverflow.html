@@ -20,10 +20,10 @@
                     {% if answer['is_accepted'] %}
                         <div class="flex justify-center">
                             <div class="pt-2 cursor-pointer text-gray-700" onClick="showAnswer('{{ answer['answer_id'] }}')">
-                                Show Answer
+                                Show Accepted Answer
                             </div>
                         </div>
-                        <div id="{{ answer['answer_id'] }}" class="px-8 mt-2 py-2 flex bg-gray-200 hidden">
+                        <div id="{{ answer['answer_id'] }}" class="px-8 mt-2 py-2 flex bg-gray-200 hidden overflow-x-auto">
                             <div>
                                 <div class="text-2xl">
                                     Accepted Answer:
