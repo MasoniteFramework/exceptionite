@@ -18,7 +18,7 @@ from masonite.providers import (
     CsrfProvider,
 )
 
-from app.MasoniteErrorsProvider import MasoniteErrorsProvider
+from src.masonite.errors.providers import ErrorProvider
 
 """
 |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ PROVIDERS = [
     # HelpersProvider,
 
     # Third Party Providers
-    MasoniteErrorsProvider,
+    ErrorProvider,
 
     # Application Providers
 
