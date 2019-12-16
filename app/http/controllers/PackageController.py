@@ -23,10 +23,13 @@ class PackageController:
         try:
             Throw(view)
         except Exception as e:
-            print(e.__class__.__module__)
             exception = Handler(e)
 
-        
+        dic = {}
+        dic.update({'hello', 'world'})
+
         return view.render('woh')
+
+
 
         

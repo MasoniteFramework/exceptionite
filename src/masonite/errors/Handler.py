@@ -1,14 +1,16 @@
 import inspect
 import math
+import os
 import pprint
 import sys
 import traceback
-import os
 
 import jinja2
-from jinja2 import ChoiceLoader, Environment, PackageLoader, select_autoescape, DictLoader
-
+import pip
 import requests
+from jinja2 import (ChoiceLoader, DictLoader, Environment, PackageLoader,
+                    select_autoescape)
+
 from .StackOverflowIntegration import StackOverflowIntegration
 
 
@@ -35,8 +37,18 @@ class Handler:
                 'Python Version': self.python_version,
                 'Platform': self.platform,
                 'File System Encoding': self.file_system_encoding,
-                'Default Encoding': self.default_encoding
+                'Default Encoding': self.default_encoding,
+                'Argv': sys.argv,
             }
+        })
+
+        installed_packages = pip.get_installed_distributions()
+        packages = {}
+        for i in installed_packages:
+            packages.update({i.key: i.version})
+
+        self.context({
+            'Packages': packages
         })
 
     def any(self):
@@ -69,7 +81,8 @@ class Handler:
         else:
             self.integrate({
                 integration.name: {
-                    'content': integration.content(self)
+                    'content': integration.content(self),
+                    'cls': integration
                 }
             })
         return self

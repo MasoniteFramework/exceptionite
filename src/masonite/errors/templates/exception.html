@@ -27,10 +27,6 @@
             <div class="text-red-600 font-bold">{{ exception.namespace() }}</div>
             <div class="text-white text-2xl">{{ exception.message() }}</div>
         </div>
-        <!-- <div class="bg-gray-900 px-8 py-8 flex-1">
-            <div class="text-red-600 font-bold">{{ exception.namespace() }}</div>
-            <div class="text-white text-2xl">{{ exception.message() }}</div>
-        </div> -->
     </section>
 
     <section class="flex justify-start">
@@ -40,9 +36,13 @@
         {% if exception.get_integrations() %}
             <div class="bg-white px-4 py-2 w-full bg-gray-400 text-lg">
                 Integrations: 
-                {% for integration in exception.get_integrations().keys() %}
+                {% for integration, value in exception.get_integrations().items() %}
                     <span class="px-4 text-red-600 cursor-pointer" onClick="showIntegrations('integration-{{ integration }}')">
-                        {{ integration }}
+                        {{ integration }} 
+
+                        <span class="text-sm">
+                            ({{ value.get('cls', []).count or '0' }})
+                        </span>
                     </span>
                 {% endfor %}
             </div>
@@ -100,11 +100,17 @@
                     {{ context }}
                 </h1>
 
-                {% for key, value in values.items() %}
-                <div class="p-2">
-                    {{ key }}: {{ value }}
+                <div class="p-2 text-gray-700 text-center cursor-pointer" onClick="show('context-{{ context }}')">
+                    Show Information
                 </div>
-                {% endfor %}
+
+                <div id="context-{{ context }}" class="hidden">
+                    {% for key, value in values.items() %}
+                    <div class="p-2">
+                        {{ key }}: {{ value }}
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -141,6 +147,11 @@
         // Integrations
         function showIntegrations(integrationId) {
             var element = document.getElementById(integrationId);
+            element.classList.toggle("hidden");
+        }
+
+        function show(elementId) {
+            var element = document.getElementById(elementId);
             element.classList.toggle("hidden");
         }
     </script>
