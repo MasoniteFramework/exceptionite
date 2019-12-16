@@ -1,21 +1,12 @@
 
-<p align="center">
-<img src="https://i.imgur.com/rEXcoMn.png" width="160px"> 
-</p>
-
 # Introduction
-
-**Using this library does not require Masonite.**
 
 This library is a way to easily interact with exception classes. You can easily pass in an exception into the `Handler` class (usage docs below) and you can get so much information from the exception in an elegant fashion.
 
-You can even render it into a beautiful HTML exception page. 
+You can even render it into a beautiful HTML exception page!
 
-## Learning Masonite
+<img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70865942-328a3b80-1f31-11ea-8106-cbc9969491d0.png">
 
-Masonite strives to have extremely comprehensive documentation. All documentation can be [Found Here](https://masoniteframework.gitbooks.io/docs/content/) and would be wise to go through the tutorials there. If you find any discrepencies or anything that doesn't make sense, be sure to comment directly on the documentation to start a discussion!
-
-Also be sure to join the [Slack channel](https://masoniteframework.gitbooks.io/docs/content/)!
 
 ## Setting up this repository for development
 
@@ -102,7 +93,7 @@ You'll now see the beautiful exception page
 
 ## Usage for Python
 
-If you are not using Masonite you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
+If you are not using Masonite or Flask you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
 
 ```python
 from masonite.errors import Handler
@@ -192,3 +183,7 @@ handler.context({
 ```
 
 Now this information will be displayed on the right hand side of the exception page.
+
+
+<img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70866053-b1cc3f00-1f32-11ea-9d4f-33805b16ecde.png">
+
