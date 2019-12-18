@@ -2,7 +2,7 @@
 
 
 from masonite.provider import ServiceProvider
-from .. import Handler, StackOverflowIntegration
+from .. import Handler, StackOverflowIntegration, SolutionsIntegration
 
 
 class MasoniteHandler:
@@ -13,7 +13,8 @@ class MasoniteHandler:
         response = container.make(Response)
         request = container.make('Request')
         handler = Handler(e)
-        handler.integrate(StackOverflowIntegration())
+        # handler.integrate(StackOverflowIntegration())
+        handler.integrate(SolutionsIntegration())
         handler.context({
             'WSGI': {
                 'Path': request.path,

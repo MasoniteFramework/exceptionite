@@ -4,10 +4,10 @@ from masonite.view import View
 from masonite.request import Request
 from app.User import User
 from src.masonite.errors import Handler
-from masonite.exceptions import ContainerError
+from masonite.exceptions import ContainerError, InvalidCSRFToken
 import pickle
 
-x = 2
+
 class Throw:
 
     def __init__(self, z):
@@ -24,9 +24,10 @@ class PackageController:
             Throw(view)
         except Exception as e:
             exception = Handler(e)
-
+        
+        raise InvalidCSRFToken("Invalid CSRF token.")
         dic = {}
-        dic.update({'hello', 'world'})
+        dic.update(['hello', 'world'])
 
         return view.render('woh')
 

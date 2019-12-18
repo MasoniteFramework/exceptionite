@@ -1,0 +1,9 @@
+<div class="bg-white mb-2 ml-2">
+    {% for solution in solutions %}
+        <div class="container border-b-2 border-gray-300 pb-4">
+            <div class="p-2 text-xl text-blue-700">
+               {{ solution|safe }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
