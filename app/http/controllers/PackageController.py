@@ -25,7 +25,6 @@ class PackageController:
         except Exception as e:
             exception = Handler(e)
         
-        raise InvalidCSRFToken("Invalid CSRF token.")
         dic = {}
         dic.update(['hello', 'world'])
 
