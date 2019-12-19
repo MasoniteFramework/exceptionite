@@ -1,0 +1,1 @@
+Driver "mysql" requires one of the following packages: "PyMySQL", "mysqlclient"
