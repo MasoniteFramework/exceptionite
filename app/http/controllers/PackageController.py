@@ -26,6 +26,7 @@ class PackageController:
             exception = Handler(e)
         
         dic = {}
+        request.hi
         dic.update(['hello', 'world'])
 
         return view.render('woh')
