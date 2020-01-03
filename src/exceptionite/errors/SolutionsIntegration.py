@@ -172,7 +172,6 @@ class SolutionsIntegration:
             loader=loader,
             autoescape=select_autoescape(['html', 'xml'])
         )
-        print(possible_solutions)
         return environment.get_template('solutions.html').render({'solutions': possible_solutions})
 
     def register(self, *solutions):
