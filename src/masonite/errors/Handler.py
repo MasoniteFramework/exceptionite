@@ -124,6 +124,44 @@ class Handler:
 
         return environment.get_template('exception.html').render({'exception': self})
 
+    @staticmethod
+    def dump(obj):
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(current_path, 'templates/dump.html'), 'r') as f:
+            dump = f.read()
+
+        with open(os.path.join(current_path, 'templates/obj_loop.html'), 'r') as f:
+            obj_loop = f.read()
+        
+        with open(os.path.join(current_path, 'templates/css/tailwind.css'), 'r') as f:
+            tailwind_template = f.read()
+
+        loader = DictLoader({
+            'dump.html': dump,
+            'obj_loop.html': obj_loop,
+            'css/tailwind.css': tailwind_template,
+        })
+
+        environment = Environment(
+            loader=loader,
+            autoescape=select_autoescape(['html', 'xml'])
+        )
+
+        return environment.get_template('dump.html').render({'obj': obj,
+                                                            'type': type,
+                                                            'list': list,
+                                                            'id': id,
+                                                            'inspect': inspect,
+                                                            'members': inspect.getmembers(obj, predicate=inspect.ismethod),
+                                                            'properties': inspect.getmembers(obj),
+                                                            'hasattr': hasattr,
+                                                            'getattr': getattr,
+                                                            'Model': list,
+                                                            'isinstance': isinstance,
+                                                            'show_methods': (bool, str, list, dict),
+                                                            'len': len,
+                                                            })
+
 
 class StackLine:
 
