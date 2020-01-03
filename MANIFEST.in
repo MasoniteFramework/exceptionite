@@ -1,2 +1,2 @@
-include src/masonite/errors/templates/*
-include src/masonite/errors/templates/css/*
+include src/exceptionite/errors/templates/*
+include src/exceptionite/errors/templates/css/*

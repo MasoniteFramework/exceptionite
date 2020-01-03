@@ -4,6 +4,7 @@ import os
 import pprint
 import sys
 import traceback
+import pkg_resources
 
 import jinja2
 import pip
@@ -42,7 +43,7 @@ class Handler:
             }
         })
 
-        installed_packages = pip.get_installed_distributions()
+        installed_packages = pkg_resources.working_set
         packages = {}
         for i in installed_packages:
             packages.update({i.key: i.version})
@@ -132,7 +133,7 @@ class Handler:
 
         with open(os.path.join(current_path, 'templates/obj_loop.html'), 'r') as f:
             obj_loop = f.read()
-        
+
         with open(os.path.join(current_path, 'templates/css/tailwind.css'), 'r') as f:
             tailwind_template = f.read()
 
@@ -148,19 +149,19 @@ class Handler:
         )
 
         return environment.get_template('dump.html').render({'obj': obj,
-                                                            'type': type,
-                                                            'list': list,
-                                                            'id': id,
-                                                            'inspect': inspect,
-                                                            'members': inspect.getmembers(obj, predicate=inspect.ismethod),
-                                                            'properties': inspect.getmembers(obj),
-                                                            'hasattr': hasattr,
-                                                            'getattr': getattr,
-                                                            'Model': list,
-                                                            'isinstance': isinstance,
-                                                            'show_methods': (bool, str, list, dict),
-                                                            'len': len,
-                                                            })
+                                                             'type': type,
+                                                             'list': list,
+                                                             'id': id,
+                                                             'inspect': inspect,
+                                                             'members': inspect.getmembers(obj, predicate=inspect.ismethod),
+                                                             'properties': inspect.getmembers(obj),
+                                                             'hasattr': hasattr,
+                                                             'getattr': getattr,
+                                                             'Model': list,
+                                                             'isinstance': isinstance,
+                                                             'show_methods': (bool, str, list, dict),
+                                                             'len': len,
+                                                             })
 
 
 class StackLine:

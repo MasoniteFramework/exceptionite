@@ -4,4 +4,4 @@ venv
 package.db
 .env
 dist/*
-src/masonite_errors.egg-info
+src/exceptionite.egg-info

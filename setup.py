@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='masonite-errors',
+    name='exceptionite',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.12',
+    version='0.13',
     package_dir={'': 'src'},
 
     description='Exception Handling Made Easy',
@@ -61,9 +61,9 @@ setup(
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=[
-        'masonite',
-        'masonite.errors',
-        'masonite.errors.providers',
+        'exceptionite',
+        'exceptionite.errors',
+        'exceptionite.errors.providers',
     ],
 
     # List run-time dependencies here.  These will be installed by pip when

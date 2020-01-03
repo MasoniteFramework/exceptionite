@@ -3,7 +3,7 @@
 from masonite.view import View
 from masonite.request import Request
 from app.User import User
-from src.masonite.errors import Handler
+from src.exceptionite.errors import Handler
 from masonite.exceptions import ContainerError, InvalidCSRFToken
 import pickle
 

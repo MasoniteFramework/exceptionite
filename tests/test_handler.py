@@ -1,5 +1,5 @@
 from masonite.testing import TestCase
-from src.masonite.errors import Handler
+from src.exceptionite.errors import Handler
 
 
 class TestPackage(TestCase):
