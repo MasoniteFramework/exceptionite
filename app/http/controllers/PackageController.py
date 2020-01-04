@@ -15,6 +15,9 @@ class Throw:
         self.z = z
         raise ContainerError('Something Broke!')
 
+class Fun:
+    def func():
+        pass
 class PackageController:
     """Controller For Welcoming The User
     """
@@ -26,7 +29,7 @@ class PackageController:
             exception = Handler(e)
         
         dic = {}
-        request.hi
+        Fun()()
         dic.update(['hello', 'world'])
 
         return view.render('woh')

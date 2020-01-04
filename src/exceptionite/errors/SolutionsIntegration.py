@@ -88,18 +88,78 @@ class Syntax:
     def regex(self):
         return r"^invalid syntax \((?P<class>(\w+\.py))+, line (?P<line>(\w+))"
 
+
 class ImportIssue:
 
     def title(self):
         return "Import Issue"
-    
+
     def description(self):
         return (
             "This is an import error. Check the file where you imported the ':object' class and make sure it exists there."
-            )
+        )
 
     def regex(self):
         return r"^cannot import name '(?P<object>(\w+))'"
+
+
+class Undefined:
+
+    def title(self):
+        return "Undefined Variable"
+
+    def description(self):
+        return (
+            "You are trying to use a variable that cannot be found. Check the ':variable' variable and see if it is declared, imported or in the correct scope depending on what the variable is."
+        )
+
+    def regex(self):
+        return r"name '(?P<variable>(\w+))' is not defined"
+
+class WrongParameterCount:
+
+    def title(self):
+        return "Wrong Parameter Count"
+
+    def description(self):
+        return (
+            "You have the wrong amount of parameters for the ':object' object. "
+            "It requires :correct parameters but you gave :wrong parameters. If the parameters are stored in a variable try checking the variable to the left. "
+            "If you are passing variables in normally then check the signature of the object"
+        )
+
+    def regex(self):
+        return r"^(?P<object>(\w*))\(\) takes (?P<correct>(\d+)) positional (argument|arguments) but (?P<wrong>(\d+)) (were|was) given"
+
+class WrongConstructorParameterCount:
+
+    def title(self):
+        return "Wrong Parameters to a Constructor"
+
+    def description(self):
+        return (
+            "The ':object' object doesn't take parameters but you gave some anyway. "
+            "Check the constructor of the ':object' object. It's likely it does not take any parameters. "
+            "If its stored in a variable you can check the value to the left."
+        )
+
+    def regex(self):
+        return r"^(?P<object>(\w*))\(\) takes no parameters "
+
+class ObjectNotCallable:
+
+    def title(self):
+        return "Objects Cannot Be Called"
+
+    def description(self):
+        return (
+            "You cannot call objects. The ':object' object has already been instiatiated. " 
+            "Once an object is instantiated it cannot be called directly anymore. "
+            "Check if the ':object' is instantiated already."
+        )
+
+    def regex(self):
+        return r"^'(?P<object>(\w*))' object is not callable"
 
 class CSRFIssue:
 
@@ -143,6 +203,10 @@ class SolutionsIntegration:
             Syntax(),
             ImportIssue(),
             CSRFIssue(),
+            Undefined(),
+            WrongParameterCount(),
+            WrongConstructorParameterCount(),
+            ObjectNotCallable(),
             SubscriptableIssue(),
         )
 
