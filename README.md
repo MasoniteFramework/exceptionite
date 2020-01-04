@@ -38,7 +38,7 @@ $ python -m pytest
 In order to use this class you will first need to install it:
 
 ```
-$ pip install masonite-errors
+$ pip install exceptionite
 ```
 
 ## Usage for Masonite
@@ -46,7 +46,7 @@ $ pip install masonite-errors
 If you are installing this library in your Masonite application you can simply add the Service Provider to your `config/providers.py` file:
 
 ```python
-from masonite.errors.providers import ErrorProvider
+from exceptionite.errors.providers import ErrorProvider
 
 PROVIDERS = [
     # ...
@@ -66,7 +66,7 @@ from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
-from masonite.errors import Handler
+from exceptionite.errors import Handler
 
 @app.errorhandler(Exception)
 def handle_exception(e):
@@ -96,7 +96,7 @@ You'll now see the beautiful exception page
 If you are not using Masonite or Flask you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
 
 ```python
-from masonite.errors import Handler
+from exceptionite.errors import Handler
 
 try:
     2/0
