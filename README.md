@@ -43,7 +43,9 @@ $ pip install exceptionite
 
 ## Usage for Masonite
 
-If you are installing this library in your Masonite application you can simply add the Service Provider to your `config/providers.py` file:
+If you are using Masonite 2.3, this package is already being used inside core for Masonite's debugger exception handling.
+
+If you are using an older version of Masonite you can simply add the Service Provider to your `config/providers.py` file:
 
 ```python
 from exceptionite.errors.providers import ErrorProvider
