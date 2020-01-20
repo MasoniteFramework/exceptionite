@@ -29,7 +29,7 @@ class PackageController:
             exception = Handler(e)
         
         dic = {}
-        Fun()()
+        # Fun()()
         dic.update(['hello', 'world'])
 
         return view.render('woh')

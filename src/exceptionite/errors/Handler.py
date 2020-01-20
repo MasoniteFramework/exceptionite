@@ -13,9 +13,9 @@ from jinja2 import (ChoiceLoader, DictLoader, Environment, PackageLoader,
                     select_autoescape)
 
 from .StackOverflowIntegration import StackOverflowIntegration
+from .TermColor import TermColor
 
-
-class Handler:
+class Handler(TermColor):
 
     def __init__(self, e=False, **kwargs):
         self.e = e
@@ -102,6 +102,7 @@ class Handler:
         return traceback
 
     def render(self):
+        self.terminal()
         current_path = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(current_path, 'templates/exception.html'), 'r') as f:
             exception_template = f.read()
@@ -124,6 +125,21 @@ class Handler:
         )
 
         return environment.get_template('exception.html').render({'exception': self})
+
+    def terminal(self):
+        self.danger(
+            f'Exception: {self.namespace()} \nMessage: {self.message()}', padding=1)
+
+        self.warning('Stack Trace:', verbose=1)
+        for key, trace in enumerate(self.stacktrace()):
+            self.warning(f"{trace.file}:{trace.lineno}", padding=1, verbose=1)
+            key += 1
+            for line, content in trace.unformatted_contents.items():
+                if trace.offending_line == line:
+                    self.line(f"<bgred>#{line}: {content}</bgred>", verbose=1)
+                else:                    
+                    self.line(f"#{line}. {content}", verbose=1)
+        
 
     @staticmethod
     def dump(obj):
@@ -187,8 +203,10 @@ class StackLine:
                 self.start_line:self.end_line]
 
         formatted_contents = {}
+        unformatted_contents = {}
         read_line = self.start_line + 1
         for content in self.file_contents:
+
             if self.language == 'python':
                 formatted_line = (content
                                   .replace('    ', '&nbsp;&nbsp;&nbsp;&nbsp;')
@@ -197,6 +215,13 @@ class StackLine:
                                   .replace('"\n \'', '<br>')
                                   .replace('"\n "', '')
                                   )
+                unformatted_line = (content
+                                  .replace("'\n '", '')
+                                  .replace('\'\n "', '')
+                                  .replace('"\n \'', '\n')
+                                  .replace('"\n "', '')
+                                  )
+                unformatted_contents.update({read_line: unformatted_line})
             else:
                 formatted_line = (content
                                   .replace("'\n '", '')
@@ -208,6 +233,7 @@ class StackLine:
             read_line += 1
 
         self.file_contents = formatted_contents
+        self.unformatted_contents = unformatted_contents
 
     def get_language(self, file):
         if file.endswith('.py'):
