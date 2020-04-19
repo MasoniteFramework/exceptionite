@@ -19,10 +19,13 @@ class StackOverflowIntegration:
 
     def content(self, handler):
 
-        response = requests.get(
-            "https://api.stackexchange.com/2.2/search/advanced?order=asc&sort=relevance&q='{0}'&body='{0}'&accepted=True&tagged={1}&site=stackoverflow".format(
-                handler.message(), ';'.join(self.tags))
-        ).json()
+        try:
+            response = requests.get(
+                "https://api.stackexchange.com/2.2/search/advanced?order=asc&sort=relevance&q='{0}'&body='{0}'&accepted=True&tagged={1}&site=stackoverflow".format(
+                    handler.message(), ';'.join(self.tags))
+            ).json()
+        except requests.exceptions.ConnectionError:
+            return
 
 
         accepted_answer_ids = []
