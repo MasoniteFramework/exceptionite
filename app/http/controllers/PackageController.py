@@ -4,6 +4,7 @@ from masonite.view import View
 from masonite.request import Request
 from app.User import User
 from src.exceptionite.errors import Handler
+from src.exceptionite.errors.TerminalHandler import TerminalHandler
 from masonite.exceptions import ContainerError, InvalidCSRFToken
 import pickle
 
@@ -26,11 +27,13 @@ class PackageController:
         try:
             Throw(view)
         except Exception as e:
-            exception = Handler(e)
+            pass
+            # exception = TerminalHandler(e)
         
         dic = {}
+
+        # dic.update(['hello', 'world'])
         Fun()()
-        dic.update(['hello', 'world'])
 
         return view.render('woh')
 

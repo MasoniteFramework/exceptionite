@@ -14,11 +14,11 @@ from jinja2 import (ChoiceLoader, DictLoader, Environment, PackageLoader,
 
 from .StackOverflowIntegration import StackOverflowIntegration
 
-
 class Handler:
 
     def __init__(self, e=False, **kwargs):
         self.e = e
+        
         self._contexts = {}
         self._integrations = {}
 
@@ -99,6 +99,11 @@ class Handler:
         for tb in self.traceback.stack:
             traceback.append(StackLine(tb, variables=tb.locals))
 
+        if hasattr(self.e, 'from_obj'):
+            frame_summary = [inspect.getsourcefile(
+                self.e.from_obj), inspect.getsourcelines(self.e.from_obj)[1], '', 'null']
+            traceback.append(StackLine(frame_summary, variables={}))
+
         return traceback
 
     def render(self):
@@ -122,7 +127,8 @@ class Handler:
             loader=loader,
             autoescape=select_autoescape(['html', 'xml'])
         )
-
+        from .TerminalHandler import TerminalHandler
+        TerminalHandler(self.e).render()
         return environment.get_template('exception.html').render({'exception': self})
 
     @staticmethod
@@ -201,6 +207,7 @@ class StackLine:
                 formatted_line = (content
                                   .replace("'\n '", '')
                                   .replace('\'\n "', ''))
+
             if self.statement in formatted_line:
                 self.offending_line = read_line
 
