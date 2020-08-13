@@ -1,3 +1,5 @@
+[Github Actions status](https://github.com/MasoniteFramework/exceptionite/workflows/Test%20Application/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/MasoniteFramework/exceptionite/badge.svg?branch=master)](https://coveralls.io/github/MasoniteFramework/exceptionite?branch=master)
 
 # Introduction
 
