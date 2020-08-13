@@ -73,6 +73,7 @@ setup(
     install_requires=[
         'jinja2',
         'requests',
+        'colorama'
     ],
 
     # List additional groups of dependencies here (e.g. development

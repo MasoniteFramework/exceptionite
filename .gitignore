@@ -5,3 +5,6 @@ package.db
 .env
 dist/*
 src/exceptionite.egg-info
+
+# local testing
+test.db
