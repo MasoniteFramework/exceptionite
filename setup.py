@@ -54,8 +54,6 @@ setup(
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Framework :: Masonite',
-        'Framework :: Masonite :: 4.0',
-        'Framework :: Masonite :: 4.1',
     ],
 
     # What does your project relate to?
