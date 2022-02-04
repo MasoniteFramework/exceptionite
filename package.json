@@ -1,0 +1,30 @@
+{
+  "name": "exceptionite",
+  "version": "2.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "production": "mix --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@heroicons/vue": "^1.0.5",
+    "@vue/compiler-sfc": "^3.2.29",
+    "autoprefixer": "^10.4.2",
+    "laravel-mix": "^6.0.41",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.16",
+    "vue": "^3.2.29",
+    "vue-loader": "^16.8.3"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.4.3",
+    "@vueuse/core": "^7.5.5",
+    "axios": "^0.25.0",
+    "highlight.js": "^11.4.0"
+  }
+}
