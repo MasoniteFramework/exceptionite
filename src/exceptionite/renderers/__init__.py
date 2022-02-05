@@ -1,4 +1,3 @@
 # flake8: noqa: E501
-
-from .JavascriptRenderer import JavascriptRenderer
+from .WebRenderer import WebRenderer
 from .TerminalRenderer import TerminalRenderer

@@ -2,7 +2,7 @@ import os
 from jinja2 import Environment, PackageLoader
 
 
-class JavascriptRenderer:
+class WebRenderer:
     def __init__(self, handler) -> None:
         self.handler = handler
 

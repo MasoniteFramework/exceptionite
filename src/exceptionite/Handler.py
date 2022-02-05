@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 from .StackTrace import StackTrace
 from .tabs import ContextTab, SolutionsTab, RecommendationsTab
-from .renderers import JavascriptRenderer, TerminalRenderer
+from .renderers import WebRenderer, TerminalRenderer
 
 
 class Handler:
@@ -39,7 +39,7 @@ class Handler:
         self.add_tab(ContextTab)
         self.add_tab(SolutionsTab)
         self.add_tab(RecommendationsTab)
-        self.add_renderer("javascript", JavascriptRenderer)
+        self.add_renderer("web", WebRenderer)
         self.add_renderer("terminal", TerminalRenderer)
 
     def set_options(self, options):
