@@ -3,7 +3,7 @@ import unittest
 # from src.exceptionite import Handler
 
 
-class TestToDoHandler(unittest):
+class TestToDoHandler(unittest.TestCase):
     def test_returns_error_message(self):
         # try:
         #     2 / 0
