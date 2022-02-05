@@ -28,6 +28,14 @@ jobs:
         run: npm install --legacy-peer-deps
       - name: Build frontend assets
         run: npm run production
+      - name: Upload assets for next steps
+        uses: actions/upload-artifact@v2
+        with:
+          name: compiled_assets
+          path: src/exceptionite/dist
+          retention-days: 1
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
       - name: debug
         run: |
           ls -lh
