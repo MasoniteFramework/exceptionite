@@ -43,7 +43,10 @@ class PossibleSolutions(Block):
 
                 possible_solutions.append({"title": solution.title(), "description": description})
 
-        return {"solutions": possible_solutions}
+        return {
+            "first": possible_solutions[0] if len(possible_solutions) > 0 else None,
+            "solutions": possible_solutions,
+        }
 
     def register(self, *solutions):
         self.registered_solutions += solutions

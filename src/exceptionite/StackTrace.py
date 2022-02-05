@@ -19,7 +19,7 @@ class StackFrame:
             index = rel_path.find(MARKER)
             if index != -1:
                 self.is_vendor = True
-                self.relative_file = "~/" + rel_path[index + len(MARKER) :]
+                self.relative_file = "~/" + rel_path[index + len(MARKER) :]  # noqa: E203
             else:
                 self.relative_file = rel_path
 
@@ -39,7 +39,7 @@ class StackFrame:
             printer = pprint.PrettyPrinter(indent=4)
 
             self.file_contents = printer.pformat(fp.read()).split("\\n")[
-                self.start_line : self.end_line
+                self.start_line : self.end_line  # noqa: E203
             ]
 
         formatted_contents = {}

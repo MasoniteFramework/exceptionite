@@ -1,3 +1,6 @@
+# flake8: noqa: E501
+
+
 class DictionaryUpdateSequence:
     def title(self):
         return "Problem title"

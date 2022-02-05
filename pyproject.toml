@@ -10,7 +10,9 @@ exclude = '''
   | \.venv
   | docs
   | node_modules
-  | tests/integrations/templates
+  | build
+  | src/exceptionite/templates
+  | src/exceptionite/assets
 )/
 '''
 

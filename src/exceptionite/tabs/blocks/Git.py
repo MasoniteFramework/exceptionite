@@ -1,6 +1,6 @@
 import shlex
 import subprocess
-from weakref import CallableProxyType
+
 from .Block import Block
 
 
@@ -11,9 +11,6 @@ class Git(Block):
 
     def build(self):
         # TODO: if no git repo
-        # TODO: add config for remote name
-        # return False
-
         git_version = subprocess.check_output(shlex.split("git --version")).strip()
         commit = subprocess.check_output(shlex.split("git rev-parse HEAD")).strip()
         branch = subprocess.check_output(shlex.split("git rev-parse --abbrev-ref HEAD")).strip()

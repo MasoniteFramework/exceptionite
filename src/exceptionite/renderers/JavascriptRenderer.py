@@ -1,5 +1,5 @@
 import os
-from jinja2 import Environment, FileSystemLoader, PackageLoader
+from jinja2 import Environment, PackageLoader
 
 
 class JavascriptRenderer:

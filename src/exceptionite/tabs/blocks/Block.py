@@ -1,4 +1,5 @@
 class Block:
+    id = "blockid"
     name = "Block Name"
     icon = "Icon Name"
     component = "KeyValBlock"
@@ -10,6 +11,7 @@ class Block:
     def serialize(self):
         self.data = self.build()
         return {
+            "id": self.id,
             "name": self.name,
             "icon": self.icon,
             "component": self.component,

@@ -23,6 +23,9 @@
       <div ref="exceptioniteBlock">
         <exception :exception="exception" />
       </div>
+
+      <first-solution v-if="firstSolution" :solution="firstSolution" class="mt-4" />
+
       <stack id="stack" class="mt-4 mb-10" :exception="exception" />
 
       <!-- All integrations -->
@@ -64,6 +67,7 @@ import Navbar from "./Navbar.vue"
 import Exception from './Exception.vue'
 import Stack from './Stack.vue'
 import ContextMenu from './ContextMenu.vue'
+import FirstSolution from './FirstSolution.vue'
 import Pulse from './Pulse.vue'
 import ShareDialog from './ShareDialog.vue'
 import BaseActionDialog from './BaseActionDialog.vue'
@@ -79,6 +83,7 @@ export default {
     ShareDialog,
     BaseActionDialog,
     Pulse,
+    FirstSolution,
   },
   props: {
     config: { required: true },
@@ -110,6 +115,18 @@ export default {
     const sharing = ref(false)
     const selectedAction = ref(null)
 
+    // solutions enabled ?
+    const firstSolution = computed(() => {
+      const solutionsTab = props.tabs.find(tab => tab.id == "solutions")
+      if (solutionsTab !== undefined) {
+        const possibleSolutions = solutionsTab.blocks.find(block => block.id === "possible_solutions")
+        if (possibleSolutions !== undefined) {
+          return possibleSolutions.data.first
+        }
+      }
+      return false
+    })
+
     // prepare default sharing settings
     const shareOptions = ref({
       exception: {
@@ -139,6 +156,7 @@ export default {
       sharing,
       // action handling
       selectedAction,
+      firstSolution,
     }
   },
   methods: {
