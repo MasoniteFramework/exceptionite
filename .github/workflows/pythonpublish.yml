@@ -1,8 +1,9 @@
 name: Upload Python Package
 
-on:
-  release:
-    types: [created]
+on: [push, pull_request]
+# on:
+#   release:
+#     types: [created]
 
 jobs:
   deploy:
@@ -19,9 +20,17 @@ jobs:
       - name: Publish only packages passing test
         run: |
           make test
-      - name: Build and publish
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          make publish
+      - name: Set up Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+      - name: Build frontend assets
+        run: npm run production
+      # - name: Build and publish
+      #   env:
+      #     TWINE_USERNAME: __token__
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #   run: |
+      #     make publish

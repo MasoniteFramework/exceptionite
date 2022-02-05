@@ -5,7 +5,7 @@ from dotty_dict import dotty
 from collections import OrderedDict
 
 from .StackTrace import StackTrace
-from .tabs import ContextTab
+from .tabs import ContextTab, SolutionsTab, RecommendationsTab
 from .renderers import JavascriptRenderer, TerminalRenderer
 
 
@@ -28,12 +28,17 @@ class Handler:
                     "repo": "https://github.com/MasoniteFramework/masonite",
                 },
                 "stack": {"offset": 10, "shorten": True},
-                "tabs": {"context": True},
+                "tabs": {"context": True, "solutions": True, "recommendations": True},
+                "blocks": {
+                    "packages_update": {"list": ["exceptionite"]},
+                },
             }
         )
         self.serialized_data = None
 
         self.add_tab(ContextTab)
+        self.add_tab(SolutionsTab)
+        self.add_tab(RecommendationsTab)
         self.add_renderer("javascript", JavascriptRenderer)
         self.add_renderer("terminal", TerminalRenderer)
 

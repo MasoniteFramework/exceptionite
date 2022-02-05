@@ -7,6 +7,7 @@ from .Block import Block
 
 
 class Environment(Block):
+    id = "environment"
     name = "System Environment"
     icon = "TerminalIcon"
 

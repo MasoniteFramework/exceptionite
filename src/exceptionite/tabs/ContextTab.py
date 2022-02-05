@@ -9,7 +9,6 @@ class ContextTab(Tab):
     name = "Context"
     id = "context"
     icon = "ViewListIcon"
-    component = "ContextTab"
 
     def configure(self):
         self.add_block(Environment)

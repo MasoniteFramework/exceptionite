@@ -6,14 +6,15 @@ import KeyValList from "./components/blocks/KeyValList.vue"
 import KeyValItem from "./components/blocks/KeyValItem.vue"
 import KeyValBlock from "./components/blocks/KeyValBlock.vue"
 import StackOverflowBlock from "./components/blocks/StackOverflowBlock.vue"
+import PossibleSolutionsBlock from "./components/blocks/PossibleSolutionsBlock.vue"
+import PackagesUpdatesBlock from "./components/blocks/PackagesUpdatesBlock.vue"
 import KeyValBlockWithSections from "./components/blocks/KeyValBlockWithSections.vue"
 import CopyButton from "./components/CopyButton.vue"
 import hljs from 'highlight.js'
 import axios from "axios"
 
 // tabs
-import ContextTab from "./components/tabs/ContextTab.vue"
-import SolutionsTab from "./components/tabs/SolutionsTab.vue"
+import BaseTab from "./components/tabs/BaseTab.vue"
 import DumpsTab from "./components/tabs/DumpsTab.vue"
 // support
 import MasoniteSupport from "./components/supports/MasoniteSupport.vue"
@@ -45,12 +46,13 @@ export default class Exceptionite {
     this.app.component('KeyValBlock', KeyValBlock)
     this.app.component('KeyValBlockWithSections', KeyValBlockWithSections)
     this.app.component('StackOverflowBlock', StackOverflowBlock)
+    this.app.component('PossibleSolutionsBlock', PossibleSolutionsBlock)
+    this.app.component('PackagesUpdatesBlock', PackagesUpdatesBlock)
     this.app.component('CopyButton', CopyButton)
   }
   registerBuiltinTabs() {
-      this.app.component('ContextTab', ContextTab)
-      this.app.component('SolutionsTab', SolutionsTab)
-      this.app.component('DumpsTab', DumpsTab)
+    this.app.component('BaseTab', BaseTab)
+    this.app.component('DumpsTab', DumpsTab)
   }
   registerBuiltinSupports() {
     this.app.component('MasoniteSupport', MasoniteSupport)

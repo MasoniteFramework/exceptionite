@@ -7,13 +7,14 @@
   >
     <component
       :is="block.component"
-      :data="block"
+      :block="block"
     />
   </div>
 </template>
 
 <script>
 export default {
+  name: "BaseTab",
   props:{
     data: {
       type: Object,
@@ -22,7 +23,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

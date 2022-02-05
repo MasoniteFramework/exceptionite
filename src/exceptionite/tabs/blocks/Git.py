@@ -5,6 +5,7 @@ from .Block import Block
 
 
 class Git(Block):
+    id = "git"
     name = "Git"
     icon = "ShareIcon"
 
