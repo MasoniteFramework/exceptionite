@@ -28,6 +28,10 @@ jobs:
         run: npm install --legacy-peer-deps
       - name: Build frontend assets
         run: npm run production
+      - name: debug
+        run: |
+          ls -lh
+          ls -lh src/exceptionite/
       # - name: Build and publish
       #   env:
       #     TWINE_USERNAME: __token__
