@@ -26,23 +26,14 @@ jobs:
           node-version: "14.x"
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
-      - name: Build frontend assets
-        run: npm run production
-      - name: Upload assets for next steps
-        uses: actions/upload-artifact@v2
-        with:
-          name: compiled_assets
-          path: src/exceptionite/dist
-          retention-days: 1
-      - name: Download a single artifact
-        uses: actions/download-artifact@v2
-      - name: debug
+      - name: Build package (python and assets) and publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
+          npm run production
           ls -lh
           ls -lh src/exceptionite/
-      # - name: Build and publish
-      #   env:
-      #     TWINE_USERNAME: __token__
-      #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      #   run: |
-      #     make publish
+          npm run production
+
+#         make publish
