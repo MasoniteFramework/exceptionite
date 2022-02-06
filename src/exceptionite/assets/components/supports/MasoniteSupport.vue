@@ -1,8 +1,9 @@
 <template>
   <!-- state -->
   <template v-if="submitted">
-    <alert v-if="success">{{ success }}</alert>
-    <alert v-else-if="error">{{ error }}</alert>
+    <alert v-if="success">Your error has been shared on Masonite support website !</alert>
+    <p>You can access it here: <a :href="data.data.link" class="underline text-blue-600 text-sm">{{ data.data.link }}</a> with the given ID:</p>
+    <div class="bg-gray-200 dark:bg-gray-900 dark:text-gray-300 p-2 rounded-sm text-xs relative break-all leading-tight pr-8">{{ data.id }}</div>
   </template>
   <template v-else>
     <!-- description -->
@@ -29,11 +30,11 @@ export default {
   },
   props: {
     success: {
-      type: String,
+      type: Boolean,
       required: true
     },
-    error: {
-      type: String,
+    data: {
+      type: Object,
       required: true
     },
     running: {
@@ -45,7 +46,7 @@ export default {
   inject: ["shareOptions"],
   computed: {
     submitted () {
-      return (!!this.success || !!this.error) && !this.running
+      return this.success && !this.running
     }
   }
 }

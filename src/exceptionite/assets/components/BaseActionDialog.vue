@@ -15,8 +15,8 @@
         <component
           :is="action.component"
           @run="run"
-          :success="successMessage"
-          :error="errorMessage"
+          :success="success"
+          :data="data"
           :running="running"
           @close="closeDialog"
         />
@@ -50,14 +50,14 @@ export default {
       opened.value = false
     }
     const opened = ref(true)
-    const successMessage = ref("")
-    const errorMessage = ref("")
+    const data = ref({})
+    const success = ref(false)
     const running = ref(false)
     return {
       opened,
       closeDialog,
-      successMessage,
-      errorMessage,
+      data,
+      success,
       running,
     }
   },
@@ -65,10 +65,16 @@ export default {
     run (options) {
       this.running = true
       this.axios.post("/_exceptionite/actions/", {"action_id": this.action.id, "options": options}).then(response => {
-        this.successMessage = response.data.message
+        this.data = response.data
+        this.success = true
       }).catch(error => {
         console.error(error)
-        this.errorMessage = response.data.message
+        try {
+          this.data = error.data
+        } catch {
+
+        }
+        this.success = false
       }).finally(()=>{
         this.running = false
       })

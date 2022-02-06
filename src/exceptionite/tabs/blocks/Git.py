@@ -12,7 +12,16 @@ class Git(Block):
     def build(self):
         # TODO: if no git repo
         git_version = subprocess.check_output(shlex.split("git --version")).strip()
-        commit = subprocess.check_output(shlex.split("git rev-parse HEAD")).strip()
+        try:
+            commit = subprocess.check_output(shlex.split("git rev-parse HEAD")).strip()
+        except subprocess.CalledProcessError:
+            # not a git repository
+            return {
+                "commit": "",
+                "branch": "",
+                "git_version": git_version.decode("utf-8"),
+                "remote": "",
+            }
         branch = subprocess.check_output(shlex.split("git rev-parse --abbrev-ref HEAD")).strip()
         try:
             remote = subprocess.check_output(
