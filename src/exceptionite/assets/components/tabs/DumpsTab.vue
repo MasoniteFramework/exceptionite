@@ -6,7 +6,7 @@
         <span class="badge badge-gray">{{ dump.relative_file }} : {{ dump.line }}</span>
         <span class="text-xs font-medium ml-4">{{ dump.method }}()</span>
       </div>
-      <div class="grid gap-y-2 gap-x-1 grid-cols-12 p-4 border-t border-gray-300 dark:border-gray-700">
+      <div class="grid gap-y-2 gap-x-1 grid-cols-12 p-4 pr-0 border-t border-gray-300 dark:border-gray-700">
         <template v-for="(obj, obj_name) in dump.objects" :label="obj_name" :key="obj_name">
             <span class="text-black dark:text-gray-400 self-baseline text-sm col-span-2 truncate font-medium">{{ obj_name }}</span>
             <div class="col-span-10">

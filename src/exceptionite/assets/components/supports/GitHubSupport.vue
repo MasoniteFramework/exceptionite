@@ -14,7 +14,7 @@
       <textarea name="description" v-model="form.description" />
     </div>
 
-    <button class="stack-button text-right" @click="$emit('run', {options: shareOptions, form})" v-if="!success && !error" :disabled="running">
+    <button class="btn text-right" @click="$emit('run', {options: shareOptions, form})" v-if="!success && !error" :disabled="running">
       {{ running ? "Creating..." : "Create issue" }}
     </button>
   </template>

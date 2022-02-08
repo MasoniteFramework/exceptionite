@@ -12,7 +12,7 @@
     </p>
     <!-- select what data to share -->
     <share-selector v-model="shareOptions" class="my-4"/>
-    <button class="stack-button text-right" @click="$emit('run', {options:shareOptions})" v-if="!success && !error" :disabled="running">
+    <button class="btn text-right" @click="$emit('run', {options:shareOptions})" v-if="!success && !error" :disabled="running">
       {{ running ? "Sharing..." : "Share" }}
     </button>
   </template>

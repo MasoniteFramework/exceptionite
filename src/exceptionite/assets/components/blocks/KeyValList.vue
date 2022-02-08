@@ -1,6 +1,6 @@
 <template>
   <div :class="className">
-    <h3 v-if="title" class="text-left text-indigo-600 font-medium mb-2">{{ title }}</h3>
+    <h3 v-if="title" class="text-left text-blue-600 font-medium mb-2">{{ title }}</h3>
     <dl v-if="$slots.default" class="definition-list items-baseline">
       <slot></slot>
     </dl>

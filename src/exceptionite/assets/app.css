@@ -208,18 +208,11 @@
   @apply font-mono;
   @apply leading-loose;
   @apply select-none;
+  @apply text-black dark:text-gray-400;
 }
 
 .stack-line-highlight {
-  @apply bg-purple-200 dark:bg-black;
-}
-
-.stack-line-selected {
-  @apply bg-yellow-200;
-}
-
-.stack-line-highlight.stack-line-selected {
-  @apply bg-yellow-300;
+  @apply bg-blue-300 text-blue-600 dark:bg-black dark:text-red-600;
 }
 
 .stack-code {
@@ -233,7 +226,7 @@
 }
 
 .stack-code-line:hover {
-  @apply bg-purple-100 dark:bg-black;
+  @apply bg-blue-100 dark:bg-black;
 }
 
 .stack-code-line .editor-link {
@@ -243,28 +236,15 @@
   @apply text-purple-400;
 }
 
-.stack-code-line .editor-link:hover {
-  @apply text-purple-500;
-}
-
-.stack-code-line:hover .editor-link {
-  @apply opacity-100;
-}
-
 .stack-code-line-highlight {
-  @apply bg-purple-100 dark:bg-black;
+  @apply bg-blue-100 dark:bg-black;
 }
 
-.stack-code-line-selected {
-  @apply bg-yellow-100;
+.btn {
+  @apply has-tooltip inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-400 dark:hover:border-gray-200 text-xs leading-4 font-medium rounded-md dark:bg-gray-900 text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:border-blue-500 hover:text-blue-500 focus:outline-none;
 }
-
-.stack-code-line-highlight.stack-code-line-selected {
-  @apply bg-yellow-200;
-}
-
-.stack-button {
-  @apply has-tooltip inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-400 dark:hover:border-white text-xs leading-4 font-medium rounded-md dark:bg-gray-900 text-gray-600 dark:text-gray-400 dark:hover:text-white hover:bg-gray-200 focus:outline-none;
+.btn-disabled {
+  @apply cursor-not-allowed text-gray-300 dark:text-gray-700 dark:border-gray-700 dark:hover:text-gray-700 dark:hover:border-gray-700 hover:bg-transparent dark:hover:bg-gray-900;
 }
 
 /* lists */
@@ -314,7 +294,7 @@
 }
 
 .definition-label {
-  @apply text-indigo-600;
+  @apply text-blue-600;
   @apply break-words;
   @apply leading-tight;
 }
@@ -359,10 +339,13 @@
 
 /* Navbar */
 .navbar-link {
-  @apply cursor-pointer text-gray-900 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-gray-700 hover:text-gray-900 rounded-md py-2 px-3 inline-flex items-center text-sm font-medium;
+  @apply cursor-pointer text-gray-900 dark:text-gray-300 hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white rounded-md py-2 px-3 inline-flex items-center text-sm font-medium;
 }
 .navbar-link-icon {
-  @apply text-gray-400 h-5 w-5;
+  @apply group-hover:text-blue-500 text-gray-400 h-5 w-5;
+}
+.navbar-link-icon-only {
+  @apply group-hover:text-blue-500 text-black dark:text-gray-400 h-5 w-5;
 }
 
 /* Tooltip */
@@ -384,6 +367,9 @@
 }
 .badge-indigo {
   @apply bg-indigo-200 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-200;
+}
+.badge-blue {
+  @apply bg-indigo-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200;
 }
 
 @import "./themes/atom-one-dark.css";

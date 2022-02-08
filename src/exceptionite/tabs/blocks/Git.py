@@ -10,7 +10,6 @@ class Git(Block):
     icon = "ShareIcon"
 
     def build(self):
-        # TODO: if no git repo
         git_version = subprocess.check_output(shlex.split("git --version")).strip()
         try:
             commit = subprocess.check_output(shlex.split("git rev-parse HEAD")).strip()

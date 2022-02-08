@@ -2,11 +2,14 @@
   <dd class="text-black dark:text-gray-400 text-sm truncate">
     {{ label }}
   </dd>
-  <dt class="group relative">
+  <dt class="group">
     <slot>
-      <div class="bg-gray-200 dark:bg-gray-900 dark:text-gray-300 p-2 rounded-sm text-xs relative break-all leading-tight pr-8">{{ value }}</div>
+      <div class="relative bg-gray-200 dark:bg-gray-900 dark:text-gray-300 p-2 rounded-sm text-xs break-all leading-tight pr-8">
+        <span v-if="value">{{ value }}</span>
+        <span v-else class="text-gray-400 dark:text-gray-600">-</span>
+        <CopyButton v-if="value" :text="'default' in $slots && $slots.default()[0].children" class="absolute right-2 origin-center top-0 translate-y-1/2 group-hover:block hidden" />
+      </div>
     </slot>
-    <CopyButton :text="'default' in $slots && $slots.default()[0].children" class="absolute right-2 top-1 group-hover:block hidden" />
   </dt>
 </template>
 

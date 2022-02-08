@@ -9,7 +9,6 @@
                     :key="line_number"
                     class="stack-line cursor-pointer"
                     :class="{
-                        'stack-line-selected': false,
                         'stack-line-highlight':
                             parseInt(line_number) === frame.no,
                     }"
@@ -26,7 +25,6 @@
             :key="line_number"
             :class="{
                 'stack-code-line-highlight': parseInt(line_number) === frame.no,
-                'stack-code-line-selected': false,
             }"
             class="stack-code-line cursor-pointer"
             @click="openEditor(line_number)"

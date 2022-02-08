@@ -15,7 +15,8 @@
         v-for="solution in block.data.solutions" class="mb-2"
         :key="solution.title"
       >
-        <span class="font-medium text-md">{{ solution.title }}</span>: {{ solution.description }}
+        <template #title>{{ solution.title }}</template>
+        {{ solution.description }}
       </alert>
     </DisclosurePanel>
   </Disclosure>

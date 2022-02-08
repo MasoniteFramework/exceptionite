@@ -10,16 +10,17 @@
     <!-- exception reminder when exception block is hidden  -->
     <div
       v-if="!exceptioniteShown"
-      class="w-full sticky shadow-md z-30 top-14 bg-white dark:bg-gray-900 h-10 flex "
+      class="w-full sticky shadow-md z-30 top-14 bg-white dark:bg-gray-900 h-10 flex"
     >
-      <div class="container mx-auto px-4 flex items-center self-stretch">
-        <span class="text-red-600 font-bold text-sm">{{ exception.type }}</span>
-        <span class="text-black dark:text-gray-300 font-medium text-sm"> : {{ exception.message }}</span>
+      <div class="container mx-auto px-4 flex items-center self-stretch text-sm">
+        <span class="text-red-600 font-bold">{{ exception.type }}</span>
+        <span class="text-black dark:text-gray-400 font-medium">&nbsp;-&nbsp;</span>
+        <span class="text-black dark:text-gray-300 font-medium"> {{ exception.message }}</span>
       </div>
     </div>
 
     <!-- page content -->
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto lg:p-4">
       <div ref="exceptioniteBlock">
         <exception :exception="exception" />
       </div>
@@ -34,7 +35,7 @@
           class="col-span-1"
         >
           <!-- menu -->
-          <context-menu :menu="contextTab.blocks" />
+          <context-menu :menu="contextTab.blocks" @browse="toContextMenu"/>
         </div>
         <div class="col-span-3">
           <!-- tabs -->
@@ -42,7 +43,10 @@
             <button
               v-for="tab in tabs"
               :key="tab.id"
-              :class="[currentTab.id === tab.id ? 'bg-white dark:bg-gray-800 dark:text-gray-300 text-indigo-500' : 'text-gray-600 dark:text-gray-400 hover:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-300', 'px-3 py-2 font-medium text-sm rounded-md relative flex items-center']"
+              :class="[
+                currentTab.id === tab.id ? 'bg-white dark:bg-gray-800 dark:text-gray-300 text-blue-500' : 'text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-gray-300',
+                'px-3 py-2 font-medium text-sm rounded-md relative flex items-center'
+              ]"
               @click="selectTab(tab)"
             >
               <pulse v-if="tab.advertise_content && tab.has_content" />
@@ -167,6 +171,14 @@ export default {
       // TODO: url encode
       const url = `${this.config.search_url}${this.exception.type} ${this.exception.message}`
       window.open(url, "_blank")
+    },
+    toContextMenu(id) {
+      // ensure context tab is opened
+      this.selectTab(this.contextTab)
+      this.$nextTick(function() {
+        // go to context section
+        this.$root.goToElement(id)
+      })
     }
   }
 }

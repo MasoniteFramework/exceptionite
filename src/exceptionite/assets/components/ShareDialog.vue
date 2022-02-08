@@ -19,8 +19,8 @@
         <share-selector class="my-4" v-model="shareOptions" />
 
         <div class="text-right">
-          <button class="stack-button mr-2" @click="copyRaw">Copy Raw</button>
-          <button class="stack-button mr-2" @click="copyMarkdown">Copy To MarkDown</button>
+          <button class="btn mr-2" @click="copyRaw">Copy Raw</button>
+          <button class="btn mr-2" @click="copyMarkdown">Copy To MarkDown</button>
         </div>
       </div>
     </div>
