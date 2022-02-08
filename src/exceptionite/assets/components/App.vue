@@ -168,8 +168,7 @@ export default {
       this.selectedAction = action
     },
     search () {
-      // TODO: url encode
-      const url = `${this.config.search_url}${this.exception.type} ${this.exception.message}`
+      const url = `${this.config.search_url}${encodeURIComponent(this.exception.type + " " +this.exception.message)}`
       window.open(url, "_blank")
     },
     toContextMenu(id) {

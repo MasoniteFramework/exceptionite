@@ -51,6 +51,7 @@
           <span class="tooltip">Share error</span>
         </button>
         <button
+          v-if="config.search_url"
           @click="$emit('search')"
           class="navbar-link has-tooltip group"
         >

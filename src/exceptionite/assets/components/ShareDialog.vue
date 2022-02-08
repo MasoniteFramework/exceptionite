@@ -7,20 +7,29 @@
           <button
             @click="closeDialog"
             type="button"
-            class="navbar-link">
-            <XIcon class="navbar-link-icon" />
+            class="navbar-link group"
+          >
+            <XIcon class="navbar-link-icon-only" />
           </button>
         </div>
-        <DialogTitle class="mb-4">Share Error</DialogTitle>
+        <DialogTitle class="mb-4 font-medium">Share Error</DialogTitle>
         <DialogDescription class="text-sm">
-          You can choose what do you want to share.
+          You can choose which elements of the exception you want to copy.
         </DialogDescription>
 
         <share-selector class="my-4" v-model="shareOptions" />
 
         <div class="text-right">
-          <button class="btn mr-2" @click="copyRaw">Copy Raw</button>
-          <button class="btn mr-2" @click="copyMarkdown">Copy To MarkDown</button>
+          <button class="btn mr-2" @click="copyRaw">
+            <CheckIcon v-if="copied && copyType == 'raw'" class="h-4 w-4 text-green-600" />
+            <DuplicateIcon v-else class="h-4 w-4" />
+            <span class="ml-2">Copy Raw</span>
+          </button>
+          <button class="btn mr-2" @click="copyMarkdown">
+            <CheckIcon v-if="copied && copyType == 'markdown'" class="h-4 w-4 text-green-600" />
+            <DuplicateIcon v-else class="h-4 w-4" />
+            <span class="ml-2">Copy as Markdown</span>
+          </button>
         </div>
       </div>
     </div>
@@ -34,8 +43,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@headlessui/vue"
-import { ref, computed } from "vue"
+import { computed, ref } from "vue"
 import ShareSelector from "./ShareSelector.vue"
+import { useClipboard } from "@vueuse/core"
+
 export default {
   name: "ShareDialog",
   components: {
@@ -59,34 +70,32 @@ export default {
     const closeDialog = () => {
       opened.value = false
     }
-    // const shareOptions = inject("shareOptions")
-    const copied = ref(false)
-    const timeout = ref(null)
+    const { copy, copied } = useClipboard({ copiedDuring: 2000})
+    const copyType = ref()
     return {
       opened,
       closeDialog,
-      // shareOptions,
+      copy,
       copied,
-      timeout,
+      copyType,
     }
   },
   inject: ["exception", "context", "shareOptions"],
   methods: {
-    copy (text) {
-      if (this.timeout) {
-        window.clearTimeout(this.timeout);
-      }
-      navigator.clipboard.writeText(text)
-      this.copied = true;
-      this.timeout = window.setTimeout(() => (this.copied = false), 2000);
-    },
     copyRaw () {
+      this.copyType = "raw"
       let text = ""
-      if (this.shareOptions.exception) {
+      if (this.shareOptions.exception.show) {
         text += `* Exception: ${this.exception.type} - ${this.exception.message}\n\n`
       }
-      if (this.shareOptions.stacktrace) {
-        const stack = this.exception.stacktrace.map(frame => {
+      if (this.shareOptions.stacktrace.show) {
+        let stacktrace = []
+        if (this.shareOptions.stacktrace.first_frame) {
+          stacktrace.push(this.exception.stacktrace[0])
+        } else {
+          stacktrace = this.exception.stacktrace
+        }
+        const stack = stacktrace.map(frame => {
           return {content: Object.values(frame.content).map(line => "\t" + line).join("\n"), title: `${frame.file}: L${frame.no}`}
         })
         text += `* Stack trace:\n\n`
@@ -95,12 +104,12 @@ export default {
         })
         text += "\n"
       }
-      if (this.shareOptions.context) {
+      if (this.shareOptions.context.show) {
         text += `* Context:\n\n`
-        this.context.forEach((value, index) => {
-          if (this.contextSelection[index]){
-            text += `\t* ${value.name}:\n\n`
-            Object.entries(value.data).forEach(entry => {
+        this.context.forEach(section => {
+          if (this.shareOptions.context[section.name]){
+            text += `\t* ${section.name}:\n\n`
+            Object.entries(section.data).forEach(entry => {
               const [key, value] = entry
               text += `\t\t${key}: ${JSON.stringify(value)}\n`
             })
@@ -112,13 +121,14 @@ export default {
       this.copy(text)
     },
     copyMarkdown () {
+      this.copyType = "markdown"
       let text = ""
-      if (this.shareOptions.exception) {
+      if (this.shareOptions.exception.show) {
         text += `## Exception\n\`${this.exception.type}\` - \`${this.exception.message}\`\n\n`
       }
-      if (this.shareOptions.stacktrace) {
+      if (this.shareOptions.stacktrace.show) {
         let stacktrace = []
-        if (this.firstFrame) {
+        if (this.shareOptions.stacktrace.first_frame) {
           stacktrace.push(this.exception.stacktrace[0])
         } else {
           stacktrace = this.exception.stacktrace
@@ -132,12 +142,12 @@ export default {
         })
         text += "\n"
       }
-      if (this.shareOptions.context) {
+      if (this.shareOptions.context.show) {
         text += `## Context\n`
-        this.context.forEach((value, index) => {
-          if (this.contextSelection[index]){
-            text += `\n### ${value.name}\n`
-            Object.entries(value.data).forEach(entry => {
+        this.context.forEach(section => {
+          if (this.shareOptions.context[section.name]){
+            text += `\n### ${section.name}\n`
+            Object.entries(section.data).forEach(entry => {
               const [key, value] = entry
               text += `\`${key}\`: \`${JSON.stringify(value)}\` \n`
             })

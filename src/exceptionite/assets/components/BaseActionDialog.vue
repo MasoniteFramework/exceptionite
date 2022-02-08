@@ -7,7 +7,8 @@
           <button
             @click="closeDialog"
             type="button"
-            class="navbar-link">
+            class="navbar-link"
+          >
             <XIcon class="navbar-link-icon" />
           </button>
         </div>
