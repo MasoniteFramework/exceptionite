@@ -7,7 +7,7 @@
       <div class="relative bg-gray-200 dark:bg-gray-900 dark:text-gray-300 p-2 rounded-sm text-xs break-all leading-tight pr-8">
         <span v-if="value">{{ value }}</span>
         <span v-else class="text-gray-400 dark:text-gray-600">-</span>
-        <CopyButton v-if="value" :text="'default' in $slots && $slots.default()[0].children" class="absolute right-2 origin-center top-0 translate-y-1/2 group-hover:block hidden" />
+        <CopyButton v-if="value" :text="value" class="absolute right-2 origin-center top-0 translate-y-1/2 group-hover:block hidden" />
       </div>
     </slot>
   </dt>
