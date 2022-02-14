@@ -25676,7 +25676,8 @@ __webpack_require__.r(__webpack_exports__);
 
     if (context) {
       context.forEach(function (item) {
-        shareOptions.value.context[item.name] = true;
+        // try setting sensible default options
+        shareOptions.value.context[item.name] = !["packages", "git", "config"].includes(item.id);
       });
     }
 

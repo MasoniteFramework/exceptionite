@@ -147,7 +147,8 @@ export default {
     })
     if (context) {
       context.forEach(item => {
-        shareOptions.value.context[item.name] = true
+        // try setting sensible default options
+        shareOptions.value.context[item.name] = !["packages", "git", "config"].includes(item.id)
       })
     }
     provide("shareOptions", shareOptions.value)
