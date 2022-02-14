@@ -39,10 +39,9 @@ class Environment(Block):
             "OS": os_name,
             "Arch": platform.architecture()[0],
             "Hostname": socket.gethostname(),
-            "IP": socket.gethostbyname(socket.gethostname()),
+            "IP": ip,
             "File System Encoding": file_system_encoding,
             "Default Encoding": default_encoding,
-            "Env": dict(os.environ),
         }
 
     def has_content(self):
