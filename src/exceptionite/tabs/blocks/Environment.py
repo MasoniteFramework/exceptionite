@@ -27,7 +27,8 @@ class Environment(Block):
             ip = socket.gethostbyname(socket.gethostname())
         except socket.gaierror:
             raise ContextParsingException(
-                "Exceptionite did not manage to fetch the IP address. Disable you VPN or '127.0.0.1 YOUR_HOSTNAME' entry in /etc/hosts file."
+                "Exceptionite did not manage to fetch the IP address"
+                + "Disable you VPN or '127.0.0.1 YOUR_HOSTNAME' entry in /etc/hosts file."
             )
 
         return {

@@ -1,6 +1,3 @@
-from dotty_dict import dotty
-
-
 class Block:
     id = "blockid"
     name = "Block Name"
