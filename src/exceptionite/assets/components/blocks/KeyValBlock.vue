@@ -1,7 +1,7 @@
 <template>
-  <Disclosure :default-open="true" v-slot:default="{ open }">
+  <Disclosure :default-open="!!block.has_content" v-slot:default="{ open }">
     <DisclosureButton class="w-full">
-      <div class="text-gray-600 font-medium text-xs uppercase tracking-wide flex items-center justify-between cursor-pointer">
+      <div class="text-gray-600 dark:text-gray-400 font-medium text-xs uppercase tracking-wide flex items-center justify-between cursor-pointer">
         <div class="flex items-center">
           <component :is="block.icon" class="mr-2 h-4 w-4 text-gray-600" />
           <span>{{ block.name }}</span>
@@ -16,6 +16,7 @@
       >
         <key-val-item v-for="(value, key) in block.data" :label="key" :key="key" :value="value" />
       </key-val-list>
+      <p v-if="!block.has_content" class="text-black dark:text-gray-400">{{ block.empty_msg || "No content." }}</p>
     </DisclosurePanel>
   </Disclosure>
 </template>

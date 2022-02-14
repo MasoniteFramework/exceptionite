@@ -241,7 +241,7 @@
 }
 
 .btn {
-  @apply has-tooltip inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-400 dark:hover:border-gray-200 text-xs leading-4 font-medium rounded-md dark:bg-gray-900 text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:border-blue-500 hover:text-blue-500 focus:outline-none;
+  @apply inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-400 dark:hover:border-gray-200 text-xs leading-4 font-medium rounded-md dark:bg-gray-900 text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:border-blue-500 hover:text-blue-500 focus:outline-none;
 }
 .btn-disabled {
   @apply cursor-not-allowed text-gray-300 dark:text-gray-700 dark:border-gray-700 dark:hover:text-gray-700 dark:hover:border-gray-700 hover:bg-transparent dark:hover:bg-gray-900;
@@ -341,22 +341,20 @@
 .navbar-link {
   @apply cursor-pointer text-gray-900 dark:text-gray-300 hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white rounded-md py-2 px-3 inline-flex items-center text-sm font-medium;
 }
+.navbar-link-disabled {
+  @apply cursor-not-allowed text-gray-900 dark:text-gray-300 dark:hover:bg-transparent;
+}
 .navbar-link-icon {
   @apply group-hover:text-blue-500 text-gray-400 h-5 w-5;
+}
+.navbar-link-disabled .navbar-link-icon {
+  @apply text-gray-200 dark:text-gray-600;
 }
 .navbar-link-icon-only {
   @apply group-hover:text-blue-500 text-black dark:text-gray-400 h-5 w-5;
 }
-
-/* Tooltip */
-.tooltip {
-  @apply invisible absolute bg-black text-white text-xs rounded p-1 w-max left-1/2 -bottom-7;
-}
-.has-tooltip {
-  @apply relative;
-}
-.has-tooltip:hover .tooltip {
-  @apply visible z-50;
+.navbar-link-disabled .navbar-link-icon-only {
+  @apply text-gray-500 dark:text-gray-600;
 }
 
 .badge {

@@ -32,12 +32,13 @@
       <!-- All integrations -->
       <div class="grid grid-cols-4 gap-4" id="exceptionite-tabs">
         <div
+          v-if="contextTab"
           class="col-span-1"
         >
           <!-- menu -->
           <context-menu :menu="contextTab.blocks" @browse="toContextMenu"/>
         </div>
-        <div class="col-span-3">
+        <div :class="contextTab ? 'col-span-3' : 'col-span-4'">
           <!-- tabs -->
           <nav class="flex space-x-4 mb-4">
             <button
@@ -107,10 +108,10 @@ export default {
     const exceptioniteBlock = ref(null)
     const exceptioniteShown = useElementVisibility(exceptioniteBlock)
     const contextTab = computed(() => props.tabs.find(tab => tab.id == "context"))
-    const context = contextTab.value.blocks
+    const context = contextTab.value?.blocks
     provide("context", context)
     // open "context" tab by default and save it in local storage
-    const defaultTabId = useStorage('exceptionite.tab', contextTab.value.id)
+    const defaultTabId = useStorage('exceptionite.tab', contextTab.value ? contextTab.value.id : props.tabs[0].id)
     const currentTab = ref(props.tabs.find(tab => tab.id == defaultTabId.value))
     const selectTab = (tab) =>{
       currentTab.value = tab
@@ -144,9 +145,11 @@ export default {
         show: true
       }
     })
-    context.forEach(item => {
-      shareOptions.value.context[item.name] = true
-    })
+    if (context) {
+      context.forEach(item => {
+        shareOptions.value.context[item.name] = true
+      })
+    }
     provide("shareOptions", shareOptions.value)
 
     return {
@@ -168,7 +171,7 @@ export default {
       this.selectedAction = action
     },
     search () {
-      const url = `${this.config.search_url}${encodeURIComponent(this.exception.type + " " +this.exception.message)}`
+      const url = `${this.config.options.search_url}${encodeURIComponent(this.exception.type + " " +this.exception.message)}`
       window.open(url, "_blank")
     },
     toContextMenu(id) {

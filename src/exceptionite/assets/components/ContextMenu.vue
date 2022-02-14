@@ -5,7 +5,7 @@
         @click="$emit('browse', block.name)"
         class="text-gray-600 dark:text-gray-400 font-medium text-xs uppercase tracking-wide mb-3 flex items-center cursor-pointer"
       >
-        <component :is="block.icon" class="mr-2 h-5 w-5 text-gray-600 dark:text-gray-800" />
+        <component :is="block.icon" class="mr-2 h-5 w-5 text-gray-600 dark:text-blue-500" />
         <span class="text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-gray-300">{{ block.name }}</span>
       </a>
       <div v-if="block.component=='KeyValBlockWithSections'" class="ml-6">

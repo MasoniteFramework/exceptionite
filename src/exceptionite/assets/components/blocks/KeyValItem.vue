@@ -7,7 +7,7 @@
       <div class="relative bg-gray-200 dark:bg-gray-900 dark:text-gray-300 p-2 rounded-sm text-xs break-all leading-tight pr-8">
         <span v-if="value">{{ value }}</span>
         <span v-else class="text-gray-400 dark:text-gray-600">-</span>
-        <CopyButton v-if="value" :text="value" class="absolute right-2 origin-center top-0 translate-y-1/2 group-hover:block hidden" />
+        <CopyButton v-if="value" :text="valueAsString" class="absolute right-2 origin-center top-0 translate-y-1/2 group-hover:block hidden" />
       </div>
     </slot>
   </dt>
@@ -21,8 +21,13 @@ export default {
       required: true
     },
     value: {
-      type: [String, null, Object, Array, Boolean],
+      type: [String, null, Object, Array, Boolean, Number],
       required: true
+    }
+  },
+  computed: {
+    valueAsString () {
+      return typeof this.value === "object" ? JSON.stringify(this.value, 2) : this.value
     }
   }
 }

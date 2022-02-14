@@ -10,11 +10,12 @@ class PossibleSolutions(Block):
     name = "Possible Solutions"
     component = "PossibleSolutionsBlock"
     advertise_content = True
+    disable_scrubbing = True
+    empty_msg = "No solution found for this error."
     icon = "LightBulbIcon"
-    count = 0
 
-    def __init__(self, handler):
-        super().__init__(handler)
+    def __init__(self, tab, handler, options):
+        super().__init__(tab, handler, options)
         self.registered_solutions = []
         self.register(
             default.DictionaryUpdateSequence(),
@@ -37,7 +38,6 @@ class PossibleSolutions(Block):
             if r.match(self.handler.message()):
                 description = solution.description()
                 matches = [m.groupdict() for m in r.finditer(self.handler.message())]
-                self.count += 1
                 for code, replacement in matches[0].items():
                     description = description.replace(":" + code, replacement)
 

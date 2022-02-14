@@ -14,27 +14,19 @@
         </button>
       </div>
       <div class="flex justify-end items-center space-x-2">
-        <!-- <button
-          @click="$emit('support')"
-          class="navbar-link has-tooltip"
-        >
-          <SupportIcon class="h-5 w-5" />
-          <span class="tooltip">Get support</span>
-        </button> -->
-        <!-- Actions -->
         <Menu as="div" class="relative inline-block text-left">
-          <MenuButton as="button" class="navbar-link has-tooltip group">
+          <MenuButton as="button" class="navbar-link group" :class="{'navbar-link-disabled': !hasActions}" v-tooltip="'Run Actions'">
             <PlayIcon class="navbar-link-icon-only" />
-            <span class="tooltip">Run actions</span>
           </MenuButton>
           <MenuItems
+            v-if="hasActions"
             class="absolute right-0 w-72 mt-4 origin-top-right bg-white px-1 py-1 dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-400 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           >
             <MenuItem
               as="button"
               v-for="action in actions"
               :key="action.id"
-              class="group flex items-center w-full px-2 py-2 text-sm text-gray-900 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-gray-700"
+              class="group w-full navbar-link"
               @click="openActionDialog(action)"
             >
               <component v-if="action.icon" class="navbar-link-icon mr-1" :is="action.icon" />
@@ -45,47 +37,47 @@
 
         <button
           @click="$emit('share')"
-          class="navbar-link has-tooltip group"
+          class="navbar-link group"
+          v-tooltip="'Share Error'"
         >
           <ShareIcon class="navbar-link-icon-only" />
-          <span class="tooltip">Share error</span>
         </button>
         <button
-          v-if="config.search_url"
+          v-if="config.options.search_url"
           @click="$emit('search')"
-          class="navbar-link has-tooltip group"
+          class="navbar-link group"
+          v-tooltip="'Search Error on the Web'"
         >
           <SearchIcon class="navbar-link-icon-only" />
-          <span class="tooltip">Search on the web</span>
         </button>
         <a
-          v-if="config.links.doc"
-          :href="config.links.doc"
+          v-if="config.options.links.doc"
+          :href="config.options.links.doc"
           target="_blank"
-          class="navbar-link has-tooltip group"
+          class="navbar-link group"
+          v-tooltip="'Open Documentation'"
         >
           <DocumentTextIcon class="navbar-link-icon-only" />
-          <span class="tooltip">Open doc</span>
         </a>
 
         <a
-          v-if="config.links.repo"
-          :href="config.links.repo"
+          v-if="config.options.links.repo"
+          :href="config.options.links.repo"
           target="_blank"
-          class="navbar-link has-tooltip group"
+          class="navbar-link group"
+          v-tooltip="'Open Repository'"
         >
           <svg class="navbar-link-icon-only" viewBox="0 0 24 24">
             <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"></path>
           </svg>
-          <span class="tooltip">Open repository</span>
         </a>
         <button
           @click="$root.toggleTheme()"
-          class="navbar-link has-tooltip group"
+          class="navbar-link group"
+          v-tooltip="'Toggle Light/Dark Theme'"
         >
           <SunIcon class="navbar-link-icon-only group-hover:text-yellow-500" v-if="$root.theme === 'dark'"/>
           <MoonIcon class="navbar-link-icon-only group-hover:text-red-600" v-else />
-          <span class="tooltip">Toggle Light/Dark theme</span>
         </button>
       </div>
     </div>
@@ -96,7 +88,6 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { ref } from "vue"
 import Pulse from "./Pulse.vue"
-
 export default {
   name: "Navbar",
   components: {
@@ -132,6 +123,11 @@ export default {
     },
     openActionDialog (action) {
       this.$emit("action", action)
+    }
+  },
+  computed: {
+    hasActions () {
+      return this.actions.length > 0
     }
   }
 }

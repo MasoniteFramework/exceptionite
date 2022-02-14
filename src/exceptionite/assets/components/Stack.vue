@@ -7,26 +7,26 @@
           type="button" class="btn"
           :disabled="vendorsFrameCount == 0"
           :class="{'btn-disabled': vendorsFrameCount === 0}"
+          v-tooltip="`${ showVendors ? 'Hide' : 'Show' } vendor frames in stack trace`"
         >
           <SolidSelectorIcon class="-ml-0.5 mr-2 h-4 w-4" />
           {{ showVendors ? "Hide" : "Show" }} Vendor ({{ vendorsFrameCount }})
-          <span class="tooltip">{{ showVendors ? "Hide" : "Show" }} vendor frames in stack trace</span>
         </button>
         <button
           @click="copyStack"
           type="button" class="btn"
+          v-tooltip="'Copy Stacktrace'"
         >
           <CheckIcon v-if="copied" class="h-4 w-4 text-green-600" />
           <DuplicateIcon v-else class="h-4 w-4" />
-          <span class="tooltip">Copy stacktrace</span>
         </button>
         <button
           @click="reverseStack"
           type="button" class="btn"
+          v-tooltip="'Toggle Stacktrace order'"
         >
           <SolidSortDescendingIcon v-if="reversed" class="h-4 w-4" />
           <SolidSortAscendingIcon v-else class="h-4 w-4" />
-          <span class="tooltip">Reverse stacktrace</span>
         </button>
       </div>
       <div

@@ -86,7 +86,7 @@ class StackFrame:
 class StackTrace:
     trace: List[StackFrame]
 
-    def __init__(self, traceback, exception, offset=5, shorten=False) -> None:
+    def __init__(self, traceback, exception, offset=5, shorten=False, scrubber=None) -> None:
         self.traceback = traceback
         self.exception = exception
         self.trace = []
@@ -94,6 +94,7 @@ class StackTrace:
         # options
         self.offset = offset
         self.shorten = shorten
+        self.scrubber = scrubber
 
     def generate(self):
         traceback = []
@@ -166,7 +167,7 @@ class StackTrace:
                 "language": frame.language,
                 "start": frame.start_line,
                 "content": frame.file_contents,
-                "variables": frame.variables,
+                "variables": self.scrubber(frame.variables),
                 "method": frame.method,
             }
             stack_data.append(frame_data)

@@ -8,6 +8,7 @@ class Git(Block):
     id = "git"
     name = "Git"
     icon = "ShareIcon"
+    disable_scrubbing = True
 
     def build(self):
         git_version = subprocess.check_output(shlex.split("git --version")).strip()
@@ -35,3 +36,6 @@ class Git(Block):
             "git_version": git_version.decode("utf-8"),
             "remote": remote.decode("utf-8"),
         }
+
+    def has_content(self):
+        return True

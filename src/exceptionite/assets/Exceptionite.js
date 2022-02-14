@@ -12,7 +12,8 @@ import KeyValBlockWithSections from "./components/blocks/KeyValBlockWithSections
 import CopyButton from "./components/CopyButton.vue"
 import hljs from 'highlight.js'
 import axios from "axios"
-
+import tippy from "tippy.js"
+import 'tippy.js/dist/tippy.css'; // optional for styling
 // tabs
 import BaseTab from "./components/tabs/BaseTab.vue"
 import DumpsTab from "./components/tabs/DumpsTab.vue"
@@ -120,6 +121,14 @@ export default class Exceptionite {
     })
 
     app.config.globalProperties.axios = axios
+
+    app.directive('tooltip', {
+      mounted(el, binding) {
+        tippy(el, {
+          content: binding.value
+        })
+      }
+    })
 
     window.app = app
     this.app = app

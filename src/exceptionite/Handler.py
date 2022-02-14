@@ -7,11 +7,24 @@ from collections import OrderedDict
 from .StackTrace import StackTrace
 from .tabs import ContextTab, SolutionsTab, RecommendationsTab
 from .renderers import WebRenderer, TerminalRenderer
+from .options import DEFAULT_OPTIONS
 
 
 class Handler:
 
     reserved_tabs = ["context"]
+    scrub_keywords = [
+        "password",
+        "passwd",
+        "pwd",
+        "secret",
+        "key",
+        "api_key",
+        "apikey",
+        "access_token",
+        "credentials",
+        "token",
+    ]
 
     def __init__(
         self,
@@ -19,21 +32,7 @@ class Handler:
         self.renderers = {}
         self.tabs = OrderedDict()
         self.actions = {}
-        self.options = dotty(
-            {
-                "editor": "vscode",
-                "search_url": "https://www.google.com/search?q=",
-                "links": {
-                    "doc": "https://docs.masoniteproject.com",
-                    "repo": "https://github.com/MasoniteFramework/masonite",
-                },
-                "stack": {"offset": 10, "shorten": True},
-                "tabs": {"context": True, "solutions": True, "recommendations": True},
-                "blocks": {
-                    "packages_update": {"list": ["exceptionite"]},
-                },
-            }
-        )
+        self.options = dotty(DEFAULT_OPTIONS)
         self.serialized_data = None
 
         self.add_tab(ContextTab)
@@ -75,7 +74,9 @@ class Handler:
             raise Exception(f"exceptionite: Tab not found: {id}")
 
     def get_enabled_tabs(self):
-        return [tab for tab in self.tabs.values() if self.options.get("tabs").get(tab.id, False)]
+        return [
+            tab for tab in self.tabs.values() if self.options.get("handlers").get(tab.id, True)
+        ]
 
     def start(self, exception):
         """Start handling exception."""
@@ -87,8 +88,9 @@ class Handler:
         self._stacktrace = StackTrace(
             traceback_exc,
             self._exception,
-            offset=self.options.get("stack.offset"),
-            shorten=self.options.get("stack.shorten"),
+            offset=self.options.get("options.stack.offset"),
+            shorten=self.options.get("options.stack.shorten"),
+            scrubber=self.scrub_data,
         )
         self._stacktrace.generate().reverse()
 
@@ -121,7 +123,7 @@ class Handler:
                 "namespace": self.namespace(),
                 "stacktrace": self.stacktrace().reverse().serialize(),
             },
-            "tabs": [tab.serialize() for tab in self.get_enabled_tabs()],
+            "tabs": [self.scrub_data(tab.serialize()) for tab in self.get_enabled_tabs()],
             "actions": [action.serialize() for action in self.actions.values()],
         }
 
@@ -134,3 +136,26 @@ class Handler:
     def run_action(self, action_id, options={}):
         action = self.actions.get(action_id)
         return action.run(options)
+
+    def scrub_data(self, data, disable=False):
+        if not self.options.get("options.hide_sensitive_data") or disable:
+            return data
+        scrubbed_data = {}
+        for key, val in data.items():
+            if not val:
+                scrubbed_data[key] = val
+                continue
+            if isinstance(val, dict):
+                scrubbed_data[key] = self.scrub_data(val, disable)
+            else:
+                # scrub entire value if key matches
+                should_scrub = False
+                for token in self.scrub_keywords:
+                    if token.lower() in key.lower():
+                        should_scrub = True
+                if should_scrub:
+                    scrubbed_val = "*****"
+                else:
+                    scrubbed_val = val
+                scrubbed_data[key] = scrubbed_val
+        return scrubbed_data

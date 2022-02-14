@@ -59,7 +59,7 @@
         </template>
       </div>
     </div>
-    <p v-if="dumps.length == 0">Nothing dumped !</p>
+    <p v-if="!data.has_content">Nothing dumped !</p>
   </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
   created () {
     //transform stack trace
     this.dumps = this.data.data.dumps.map(dump => {
-      let relativePath = dump.filename.replace(`${this.config.absolute_path}/`, '')
+      let relativePath = dump.filename.replace(`${this.config.options.absolute_path}/`, '')
       return {
         ...dump,
         locale_time: new Date(dump.timestamp * 1000).toLocaleTimeString(),

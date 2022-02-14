@@ -17,12 +17,15 @@ class PackagesUpdates(Block):
     name = "Packages to update"
     icon = "ArrowCircleUpIcon"
     component = "PackagesUpdatesBlock"
+    empty_msg = "Selected packages are up to date !"
+    disable_scrubbing = True
 
     def build(self):
         installed_packages = {
             package.key: package.version for package in pkg_resources.working_set
         }
-        packages_to_check = self.handler.options.get("blocks.packages_updates.list", [])
+
+        packages_to_check = self.options.get("list", ["exceptionite"])
         packages = {}
         if packages_to_check:
             #     with open(".pyexceptions.packages", "r+") as f:

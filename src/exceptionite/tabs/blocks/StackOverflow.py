@@ -9,6 +9,8 @@ class StackOverflow(Block):
     component = "StackOverflowBlock"
     tags = ["python"]
     api_url = "https://api.stackexchange.com/2.2/"
+    empty_msg = "No solution found on Stack Overflow."
+    disable_scrubbing = True
 
     def get_tags(self):
         return ";".join(self.tags)
