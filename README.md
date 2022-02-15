@@ -1,5 +1,5 @@
 
-# exceptionite
+# Exceptionite
 
 <p align="center">
   <img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/MasoniteFramework/exceptionite/Test%20Application/2.0-dev">
@@ -9,12 +9,16 @@
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
-This library is a way to easily interact with exception classes. You can easily pass in an exception into the `Handler` class (usage docs below) and you can get so much information from the exception in an elegant fashion.
+A Python exception library designed to make handling and displaying exceptions a cinch.
 
 You can even render it into a beautiful HTML exception page!
 
-<img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70865942-328a3b80-1f31-11ea-8106-cbc9969491d0.png">
+![](screenshots/masonite_1.png)
+![](screenshots/masonite_2.png)
 
+Or render it to your terminal:
+
+![](screenshots/terminal_handler.png)
 
 # Getting Started
 
