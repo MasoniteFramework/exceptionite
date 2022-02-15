@@ -26,3 +26,6 @@ class TestHandler(unittest.TestCase):
         assert frame.lineno == 13
         assert frame.offending_line == 13
         assert frame.method == "test_handler_can_provide_basic_exception_data"
+
+    def test_cannot_override_tab_context():
+        pass

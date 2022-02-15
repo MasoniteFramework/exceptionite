@@ -7,6 +7,8 @@ MARKER = "site-packages/"
 
 
 class StackFrame:
+    """Model a frame in the stack trace."""
+
     def __init__(
         self, index, frame_summary, variables={}, offset=5, shorten=False, absolute_path=""
     ):
@@ -73,7 +75,8 @@ class StackFrame:
             number: text[min_start_spaces:] for number, text in formatted_contents.items()
         }
 
-    def get_language(self, file):
+    def get_language(self, file: str) -> str:
+        """Resolve language from the file path."""
         if file.endswith(".py"):
             return "python"
         elif file.endswith(".html"):
@@ -83,7 +86,9 @@ class StackFrame:
 
 
 class StackTrace:
-    trace: List[StackFrame]
+    """Model a stack trace."""
+
+    trace: List["StackFrame"]
 
     def __init__(self, traceback, exception, offset=5, shorten=False, scrubber=None) -> None:
         self.traceback = traceback
@@ -95,7 +100,8 @@ class StackTrace:
         self.shorten = shorten
         self.scrubber = scrubber
 
-    def generate(self):
+    def generate(self) -> List["StackFrame"]:
+        """Generate all required data from a given traceback."""
         traceback = []
         for index, tb in enumerate(self.traceback.stack):
             traceback.append(
@@ -146,18 +152,22 @@ class StackTrace:
     def __getitem__(self, index: int) -> "StackFrame":
         return self.trace[index]
 
-    def reverse(self):
+    def reverse(self) -> "StackTrace":
+        """Set stack frame in reversed order. Exception is located at the beginning."""
         self.trace.sort(key=lambda frame: frame.index, reverse=True)
         return self
 
-    def unreverse(self):
+    def unreverse(self) -> "StackTrace":
+        """Set stack frame in normal order. Exception is located at the end."""
         self.trace.sort(key=lambda frame: frame.index, reverse=False)
         return self
 
-    def first(self):
+    def first(self) -> "StackFrame":
+        """Get first frame of the stack trace."""
         return self.trace[0]
 
-    def serialize(self):
+    def serialize(self) -> dict:
+        """Serialize all data from the stack trace."""
         stack_data = []
         for frame in self.trace:
             frame_data = {
@@ -176,7 +186,8 @@ class StackTrace:
 
         return stack_data
 
-    def serialize_light(self):
+    def serialize_light(self) -> dict:
+        """Serialize some data from the stack trace, to get a compact representation."""
         stack_data = []
         for frame in self.trace:
             frame_data = {

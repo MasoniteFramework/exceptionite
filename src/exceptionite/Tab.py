@@ -1,5 +1,5 @@
 from dotty_dict import dotty
-from typing import TYPE_CHECKING, Type
+from typing import TYPE_CHECKING, Type, List
 
 if TYPE_CHECKING:
     from .Block import Block
@@ -30,10 +30,12 @@ class Tab:
             self.blocks.update({block.id: block})
         return self
 
-    def block(self, id):
+    def block(self, id: str) -> "Block":
+        """Get tab block with the given name."""
         return self.blocks.get(id)
 
-    def active_blocks(self):
+    def active_blocks(self) -> List["Block"]:
+        """Get active blocks list enabled in options."""
         active_blocks = []
         display_tab = self.handler.options.get(f"handlers.{self.id}", True)
         if display_tab is False:
@@ -48,7 +50,8 @@ class Tab:
             active_blocks.append(block)
         return active_blocks
 
-    def serialize(self):
+    def serialize(self) -> dict:
+        """Serialize data from the tab."""
         raw_data = self.build()
         self.data = self.handler.scrub_data(raw_data, self.disable_scrubbing)
         return {
@@ -65,7 +68,9 @@ class Tab:
     def build(self):
         return {}
 
-    def has_content(self):
+    def has_content(self) -> bool:
+        """Compute if tab contains content. By default this will check if any of the block have
+        content."""
         return any(
             list(map(lambda b: b.has_content(), self.active_blocks())),
         )

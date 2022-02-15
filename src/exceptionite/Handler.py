@@ -43,6 +43,7 @@ class Handler:
     ):
         self.renderers: dict["Renderer"] = {}
         self.options: dict = dotty(DEFAULT_OPTIONS)
+        self.context = {}
         self.add_renderer("web", WebRenderer)
         self.add_renderer("terminal", TerminalRenderer)
 
@@ -60,6 +61,10 @@ class Handler:
     def renderer(self, name: str) -> "Renderer":
         """Get the renderer with the given name."""
         return self.renderers[name]
+
+    def add_context(self, name: str, data: dict) -> "Handler":
+        self.context.update({name: data})
+        return self
 
     def start(self, exception: BaseException) -> "Handler":
         """Start handling the given exception."""
