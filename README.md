@@ -1,5 +1,13 @@
 
-# Introduction
+# exceptionite
+
+<p align="center">
+  <img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/MasoniteFramework/exceptionite/Test%20Application/2.0-dev">
+  <img src="https://img.shields.io/badge/python-3.7+-blue.svg" alt="Python Version">
+  <img alt="PyPI" src="https://img.shields.io/pypi/v/exceptionite">
+  <img alt="License" src="https://img.shields.io/github/license/MasoniteFramework/exceptionite">
+  <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>
 
 This library is a way to easily interact with exception classes. You can easily pass in an exception into the `Handler` class (usage docs below) and you can get so much information from the exception in an elegant fashion.
 
@@ -8,82 +16,122 @@ You can even render it into a beautiful HTML exception page!
 <img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70865942-328a3b80-1f31-11ea-8106-cbc9969491d0.png">
 
 
-# Usage
+# Getting Started
 
-In order to use this class you will first need to install it:
+First install the package:
 
+```bash
+pip install exceptionite
 ```
-$ pip install exceptionite
-```
+
+Then you can follow instruction for your use case:
+
+- [Masonite](#usage-for-masonite)
+- [Flask](#usage-for-flask)
+- [Django](#usage-for-django)
+- [Basic Python](#usage-for-python)
 
 ## Usage for Masonite
 
-If you are using Masonite 2.3, this package is already being used inside core for Masonite's debugger exception handling.
-
-If you are using an older version of Masonite you can simply add the Service Provider to your `config/providers.py` file:
-
-```python
-from exceptionite.errors.providers import ErrorProvider
-
-PROVIDERS = [
-    # ...
-    ErrorProvider,
-]
-```
-
-You will now have a beautiful new exception screen!
+Masonite 4 is already using `exceptionite` for its default error page so you don't have anything
+to set up.
+If you are using `Masonite < 4.0`, please use `exceptionite < 2.0`.
 
 ## Usage for Flask
 
-If you are using flask you can also use this package! Here is an example for a flask application:
+If you are using `Flask` you can also use this package! Here is an example for a flask application:
 
 ```python
 from flask import Flask, request
-from werkzeug.exceptions import HTTPException
+from exceptionite import Handler, Block
 
 app = Flask(__name__)
+handler = Handler()
 
-from exceptionite.errors import Handler
+class FlaskContextBlock(Block):
+    id = "flask"
+    name = "Flask"
+    icon = "DesktopComputerIcon"
+
+    def build(self):
+        return {
+            "Path": request.path,
+            "Input": dict(request.args),
+            "Request Method": request.method,
+        }
+
+handler.renderer("web").tab("context").add_blocks(FlaskContextBlock)
+
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    handler = Handler(e)
-    handler.context({
-        'WSGI': {
-            'Path': request.path,
-            'Input': dict(request.args),
-            'Request Method': request.method,
-        }
-    })
-    return handler.render()
+    handler.start(e)
+    return handler.render("web")
+
 
 @app.route('/<world>')
 def hello(world):
-    x = 'Hello World'
+    test = 'Hello World'
     return 2/0
+
 
 if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-You'll now see the beautiful exception page
+You'll now see this beautiful exception page:
+![](screenshots/flask_1.png)
+![](screenshots/flask_2.png)
+
+
+## Usage for Django
+
+You can customize error reports in Django in `DEBUG` mode as explained in the [docs](https://docs.djangoproject.com/en/3.2/howto/error-reporting/#custom-error-reports).
+You need to write a custom `ExceptionReporter`:
+
+```python
+# settings.py
+DEFAULT_EXCEPTION_REPORTER = "my_app.handler.ExceptioniteReporter"
+
+# my_app/handler.py
+from exceptionite import Handler
+
+handler = Handler()
+
+class ExceptioniteReporter:
+
+    def __init__(self, request, exc_type, exc_value, tb):
+        self.request = request
+        self.exception = exc_value
+
+    def get_traceback_html(self):
+        handler.start(self.exception)
+        handler.render("terminal")
+        return handler.render("web")
+```
+
 
 ## Usage for Python
 
-If you are not using Masonite or Flask you can still use this library. You can import the `Handler` class. This is the main exception handler class. This class accepts an exception. Here is an example of how to use it:
+If you are not using a specific framework you can still use this library. You just have to get
+an instance of the `Handler` class and use the `start()` method to start handling the exception.
+
+Then you can get useful information easily and also define how you want to render the error. You
+can even add your own renderer.
 
 ```python
-from exceptionite.errors import Handler
+from exceptionite import Handler
 
 try:
     2/0
 except Exception as e:
-    handler = Handler(e)
+    handler = Handler()
+    handler.start(e)
 ```
 
 Once you have the handler class theres a whole bunch of things we can now do!
 
-## Getting Exception Values:
+### Getting Exception Details
 
 Getting the exception name:
 
@@ -131,13 +179,14 @@ handler.platform #== windows
 
 ## Rendering an HTML page
 
-You can render an elegant exception page by calling the `render` method:
+You can render an elegant exception page by using the `render` method with the `WebRenderer`:
 
 ```python
-handler.render() #== <html> ... </html>
+handler.render("web") #== <html> ... </html>
 ```
 
-If you have a framework or an application you can swap the exception handler out with then this is a great method to use.
+If you have a framework or an application you can swap the exception handler out with this handler
+and then call this method.
 
 ## Contexts
 
@@ -167,27 +216,13 @@ Now this information will be displayed on the right hand side of the exception p
 
 # Contributing
 
-## Setting up this repository for development
+Please read the [Contributing Documentation](CONTRIBUTING.md) here.
 
-To setup the package to get your package up and running, you should first take a look at `setup.py` and make any packages specific changes there. These include the classifiers and package name.
+# Maintainers
 
-Then you should create a virtual environment and activate it
+- [Joseph Mancuso](https://github.com/josephmancuso)
+- [Samuel Girardin](https://www.github.com/girardinsamuel)
 
-```
-python3 -m venv venv
-source venv/bin/activate
-```
+# License
 
-Then install from the requirements file
-
-```
-pip install -r requirements.txt
-```
-
-This will install `exceptionite` and development related packages.
-
-## Running tests
-
-```
-python -m pytest
-```
+Exceptionite is open-sourced software licensed under the [MIT license](LICENSE).

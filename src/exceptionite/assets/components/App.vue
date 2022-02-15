@@ -15,12 +15,12 @@
       <div class="container mx-auto px-4 flex items-center self-stretch text-sm">
         <span class="text-red-600 font-bold">{{ exception.type }}</span>
         <span class="text-black dark:text-gray-400 font-medium">&nbsp;-&nbsp;</span>
-        <span class="text-black dark:text-gray-300 font-medium"> {{ exception.message }}</span>
+        <span class="text-black dark:text-gray-300 font-medium truncate"> {{ exception.message }}</span>
       </div>
     </div>
 
     <!-- page content -->
-    <div class="container mx-auto lg:p-4">
+    <div class="container mx-auto py-4 lg:p-4">
       <div ref="exceptioniteBlock">
         <exception :exception="exception" />
       </div>

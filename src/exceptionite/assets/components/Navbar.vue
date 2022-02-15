@@ -1,6 +1,6 @@
 <template>
   <div class="sticky top-0 bg-white dark:bg-gray-800 py-2 h-14 z-40 shadow-md">
-    <div class="flex justify-between items-center container px-4 mx-auto">
+    <div class="flex justify-between items-center container lg:px-4 mx-auto">
       <div class="flex justify-start items-center space-x-2">
         <button
           v-for="tab in tabs"

@@ -1,9 +1,8 @@
 import sys
 import traceback
 from dotty_dict import dotty
-from typing import Type, TYPE_CHECKING, Protocol
-
-# from typing_extensions import Protocol
+from typing import Type, TYPE_CHECKING
+from typing_extensions import Protocol
 
 if TYPE_CHECKING:
 

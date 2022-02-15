@@ -31,4 +31,4 @@ class Block:
         raise NotImplementedError("block should implement build()")
 
     def has_content(self):
-        return False
+        return True

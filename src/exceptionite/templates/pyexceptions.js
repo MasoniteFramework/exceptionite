@@ -25973,11 +25973,8 @@ __webpack_require__.r(__webpack_exports__);
       return this.$root.highlightCode(this.frame.language, code);
     },
     openEditor: function openEditor(line_number) {
-      window.open((0,_editorUrl__WEBPACK_IMPORTED_MODULE_0__["default"])(this.config, this.frame.file, line_number));
+      window.open((0,_editorUrl__WEBPACK_IMPORTED_MODULE_0__["default"])(this.config.options.editor, this.frame.file, line_number));
     }
-  },
-  mounted: function mounted() {
-    console.log(this.$root.theme);
   }
 });
 
@@ -26423,10 +26420,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggleVendor: function toggleVendor() {
-      this.showVendors = !this.showVendors;
+      var _this = this;
 
-      if (!this.showVendors) {
+      this.showVendors = !this.showVendors; // if no frame selected try to select first
+
+      if (!this.currentFrame && this.selectedFrames.length > 0) {
         this.selectFrame(this.selectedFrames[0]);
+      } else if (this.currentFrame) {
+        // check if old current frame is still visible else hide it
+        if (!this.selectedFrames.find(function (frame) {
+          return frame.index === _this.currentFrame.index;
+        })) {
+          this.currentFrame = null;
+        }
       }
     }
   }
@@ -26962,10 +26968,10 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_6 = {
-  "class": "text-black dark:text-gray-300 font-medium"
+  "class": "text-black dark:text-gray-300 font-medium truncate"
 };
 var _hoisted_7 = {
-  "class": "container mx-auto lg:p-4"
+  "class": "container mx-auto py-4 lg:p-4"
 };
 var _hoisted_8 = {
   ref: "exceptioniteBlock"
@@ -27555,7 +27561,7 @@ var _hoisted_1 = {
   "class": "sticky top-0 bg-white dark:bg-gray-800 py-2 h-14 z-40 shadow-md"
 };
 var _hoisted_2 = {
-  "class": "flex justify-between items-center container px-4 mx-auto"
+  "class": "flex justify-between items-center container lg:px-4 mx-auto"
 };
 var _hoisted_3 = {
   "class": "flex justify-start items-center space-x-2"
@@ -28033,6 +28039,10 @@ var _hoisted_7 = {
 var _hoisted_8 = {
   "class": "self-stretch grow rounded-r-md overflow-x-auto"
 };
+var _hoisted_9 = {
+  key: 1,
+  "class": "text-black dark:text-gray-400 p-2 text-center"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_SolidSelectorIcon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SolidSelectorIcon");
 
@@ -28107,7 +28117,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_5);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_frame, {
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [$setup.currentFrame ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 0
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_frame, {
     frame: $setup.currentFrame
   }, null, 8
   /* PROPS */
@@ -28115,7 +28127,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     variables: $setup.currentFrame.variables
   }, null, 8
   /* PROPS */
-  , ["variables"])])]);
+  , ["variables"])], 64
+  /* STABLE_FRAGMENT */
+  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_9, "No frame selected"))])]);
 }
 
 /***/ }),
@@ -29483,8 +29497,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ editorUrl)
 /* harmony export */ });
-function editorUrl(config, file, lineNumber) {
-  var editor = config.editor;
+function editorUrl(editorName, file, lineNumber) {
+  var editor = editorName;
   var editors = {
     sublime: 'subl://open?url=file://%path&line=%line',
     textmate: 'txmt://open?url=file://%path&line=%line',

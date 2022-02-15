@@ -1,5 +1,5 @@
-export default function editorUrl(config, file, lineNumber) {
-    const editor = config.editor;
+export default function editorUrl(editorName, file, lineNumber) {
+    const editor = editorName
     const editors = {
         sublime: 'subl://open?url=file://%path&line=%line',
         textmate: 'txmt://open?url=file://%path&line=%line',

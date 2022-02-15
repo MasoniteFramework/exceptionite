@@ -47,11 +47,10 @@ class StackFrame:
 
         for content in self.file_contents:
             if self.language == "python":
-                # content.replace("    ", "&nbsp;&nbsp;&nbsp;&nbsp;")
                 formatted_line = (
                     content.replace("'\n '", "")
                     .replace("'\n \"", "")
-                    .replace("\"\n '", "<br>")
+                    .replace("\"\n '", "")
                     .replace('"\n "', "")
                     .replace("""(\'""", "")
                     .replace("')", "")

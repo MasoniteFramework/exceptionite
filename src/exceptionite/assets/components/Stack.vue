@@ -44,8 +44,11 @@
       </div>
     </div>
     <div class="self-stretch grow rounded-r-md overflow-x-auto">
-      <frame :frame="currentFrame" />
-      <frame-vars :variables="currentFrame.variables" />
+      <template v-if="currentFrame">
+        <frame :frame="currentFrame" />
+        <frame-vars :variables="currentFrame.variables" />
+      </template>
+      <p v-else class="text-black dark:text-gray-400 p-2 text-center">No frame selected</p>
     </div>
   </div>
 </template>
@@ -121,8 +124,15 @@ export default {
   methods: {
     toggleVendor() {
       this.showVendors = !this.showVendors
-      if (!this.showVendors) {
+      // if no frame selected try to select first
+      if (!this.currentFrame && this.selectedFrames.length > 0) {
         this.selectFrame(this.selectedFrames[0])
+      } else if (this.currentFrame) {
+        // check if old current frame is still visible else hide it
+        if (!this.selectedFrames.find(frame => frame.index === this.currentFrame.index)) {
+          this.currentFrame = null
+        }
+
       }
     }
   },

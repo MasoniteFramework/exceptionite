@@ -1296,6 +1296,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(191 219 254 / var(--tw-text-opacity));
 }
 
+.visible {
+  visibility: visible;
+}
+
 .fixed {
   position: fixed;
 }
@@ -2385,6 +2389,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .lg\:p-4 {
     padding: 1rem;
+  }
+
+  .lg\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 

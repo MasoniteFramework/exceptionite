@@ -51,15 +51,8 @@ export default {
       return this.$root.highlightCode(this.frame.language, code);
     },
     openEditor (line_number) {
-      window.open(url(this.config, this.frame.file, line_number))
+      window.open(url(this.config.options.editor, this.frame.file, line_number))
     }
-  },
-  mounted () {
-    console.log(this.$root.theme)
   }
 }
 </script>
-
-<style>
-
-</style>
