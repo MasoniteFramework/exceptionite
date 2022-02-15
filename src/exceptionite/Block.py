@@ -1,7 +1,7 @@
 class Block:
-    id = "blockid"
+    id = ""
     name = "Block Name"
-    icon = "Icon Name"
+    icon = ""
     component = "KeyValBlock"
     disable_scrubbing = False
     empty_msg = "No content."
@@ -12,7 +12,7 @@ class Block:
         self.handler = handler
         self.options = options
         self.data = {}
-        assert self.id, "Tab should declare an 'id' attribute !"
+        assert self.id, "Block should declare an 'id' attribute !"
 
     def serialize(self):
         raw_data = self.build()

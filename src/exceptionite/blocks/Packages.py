@@ -1,6 +1,6 @@
 import pkg_resources
 
-from .Block import Block
+from ..Block import Block
 
 
 class Packages(Block):

@@ -144,6 +144,9 @@ class StackTrace:
     def __len__(self):
         return len(self.trace)
 
+    def __getitem__(self, index: int) -> "StackFrame":
+        return self.trace[index]
+
     def reverse(self):
         self.trace.sort(key=lambda frame: frame.index, reverse=True)
         return self
@@ -172,4 +175,16 @@ class StackTrace:
             }
             stack_data.append(frame_data)
 
+        return stack_data
+
+    def serialize_light(self):
+        stack_data = []
+        for frame in self.trace:
+            frame_data = {
+                "index": frame.index,
+                "file": frame.file,
+                "line": frame.lineno,
+                "statement": frame.parent_statement,
+            }
+            stack_data.append(frame_data)
         return stack_data

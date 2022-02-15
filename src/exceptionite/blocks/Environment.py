@@ -3,8 +3,8 @@ import platform
 import socket
 import os
 
-from ...exceptions import ContextParsingException
-from .Block import Block
+from ..exceptions import ContextParsingException
+from ..Block import Block
 
 
 class Environment(Block):
@@ -28,7 +28,7 @@ class Environment(Block):
         except socket.gaierror:
             raise ContextParsingException(
                 "Exceptionite did not manage to fetch the IP address"
-                + "Disable you VPN or '127.0.0.1 YOUR_HOSTNAME' entry in /etc/hosts file."
+                + "Disable you VPN or add '127.0.0.1 YOUR_HOSTNAME' line in /etc/hosts file."
             )
 
         return {
@@ -39,7 +39,7 @@ class Environment(Block):
             "Working Dir": os.getcwd(),
             "OS": os_name,
             "Arch": platform.architecture()[0],
-            "Hostname": socket.gethostname(),
+            "Host Name": socket.gethostname(),
             "IP": ip,
             "File System Encoding": file_system_encoding,
             "Default Encoding": default_encoding,

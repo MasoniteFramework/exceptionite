@@ -11,8 +11,6 @@ DEFAULT_OPTIONS = {
     "handlers": {
         "context": True,
         "solutions": {"stackoverflow": False, "possible_solutions": True},
-        "recommendations": {
-            "packages_updates": {"list": ["exceptionite", "masonite", "masonite-orm"]}
-        },
+        "recommendations": {"packages_updates": {"list": ["exceptionite"]}},
     },
 }

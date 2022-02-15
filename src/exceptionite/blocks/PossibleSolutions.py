@@ -1,7 +1,7 @@
 import re
 
-from .Block import Block
-from ..solutions import default
+from ..Block import Block
+from .. import solutions
 
 
 class PossibleSolutions(Block):
@@ -18,17 +18,17 @@ class PossibleSolutions(Block):
         super().__init__(tab, handler, options)
         self.registered_solutions = []
         self.register(
-            default.DictionaryUpdateSequence(),
-            default.ClassMethodExists(),
-            default.GetAttributeObject(),
-            default.NoModuleNamed(),
-            default.Syntax(),
-            default.ImportIssue(),
-            default.Undefined(),
-            default.WrongParameterCount(),
-            default.WrongConstructorParameterCount(),
-            default.ObjectNotCallable(),
-            default.SubscriptableIssue(),
+            solutions.DictionaryUpdateSequence(),
+            solutions.ClassMethodExists(),
+            solutions.GetAttributeObject(),
+            solutions.NoModuleNamed(),
+            solutions.Syntax(),
+            solutions.ImportIssue(),
+            solutions.Undefined(),
+            solutions.WrongParameterCount(),
+            solutions.WrongConstructorParameterCount(),
+            solutions.ObjectNotCallable(),
+            solutions.SubscriptableIssue(),
         )
 
     def build(self):

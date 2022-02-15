@@ -1,33 +1,28 @@
 import unittest
 
-# from src.exceptionite import Handler
+from src.exceptionite import Handler
 
 
-class TestToDoHandler(unittest.TestCase):
-    def test_returns_error_message(self):
-        # try:
-        #     2 / 0
-        # except Exception as e:
-        #     handler = Handler(e)
+class TestHandler(unittest.TestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.handler = Handler()
 
-        # self.assertEqual(handler.message(), "division by zero")
-        # self.assertEqual(handler.exception(), "ZeroDivisionError")
-        pass
+    def test_handler_can_provide_basic_exception_data(self):
+        try:
+            raise ValueError("Custom message")
+        except Exception as exception:
+            self.handler.start(exception)
 
-    def test_returns_true_when_has_exception(self):
-        # try:
-        #     2 / 0
-        # except Exception as e:
-        #     handler = Handler(e)
+        assert self.handler.message() == "Custom message"
+        assert self.handler.exception() == "ValueError"
+        assert self.handler.namespace() == "builtins.ValueError"
+        assert self.handler.count() > 0
 
-        # self.assertTrue(handler.any())
-        pass
-
-    def test_returns_correct_exception_count_trace(self):
-        # try:
-        #     2 / 0
-        # except Exception as e:
-        #     handler = Handler(e)
-
-        # self.assertEqual(handler.count(), 1)
-        pass
+        frame = self.handler.stacktrace()[0]
+        assert frame.index == 0
+        assert frame.relative_file == "tests/test_handler.py"
+        assert not frame.is_vendor
+        assert frame.lineno == 13
+        assert frame.offending_line == 13
+        assert frame.method == "test_handler_can_provide_basic_exception_data"

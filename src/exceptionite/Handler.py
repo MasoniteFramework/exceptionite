@@ -1,18 +1,31 @@
-import os
 import sys
 import traceback
 from dotty_dict import dotty
-from collections import OrderedDict
+from typing import Type, TYPE_CHECKING, Protocol
+
+# from typing_extensions import Protocol
+
+if TYPE_CHECKING:
+
+    class Renderer(Protocol):
+        handler: "Handler"
+
+        def __init__(self, handler: "Handler") -> None:
+            ...
+
+        def render(self) -> str:
+            """Render exception with the given renderer"""
+            ...
+
 
 from .StackTrace import StackTrace
-from .tabs import ContextTab, SolutionsTab, RecommendationsTab
 from .renderers import WebRenderer, TerminalRenderer
 from .options import DEFAULT_OPTIONS
 
 
 class Handler:
+    """Exceptionite handler used to handle exceptions and render them using the given renderer."""
 
-    reserved_tabs = ["context"]
     scrub_keywords = [
         "password",
         "passwd",
@@ -29,57 +42,28 @@ class Handler:
     def __init__(
         self,
     ):
-        self.renderers = {}
-        self.tabs = OrderedDict()
-        self.actions = {}
-        self.options = dotty(DEFAULT_OPTIONS)
-        self.serialized_data = None
-
-        self.add_tab(ContextTab)
-        self.add_tab(SolutionsTab)
-        self.add_tab(RecommendationsTab)
+        self.renderers: dict["Renderer"] = {}
+        self.options: dict = dotty(DEFAULT_OPTIONS)
         self.add_renderer("web", WebRenderer)
         self.add_renderer("terminal", TerminalRenderer)
 
-    def set_options(self, options):
+    def set_options(self, options: dict) -> "Handler":
+        """Configure exceptionite handler with given options."""
         # ensure options is a dict here, might already be a dotty dict
         self.options = dotty(dict(options))
         return self
 
-    def add_renderer(self, name, renderer_class):
-        self.renderers.update({name: renderer_class})
+    def add_renderer(self, name: str, renderer_class: Type["Renderer"]) -> "Handler":
+        """Register a renderer to handle exceptions."""
+        self.renderers.update({name: renderer_class(self)})
         return self
 
-    def get_renderer(self, name):
-        return self.renderers[name](self)
+    def renderer(self, name: str) -> "Renderer":
+        """Get the renderer with the given name."""
+        return self.renderers[name]
 
-    def add_tab(self, tab_class):
-        tab = tab_class(self)
-        if tab.id in self.reserved_tabs and tab.id in self.tabs:
-            raise Exception(
-                f"exceptionite: {tab.id} is a reserved name. This tab can't be overriden."
-            )
-        self.tabs.update({tab.id: tab})
-        return self
-
-    def add_action(self, action_class):
-        action = action_class(self)
-        self.actions.update({action.id: action})
-        return self
-
-    def get_tab(self, id):
-        try:
-            return self.tabs[id]
-        except KeyError:
-            raise Exception(f"exceptionite: Tab not found: {id}")
-
-    def get_enabled_tabs(self):
-        return [
-            tab for tab in self.tabs.values() if self.options.get("handlers").get(tab.id, True)
-        ]
-
-    def start(self, exception):
-        """Start handling exception."""
+    def start(self, exception: BaseException) -> "Handler":
+        """Start handling the given exception."""
         self._exception = exception
         self._type, self._value, self._original_traceback = sys.exc_info()
         traceback_exc = traceback.TracebackException(
@@ -93,51 +77,35 @@ class Handler:
             scrubber=self.scrub_data,
         )
         self._stacktrace.generate().reverse()
-
-        # save serialized exception data for further use in renderers
-        self.serialized_data = self.serialize()
         return self
 
     # helpers
-    def exception(self):
+    def exception(self) -> str:
+        """Get the handled exception name."""
         return self._exception.__class__.__name__
 
-    def namespace(self):
+    def namespace(self) -> str:
+        """Get the handled exception full namespace."""
         return self._exception.__class__.__module__ + "." + self.exception()
 
-    def message(self):
+    def message(self) -> str:
+        """Get the handled exception message."""
         return str(self._exception)
 
-    def stacktrace(self):
+    def stacktrace(self) -> "StackTrace":
+        """Get the handled exception stack trace object."""
         return self._stacktrace
 
-    def serialize(self):
-        return {
-            "config": {
-                **self.options.to_dict(),
-                "absolute_path": os.getcwd(),
-            },
-            "exception": {
-                "type": self.exception(),
-                "message": self.message(),
-                "namespace": self.namespace(),
-                "stacktrace": self.stacktrace().reverse().serialize(),
-            },
-            "tabs": [self.scrub_data(tab.serialize()) for tab in self.get_enabled_tabs()],
-            "actions": [action.serialize() for action in self.actions.values()],
-        }
+    def count(self):
+        return len(self._stacktrace)
 
-    def render(self, renderer):
-        return self.get_renderer(renderer).render()
+    def render(self, renderer: str) -> str:
+        """Render the handled exception with the given renderer."""
+        return self.renderer(renderer).render()
 
-    def get_last_exception_data(self):
-        return self.serialized_data
-
-    def run_action(self, action_id, options={}):
-        action = self.actions.get(action_id)
-        return action.run(options)
-
-    def scrub_data(self, data, disable=False):
+    def scrub_data(self, data: dict, disable: bool = False) -> dict:
+        """Hide sensitive data of the given dictionary if enabled in the options with
+        'hide_sensitive_data' parameter."""
         if not self.options.get("options.hide_sensitive_data") or disable:
             return data
         scrubbed_data = {}

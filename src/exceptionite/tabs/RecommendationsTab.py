@@ -1,5 +1,5 @@
-from .Tab import Tab
-from .blocks.PackagesUpdates import PackagesUpdates
+from ..Tab import Tab
+from ..blocks.PackagesUpdates import PackagesUpdates
 
 
 class RecommendationsTab(Tab):
@@ -9,5 +9,6 @@ class RecommendationsTab(Tab):
     icon = "CheckCircleIcon"
     advertise_content = True
 
-    def configure(self):
-        self.add_block(PackagesUpdates)
+    def __init__(self, handler):
+        super().__init__(handler)
+        self.add_blocks(PackagesUpdates)

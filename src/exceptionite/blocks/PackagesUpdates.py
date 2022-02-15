@@ -1,7 +1,7 @@
 import pkg_resources
 import requests
 
-from .Block import Block
+from ..Block import Block
 
 
 def get_latest_version(name):

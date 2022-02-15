@@ -1,4 +1,12 @@
+import os
 from setuptools import setup
+
+meta = {}
+with open(
+    os.path.join(os.path.abspath(os.path.dirname(__file__)), "src", "exceptionite", "version.py"),
+    "r",
+) as f:
+    exec(f.read(), meta)
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -8,13 +16,13 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version="2.0.0",
+    version=meta["__version__"],
     description="Exception Handling Made Easy",
     long_description=long_description,
     long_description_content_type="text/markdown",
     include_package_data=True,
     # The project's main homepage.
-    url="https://github.com/masoniteframework/exceptions",
+    url="https://github.com/masoniteframework/exceptionite",
     # Author details
     author="The Masonite Community",
     author_email="joe@masoniteproject.com",
@@ -55,12 +63,9 @@ setup(
     package_dir={"": "src"},
     packages=[
         "exceptionite",
-        "exceptionite.actions",
-        "exceptionite.config",
         "exceptionite.renderers",
         "exceptionite.tabs",
-        "exceptionite.tabs.blocks",
-        "exceptionite.tabs.solutions",
+        "exceptionite.blocks",
     ],
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's

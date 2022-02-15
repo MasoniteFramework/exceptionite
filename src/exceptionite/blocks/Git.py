@@ -1,7 +1,7 @@
 import shlex
 import subprocess
 
-from .Block import Block
+from ..Block import Block
 
 
 class Git(Block):

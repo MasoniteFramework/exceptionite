@@ -26982,6 +26982,9 @@ var _hoisted_11 = {
   "class": "flex space-x-4 mb-4"
 };
 var _hoisted_12 = ["onClick"];
+var _hoisted_13 = {
+  "class": "text-gray-600 dark:text-gray-400 text-xs text-center"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_navbar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("navbar");
 
@@ -27067,7 +27070,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* DYNAMIC_SLOTS */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
-  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_share_dialog, {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_13, "v" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.config.version), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_share_dialog, {
     modelValue: $setup.sharing,
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.sharing = $event;

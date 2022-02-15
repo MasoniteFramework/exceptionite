@@ -1,7 +1,7 @@
-from .Tab import Tab
-from .blocks.Environment import Environment
-from .blocks.Packages import Packages
-from .blocks.Git import Git
+from ..Tab import Tab
+from ..blocks.Environment import Environment
+from ..blocks.Packages import Packages
+from ..blocks.Git import Git
 
 
 class ContextTab(Tab):
@@ -10,7 +10,6 @@ class ContextTab(Tab):
     id = "context"
     icon = "ViewListIcon"
 
-    def configure(self):
-        self.add_block(Environment)
-        self.add_block(Packages)
-        self.add_block(Git)
+    def __init__(self, handler):
+        super().__init__(handler)
+        self.add_blocks(Environment, Packages, Git)

@@ -1,4 +1,8 @@
-from colorama import init, Fore, Style
+from colorama import init as init_colorama, Fore, Style
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..Handler import Handler
 
 
 COLORS_PREFIX = {
@@ -22,11 +26,15 @@ def get_frame_line_output(frame, index: int = None) -> str:
 
 
 class TerminalRenderer:
-    def __init__(self, handler) -> None:
+    """Renderer used to print an exception nicely in the terminal. It will render stack
+    trace too."""
+
+    def __init__(self, handler: "Handler") -> None:
         self.handler = handler
 
-    def render(self) -> None:
-        init()
+    def render(self) -> str:
+        """Print exception and stack trace nicely in terminal."""
+        init_colorama()
 
         # start printing exception to terminal
         print("")
@@ -64,3 +72,4 @@ class TerminalRenderer:
         for index, frame in enumerate(stacktrace):
             frame_index = str(index + 1)
             print(f"   # {get_frame_line_output(frame, frame_index)}")
+        return ""

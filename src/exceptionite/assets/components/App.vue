@@ -61,6 +61,7 @@
         </div>
 
       </div>
+      <p class="text-gray-600 dark:text-gray-400 text-xs text-center">v{{ config.version }}</p>
     </div>
     <share-dialog v-model="sharing" />
     <base-action-dialog v-if="selectedAction" :action="selectedAction" @close="selectedAction = null"  />

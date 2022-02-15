@@ -1,4 +1,8 @@
 from dotty_dict import dotty
+from typing import TYPE_CHECKING, Type
+
+if TYPE_CHECKING:
+    from .Block import Block
 
 
 class Tab:
@@ -15,24 +19,21 @@ class Tab:
         self.blocks = {}
         tab_options = self.handler.options.get(f"handlers.{self.id}", {})
         self.options = dotty({} if isinstance(tab_options, bool) else tab_options)
-        self.configure()
         assert self.id, "Tab should declare an 'id' attribute !"
 
-    def add_block(self, block_class):
-        """Register the given block class in the tab."""
-        block_options = self.options.get(block_class.id, {})
-        block_options = dotty({} if isinstance(block_options, bool) else block_options)
-        block = block_class(self, self.handler, block_options)
-        self.blocks.update({block.id: block})
+    def add_blocks(self, *block_classes: Type["Block"]):
+        """Register the given block(s) in the tab."""
+        for block_class in block_classes:
+            block_options = self.options.get(block_class.id, {})
+            block_options = dotty({} if isinstance(block_options, bool) else block_options)
+            block = block_class(self, self.handler, block_options)
+            self.blocks.update({block.id: block})
         return self
 
-    def configure(self):
-        return self
-
-    def get_block(self, id):
+    def block(self, id):
         return self.blocks.get(id)
 
-    def get_active_blocks(self):
+    def active_blocks(self):
         active_blocks = []
         display_tab = self.handler.options.get(f"handlers.{self.id}", True)
         if display_tab is False:
@@ -55,7 +56,7 @@ class Tab:
             "name": self.name,
             "icon": self.icon,
             "component": self.component,
-            "blocks": list(map(lambda b: b.serialize(), self.get_active_blocks())),
+            "blocks": list(map(lambda b: b.serialize(), self.active_blocks())),
             "data": self.data,
             "advertise_content": self.advertise_content,
             "has_content": self.has_content(),
@@ -66,5 +67,5 @@ class Tab:
 
     def has_content(self):
         return any(
-            list(map(lambda b: b.has_content(), self.get_active_blocks())),
+            list(map(lambda b: b.has_content(), self.active_blocks())),
         )
