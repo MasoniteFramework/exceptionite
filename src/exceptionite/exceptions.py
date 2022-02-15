@@ -4,3 +4,7 @@ class ConfigurationException(Exception):
 
 class ContextParsingException(Exception):
     pass
+
+
+class TabNotFound(Exception):
+    pass

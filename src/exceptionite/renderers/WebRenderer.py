@@ -1,7 +1,8 @@
 from collections import OrderedDict
 import os
 from jinja2 import Environment, PackageLoader
-from typing import Type, TYPE_CHECKING, List
+from typing import Type, TYPE_CHECKING, List, Callable
+
 
 if TYPE_CHECKING:
     from ..Tab import Tab
@@ -9,6 +10,8 @@ if TYPE_CHECKING:
     from ..Action import Action
 
 from ..tabs import ContextTab, SolutionsTab, RecommendationsTab
+from ..exceptions import ConfigurationException, TabNotFound
+from ..Block import Block
 
 
 class WebRenderer:
@@ -72,7 +75,7 @@ class WebRenderer:
         for tab_class in tab_classes:
             tab = tab_class(self.handler)
             if tab.id in self.reserved_tabs and tab.id in self.tabs:
-                raise Exception(
+                raise ConfigurationException(
                     f"exceptionite: {tab.id} is a reserved name. This tab can't be overriden."
                 )
             self.tabs.update({tab.id: tab})
@@ -90,7 +93,7 @@ class WebRenderer:
         try:
             return self.tabs[id]
         except KeyError:
-            raise Exception(f"exceptionite: Tab not found: {id}")
+            raise TabNotFound(f"Tab not found: {id}")
 
     def enabled_tabs(self) -> List["Tab"]:
         """Get enabled tabs from options"""
@@ -104,3 +107,17 @@ class WebRenderer:
         """Run the given action with options if any"""
         action = self.actions.get(action_id)
         return action.run(options)
+
+    def add_context(self, name: str, data: "dict|Callable", icon: str = None) -> "WebRenderer":
+        """Quick shortcut method to add a context block into 'context' tab."""
+
+        custom_block = Block
+        custom_block.id = f"context.id.{name.lower()}"
+        custom_block.name = name
+        custom_block.icon = icon
+        if callable(data):
+            custom_block.build = data
+        else:
+            custom_block.build = lambda self: data
+        self.tab("context").add_blocks(custom_block)
+        return self

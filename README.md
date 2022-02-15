@@ -155,32 +155,6 @@ Getting the exception namespace:
 handler.namespace() #== builtins.ZeroDivisionError
 ```
 
-## Getting Environment Specific Information:
-
-Getting the Python version:
-
-```python
-handler.python_version #== 3.6.5
-```
-
-Getting the default encoding:
-
-```python
-handler.default_encoding #== utf-8
-```
-
-Getting the file system encoding:
-
-```python
-handler.file_system_encoding #== utf-8
-```
-
-Getting the platform:
-
-```python
-handler.platform #== windows
-```
-
 ## Rendering an HTML page
 
 You can render an elegant exception page by using the `render` method with the `WebRenderer`:
@@ -198,24 +172,37 @@ Sometimes you will need to add more information to the exception page. This is w
 
 If you use a framework like Masonite you might want to see information related to your Service Providers. If you use a framework like django you might want to see a list of your installed apps.
 
-On the right side of the HTML page you will see a section of information. These are where the contexts are diplayed.
+On the left side of the page below the stack trace you will fidn the context menu. Context is organised into blocks.
 
-You can register new contexts by supplied a dictionary of the context name and a dictionary of the key value pairs:
+1. You can register new contexts quickly by supplying a dictionary or a callable providing a dictionary:
 
 ```python
 import sys
 
-handler.context({
-    'System Variables': {
-        'sys argv': sys.argv
-    }
-})
+handler.renderer("web").context("System Variables", {"sys argv": sys.argv})
 ```
 
-Now this information will be displayed on the right hand side of the exception page.
+2. Or you can create custom blocks and add them to the `Context` tab:
 
+```python
+import sys
+from exceptionite import Block
 
-<img width="1435" alt="Screen Shot 2019-12-15 at 11 49 39 AM" src="https://user-images.githubusercontent.com/20172538/70866053-b1cc3f00-1f32-11ea-9d4f-33805b16ecde.png">
+class SystemVarsBlock(Block):
+    id = "system_vars"
+    name= "System Variables"
+
+    def build(self):
+        return {
+           "sys argv": sys.argv
+        }
+
+handler.renderer("web").tab("context").add_blocks(SystemVarsBlock)
+```
+
+The second method allows more customization of the block (such as defining the Vue component to use
+, the icon and if the block has content).
+
 
 
 # Contributing

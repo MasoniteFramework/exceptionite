@@ -13,7 +13,9 @@ class Git(Block):
     def build(self):
         git_version = subprocess.check_output(shlex.split("git --version")).strip()
         try:
-            commit = subprocess.check_output(shlex.split("git rev-parse HEAD")).strip()
+            commit = subprocess.check_output(
+                shlex.split("git rev-parse HEAD"), stderr=subprocess.STDOUT
+            ).strip()
         except subprocess.CalledProcessError:
             # not a git repository
             return {
@@ -22,10 +24,12 @@ class Git(Block):
                 "git_version": git_version.decode("utf-8"),
                 "remote": "",
             }
-        branch = subprocess.check_output(shlex.split("git rev-parse --abbrev-ref HEAD")).strip()
+        branch = subprocess.check_output(
+            shlex.split("git rev-parse --abbrev-ref HEAD"), stderr=subprocess.STDOUT
+        ).strip()
         try:
             remote = subprocess.check_output(
-                shlex.split("git config --get remote.origin.url")
+                shlex.split("git config --get remote.origin.url", stderr=subprocess.STDOUT)
             ).strip()
         except subprocess.CalledProcessError:
             remote = b""

@@ -1,6 +1,12 @@
 import unittest
 
-from src.exceptionite import Handler
+from src.exceptionite import Handler, Tab
+from src.exceptionite.exceptions import ConfigurationException
+
+
+class OtherContextTab(Tab):
+    id = "context"
+    name = "An other context tab"
 
 
 class TestHandler(unittest.TestCase):
@@ -23,9 +29,10 @@ class TestHandler(unittest.TestCase):
         assert frame.index == 0
         assert frame.relative_file == "tests/test_handler.py"
         assert not frame.is_vendor
-        assert frame.lineno == 13
-        assert frame.offending_line == 13
+        assert frame.lineno == 19
+        assert frame.offending_line == 19
         assert frame.method == "test_handler_can_provide_basic_exception_data"
 
-    def test_cannot_override_tab_context():
-        pass
+    def test_cannot_override_tab_context(self):
+        with self.assertRaises(ConfigurationException):
+            self.handler.renderer("web").add_tabs(OtherContextTab)
