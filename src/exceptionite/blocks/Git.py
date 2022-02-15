@@ -29,7 +29,7 @@ class Git(Block):
         ).strip()
         try:
             remote = subprocess.check_output(
-                shlex.split("git config --get remote.origin.url", stderr=subprocess.STDOUT)
+                shlex.split("git config --get remote.origin.url"), stderr=subprocess.STDOUT
             ).strip()
         except subprocess.CalledProcessError:
             remote = b""
