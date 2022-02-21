@@ -225,7 +225,7 @@ class SolutionsIntegration:
                 possible_solutions.append(solution)
 
         current_path = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(current_path, 'templates/solutions.html'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/solutions.html'), 'r', encoding='utf-8') as f:
             overflow_exception = f.read()
 
         loader = DictLoader({

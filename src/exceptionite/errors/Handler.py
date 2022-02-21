@@ -108,13 +108,13 @@ class Handler:
 
     def render(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(current_path, 'templates/exception.html'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/exception.html'), 'r', encoding='utf-8') as f:
             exception_template = f.read()
 
-        with open(os.path.join(current_path, 'templates/css/tailwind.css'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/css/tailwind.css'), 'r', encoding='utf-8') as f:
             tailwind_template = f.read()
 
-        with open(os.path.join(current_path, 'templates/css/prism.css'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/css/prism.css'), 'r', encoding='utf-8') as f:
             prism_template = f.read()
 
         loader = DictLoader({
@@ -134,13 +134,13 @@ class Handler:
     @staticmethod
     def dump(obj):
         current_path = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(current_path, 'templates/dump.html'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/dump.html'), 'r', encoding='utf-8') as f:
             dump = f.read()
 
-        with open(os.path.join(current_path, 'templates/obj_loop.html'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/obj_loop.html'), 'r', encoding='utf-8') as f:
             obj_loop = f.read()
 
-        with open(os.path.join(current_path, 'templates/css/tailwind.css'), 'r') as f:
+        with open(os.path.join(current_path, 'templates/css/tailwind.css'), 'r', encoding='utf-8') as f:
             tailwind_template = f.read()
 
         loader = DictLoader({
@@ -186,7 +186,7 @@ class StackLine:
         self.end_line = self.lineno + 5
         self.variables = variables
 
-        with open(self.file) as fp:
+        with open(self.file, encoding='utf-8') as fp:
             printer = pprint.PrettyPrinter(indent=4)
 
             self.file_contents = printer.pformat(fp.read()).split('\\n')[
