@@ -1,5 +1,5 @@
 import { createApp, h } from "vue"
-import App from "./components/App.vue"
+import App from "./App.vue"
 import Badge from "./components/Badge.vue"
 import AppButton from "./components/AppButton.vue"
 import KeyValList from "./components/blocks/KeyValList.vue"

@@ -16,7 +16,7 @@ lint: ## Run code linting
 format: ## Format code with Black
 	black .
 coverage: ## Run package tests and upload coverage reports
-	python -m pytest --cov-report term --cov-report xml --cov=src/masonite/pyexceptions tests
+	python -m pytest --cov-report term --cov-report xml --cov=src/masonite/exceptionite tests
 publish: ## Publish package to pypi
 	python setup.py sdist bdist_wheel
 	twine upload dist/*

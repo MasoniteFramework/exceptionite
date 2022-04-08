@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - {{ data.exception.message }}</title>
+    <style>
+      {% include "exceptionite.css" %}
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Error - {{ data.exception.message }}</title>
-  <style>
-    {% include "pyexceptions.css" %}
-  </style>
-</head>
+  <body class="h-screen w-full">
+    <div id="app" class="min-h-screen"></div>
+    <!-- dump from backend -->
+    <script>
+    {{ script }}
+    </script>
+    <script>
+      window.data = {{ data | tojson | safe }}
+    </script>
+    <script>
+      window.Exceptionite = window.exceptionite(window.data);
+    </script>
 
-<body class="h-screen w-full">
-  <div id="app" class="min-h-screen"></div>
-  <!-- dump from backend -->
-  <script>
-  {{ script }}
-  </script>
-  <script>
-    window.data = {{ data | tojson | safe }}
-  </script>
-  <script>
-    window.Exceptionite = window.exceptionite(window.data);
-  </script>
-
-  <!-- add custom -->
-  <!-- <script src="dist/external.js"></script> -->
-  <script>
-    Exceptionite.start();
-  </script>
-</body>
-
+    <!-- add custom -->
+    {% for script_src in data.scripts %}
+      <script src="{{ script_src }}"></script>
+    {% endfor %}
+    <script>
+      Exceptionite.start();
+    </script>
+  </body>
 </html>

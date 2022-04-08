@@ -28,15 +28,7 @@ class PackagesUpdates(Block):
         packages_to_check = self.options.get("list", ["exceptionite"])
         packages = {}
         if packages_to_check:
-            #     with open(".pyexceptions.packages", "r+") as f:
-            #         data = f.read()
-            #         if data:
-            #             versions = loads(data)
-            #         else:
-            #             versions = {}
             for package_name in packages_to_check:
-                # latest_version = versions.get(package.project_name)
-                # if not latest_version:
                 current_version = installed_packages.get(package_name)
                 latest_version = get_latest_version(package_name)
                 if current_version != latest_version:
@@ -48,7 +40,6 @@ class PackagesUpdates(Block):
                             }
                         }
                     )
-        #         json.dump(versions, f)
 
         return packages
 

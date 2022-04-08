@@ -13,6 +13,8 @@ class Tab:
     component = "BaseTab"
     advertise_content = False
     disable_scrubbing = False
+    styles = []
+    scripts = []
 
     def __init__(self, handler) -> None:
         self.handler = handler

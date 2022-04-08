@@ -33,6 +33,7 @@ class WebRenderer:
         """Build the handled exception context to inject into the error page."""
         from .. import __version__
 
+        enabled_tabs = self.enabled_tabs()
         return {
             "config": {
                 **self.handler.options.to_dict(),
@@ -45,15 +46,16 @@ class WebRenderer:
                 "namespace": self.handler.namespace(),
                 "stacktrace": self.handler.stacktrace().reverse().serialize(),
             },
-            "tabs": [self.handler.scrub_data(tab.serialize()) for tab in self.enabled_tabs()],
+            "tabs": [self.handler.scrub_data(tab.serialize()) for tab in enabled_tabs],
             "actions": [action.serialize() for action in self.actions.values()],
+            "scripts": [script for tab in enabled_tabs for script in tab.scripts],
         }
 
     def render(self) -> str:
         """Render the HTML error page."""
         self.data = self.build()
         path = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)), "templates", "pyexceptions.js"
+            os.path.dirname(os.path.dirname(__file__)), "templates", "exceptionite.js"
         )
         with open(path, "r") as f:
             script = f.read()
@@ -62,13 +64,6 @@ class WebRenderer:
 
         template = env.get_template("exception.html")
         return template.render({"data": self.data, "script": script})
-
-    # def render(self):
-    #     path = os.path.dirname(os.path.dirname(__file__))
-    #     file_loader = FileSystemLoader(os.path.join(path, "templates/"))
-    #     env = Environment(loader=file_loader)
-    #     template = env.get_template("exception.html")
-    #     return template.render({"data": self.data()})
 
     def add_tabs(self, *tab_classes: Type["Tab"]) -> "Handler":
         """Register a tab in the HTML error page."""
