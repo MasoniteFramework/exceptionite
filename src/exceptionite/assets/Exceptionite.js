@@ -133,11 +133,11 @@ export default class Exceptionite {
     window.app = app
     this.app = app
 
-    this.registerIcons();
-    this.registerSharedComponents();
-    this.registerBuiltinTabs();
-    this.registerBuiltinSupports();
-    this.registerCustomTabs();
+    this.registerIcons()
+    this.registerSharedComponents()
+    this.registerBuiltinTabs()
+    this.registerBuiltinSupports()
+    this.registerCustomTabs()
 
     app.mount('#app')
   }
