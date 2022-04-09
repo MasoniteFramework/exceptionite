@@ -316,6 +316,7 @@ The HTML exception page created with the WebRenderer is highly configurable:
     "editor": "sublime"
     # ...
 }
+```
 
 Available editors are `vscode`, `pycharm`, `idea`, `sublime`, `atom`, `textmate`, `emacs`, `macvim`, `vscodium`.
 
@@ -330,7 +331,7 @@ Available editors are `vscode`, `pycharm`, `idea`, `sublime`, `atom`, `textmate`
 }
 ```
 
-- Tabs can be disabled:
+- Tabs can be disabled. To disable `solutions` tab:
 ```python
 "handlers": {
     "solutions": False
