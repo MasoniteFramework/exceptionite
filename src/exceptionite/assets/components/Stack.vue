@@ -7,7 +7,7 @@
           type="button" class="btn"
           :disabled="vendorsFrameCount == 0"
           :class="{'btn-disabled': vendorsFrameCount === 0}"
-          v-tooltip="`${ showVendors ? 'Hide' : 'Show' } vendor frames in stack trace`"
+          v-tooltip="`Show/Hide vendor frames in stack trace`"
         >
           <SolidSelectorIcon class="-ml-0.5 mr-2 h-4 w-4" />
           {{ showVendors ? "Hide" : "Show" }} Vendor ({{ vendorsFrameCount }})
@@ -33,8 +33,8 @@
         v-for="frame in selectedFrames" :key="frame.relative_file + frame.index"
         class="border-b border-gray-300 dark:border-gray-700 px-2 py-4 text-xs cursor-pointer hover:bg-blue-600 dark:hover:bg-red-600 hover:text-white  dark:hover:text-gray-400"
         :class="[
-          currentFrame.index == frame.index ? 'text-white dark:text-gray-200' : frame.is_vendor ? 'text-gray-500 ' : 'text-black dark:text-gray-400 dark:bg-gray-900',
-          {'bg-blue-600 dark:bg-red-600': currentFrame.index == frame.index}
+          isCurrent(frame) ? 'text-white dark:text-gray-200' : frame.is_vendor ? 'text-gray-500 ' : 'text-black dark:text-gray-400 dark:bg-gray-900',
+          {'bg-blue-600 dark:bg-red-600': isCurrent(frame)}
         ]"
         @click="selectFrame(frame)"
       >
@@ -100,6 +100,12 @@ export default {
 
     const vendorsFrameCount = computed(() => stack.value.filter(frame => frame.is_vendor).length)
 
+    const isCurrent = (frame) => {
+      if (!currentFrame.value) {
+        return false
+      }
+      return currentFrame.value.index === frame.index
+    }
     // set initial reversed state
     if (reversed.value) {
       reverseStack()
@@ -110,6 +116,7 @@ export default {
 
     return {
       currentFrame,
+      isCurrent,
       showVendors,
       selectFrame,
       stack,
@@ -123,17 +130,14 @@ export default {
   },
   methods: {
     toggleVendor() {
-      this.showVendors = !this.showVendors
-      // if no frame selected try to select first
-      if (!this.currentFrame && this.selectedFrames.length > 0) {
-        this.selectFrame(this.selectedFrames[0])
-      } else if (this.currentFrame) {
-        // check if old current frame is still visible else hide it
-        if (!this.selectedFrames.find(frame => frame.index === this.currentFrame.index)) {
-          this.currentFrame = null
-        }
-
+      // if we were showing vendors frame and current is vendor
+      // set current as first non vendor
+      if (this.showVendors && this.currentFrame.is_vendor) {
+        this.currentFrame = this.stack.filter(frame => !frame.is_vendor)[0]
       }
+
+      // make change
+      this.showVendors = !this.showVendors
     }
   },
 }

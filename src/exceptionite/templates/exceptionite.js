@@ -26453,7 +26453,16 @@ __webpack_require__.r(__webpack_exports__);
       return stack.value.filter(function (frame) {
         return frame.is_vendor;
       }).length;
-    }); // set initial reversed state
+    });
+
+    var isCurrent = function isCurrent(frame) {
+      if (!currentFrame.value) {
+        return false;
+      }
+
+      return currentFrame.value.index === frame.index;
+    }; // set initial reversed state
+
 
     if (reversed.value) {
       reverseStack();
@@ -26464,6 +26473,7 @@ __webpack_require__.r(__webpack_exports__);
 
     return {
       currentFrame: currentFrame,
+      isCurrent: isCurrent,
       showVendors: showVendors,
       selectFrame: selectFrame,
       stack: stack,
@@ -26477,20 +26487,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggleVendor: function toggleVendor() {
-      var _this = this;
+      // if we were showing vendors frame and current is vendor
+      // set current as first non vendor
+      debugger;
 
-      this.showVendors = !this.showVendors; // if no frame selected try to select first
+      if (this.showVendors && this.currentFrame.is_vendor) {
+        this.currentFrame = this.stack.filter(function (frame) {
+          return !frame.is_vendor;
+        })[0];
+      } // make change
 
-      if (!this.currentFrame && this.selectedFrames.length > 0) {
-        this.selectFrame(this.selectedFrames[0]);
-      } else if (this.currentFrame) {
-        // check if old current frame is still visible else hide it
-        if (!this.selectedFrames.find(function (frame) {
-          return frame.index === _this.currentFrame.index;
-        })) {
-          this.currentFrame = null;
-        }
-      }
+
+      this.showVendors = !this.showVendors;
     }
   }
 });
@@ -28040,11 +28048,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $setup.vendorsFrameCount == 0
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SolidSelectorIcon, {
     "class": "-ml-0.5 mr-2 h-4 w-4"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.showVendors ? "Hide" : "Show") + " Vendor (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.vendorsFrameCount) + ") ", 1
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.showVendors ? "Hide" : "Show") + " Vendorrr (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.vendorsFrameCount) + ") ", 1
   /* TEXT */
   )], 10
   /* CLASS, PROPS */
-  , _hoisted_4)), [[_directive_tooltip, "".concat($setup.showVendors ? 'Hide' : 'Show', " vendor frames in stack trace")]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  , _hoisted_4)), [[_directive_tooltip, "Show/Hide vendor frames in stack trace"]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     onClick: _cache[1] || (_cache[1] = function () {
       return $setup.copyStack && $setup.copyStack.apply($setup, arguments);
     }),
@@ -28071,8 +28079,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }))])), [[_directive_tooltip, 'Toggle Stacktrace order']])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.selectedFrames, function (frame) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: frame.relative_file + frame.index,
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["border-b border-gray-300 dark:border-gray-700 px-2 py-4 text-xs cursor-pointer hover:bg-blue-600 dark:hover:bg-red-600 hover:text-white dark:hover:text-gray-400", [$setup.currentFrame.index == frame.index ? 'text-white dark:text-gray-200' : frame.is_vendor ? 'text-gray-500 ' : 'text-black dark:text-gray-400 dark:bg-gray-900', {
-        'bg-blue-600 dark:bg-red-600': $setup.currentFrame.index == frame.index
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["border-b border-gray-300 dark:border-gray-700 px-2 py-4 text-xs cursor-pointer hover:bg-blue-600 dark:hover:bg-red-600 hover:text-white dark:hover:text-gray-400", [$setup.isCurrent(frame) ? 'text-white dark:text-gray-200' : frame.is_vendor ? 'text-gray-500 ' : 'text-black dark:text-gray-400 dark:bg-gray-900', {
+        'bg-blue-600 dark:bg-red-600': $setup.isCurrent(frame)
       }]]),
       onClick: function onClick($event) {
         return $setup.selectFrame(frame);

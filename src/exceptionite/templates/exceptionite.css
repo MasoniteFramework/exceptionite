@@ -1296,10 +1296,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(191 219 254 / var(--tw-text-opacity));
 }
 
-.visible {
-  visibility: visible;
-}
-
 .fixed {
   position: fixed;
 }

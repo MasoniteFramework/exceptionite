@@ -3,7 +3,7 @@ import inspect
 import os
 from typing import List
 
-MARKER = "site-packages/"
+MARKERS = ["site-packages/", "src/masonite/"]
 
 
 class StackFrame:
@@ -16,10 +16,19 @@ class StackFrame:
         self.is_vendor = False
         if shorten:
             rel_path = self.file.replace(f"{os.getcwd()}/", "")
-            index = rel_path.find(MARKER)
+            # check if frame is a vendor frame (from an external python package or masonite package
+            # in development)
+            for marker in MARKERS:
+                index = rel_path.find(marker)
+                if index != -1:
+                    break
+
             if index != -1:
                 self.is_vendor = True
-                self.relative_file = "~/" + rel_path[index + len(MARKER) :]  # noqa: E203
+                if marker == "src/masonite/":
+                    self.relative_file = "~/" + rel_path[index + len("src/") :]  # noqa: E203
+                else:
+                    self.relative_file = "~/" + rel_path[index + len(marker) :]  # noqa: E203
             else:
                 self.relative_file = rel_path
 
