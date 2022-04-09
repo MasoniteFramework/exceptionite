@@ -25,10 +25,8 @@ class StackFrame:
 
             if index != -1:
                 self.is_vendor = True
-                if marker == "src/masonite/":
-                    self.relative_file = "~/" + rel_path[index + len("src/") :]  # noqa: E203
-                else:
-                    self.relative_file = "~/" + rel_path[index + len(marker) :]  # noqa: E203
+                end_index = len("src/") if marker == "src/masonite/" else len(marker)
+                self.relative_file = "~/" + rel_path[index + end_index :]  # noqa: E203
             else:
                 self.relative_file = rel_path
 
