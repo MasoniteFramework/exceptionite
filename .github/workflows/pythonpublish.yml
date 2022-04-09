@@ -1,17 +1,16 @@
 name: Upload Python Package
 
-on: [push, pull_request]
-# on:
-#   release:
-#     types: [created]
+on:
+  release:
+    types: [created]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: "3.x"
       - name: Install dependencies
@@ -21,7 +20,7 @@ jobs:
         run: |
           make test
       - name: Set up Node.js 14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "14.x"
       - name: Install Dependencies
@@ -35,5 +34,4 @@ jobs:
           ls -lh
           ls -lh src/exceptionite/
           npm run production
-
-#         make publish
+          make publish
