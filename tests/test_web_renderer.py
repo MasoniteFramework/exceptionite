@@ -36,6 +36,7 @@ class TestWebRenderer(unittest.TestCase):
         assert context_tab.get("id") == "context"
         assert context_tab.get("name") == "Context"
         assert context_tab.get("has_content")
+        assert not context_tab.get("has_sections")
         blocks = context_tab.get("blocks")
         assert len(blocks) == 3
         env_block = blocks[0]

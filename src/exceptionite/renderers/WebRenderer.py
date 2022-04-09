@@ -48,7 +48,6 @@ class WebRenderer:
             },
             "tabs": [self.handler.scrub_data(tab.serialize()) for tab in enabled_tabs],
             "actions": [action.serialize() for action in self.actions.values()],
-            "scripts": [script for tab in enabled_tabs for script in tab.scripts],
         }
 
     def render(self) -> str:

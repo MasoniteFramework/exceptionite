@@ -12,7 +12,6 @@
 
   <body class="h-screen w-full">
     <div id="app" class="min-h-screen"></div>
-    <!-- dump from backend -->
     <script>
     {{ script }}
     </script>
@@ -22,11 +21,6 @@
     <script>
       window.Exceptionite = window.exceptionite(window.data);
     </script>
-
-    <!-- add custom -->
-    {% for script_src in data.scripts %}
-      <script src="{{ script_src }}"></script>
-    {% endfor %}
     <script>
       Exceptionite.start();
     </script>
