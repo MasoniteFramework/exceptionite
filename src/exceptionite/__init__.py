@@ -1,5 +1,5 @@
 # flake8: noqa F401
-from .Handler import Handler
+from .Handler import Handler, DefaultOptions
 from .Block import Block
 from .Tab import Tab
 from .Action import Action

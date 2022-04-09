@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 from .StackTrace import StackTrace
 from .renderers import WebRenderer, TerminalRenderer
-from .options import DEFAULT_OPTIONS
+from .options import DEFAULT_OPTIONS as DefaultOptions
 
 
 class Handler:
@@ -42,7 +42,7 @@ class Handler:
         self,
     ):
         self.renderers: dict["Renderer"] = {}
-        self.options: dict = dotty(DEFAULT_OPTIONS)
+        self.options: dict = dotty(DefaultOptions)
         self.context = {}
         self.add_renderer("web", WebRenderer)
         self.add_renderer("terminal", TerminalRenderer)
@@ -106,6 +106,18 @@ class Handler:
     def render(self, renderer: str) -> str:
         """Render the handled exception with the given renderer."""
         return self.renderer(renderer).render()
+
+    def add_scrub_keywords(self, keywords: list) -> "Handler":
+        """Add new scrub keywords used to hide sensitive data."""
+        self.scrub_keywords.extend(keywords)
+        # ensure keywords are not duplicated
+        self.scrub_keywords = list(set(self.scrub_keywords))
+        return self
+
+    def set_scrub_keywords(self, keywords: list) -> "Handler":
+        """Override scrub keywords used to hide sensitive data."""
+        self.scrub_keywords = keywords
+        return self
 
     def scrub_data(self, data: dict, disable: bool = False) -> dict:
         """Hide sensitive data of the given dictionary if enabled in the options with

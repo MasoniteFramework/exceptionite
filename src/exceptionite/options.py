@@ -7,6 +7,7 @@ DEFAULT_OPTIONS = {
             "repo": "https://github.com/MasoniteFramework/masonite",
         },
         "stack": {"offset": 8, "shorten": True},
+        "hide_sensitive_data": True
     },
     "handlers": {
         "context": True,

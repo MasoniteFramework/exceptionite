@@ -135,6 +135,41 @@ except Exception as e:
 
 Once you have the handler class theres a whole bunch of things we can now do!
 
+### Configuration
+
+The `exceptionite` handler comes with the default options below:
+```python
+{
+    "options": {
+        "editor": "vscode",
+        "search_url": "https://www.google.com/search?q=",
+        "links": {
+            "doc": "https://docs.masoniteproject.com",
+            "repo": "https://github.com/MasoniteFramework/masonite",
+        },
+        "stack": {"offset": 8, "shorten": True},
+        "hide_sensitive_data": True
+    },
+    "handlers": {
+        "context": True,
+        "solutions": {"stackoverflow": False, "possible_solutions": True},
+        "recommendations": {"packages_updates": {"list": ["exceptionite"]}},
+    },
+}
+```
+
+You can configure it by using `set_options(options)` method:
+```python
+from exceptionite import Handler, DefaultOptions
+
+handler = Handler()
+options = DefaultOptions
+options.get("options").update({"search_url": "https://duckduckgo.com/?q="})
+handler.set_options(options)
+```
+
+For Masonite, options are defined in `exceptions.py` configuration file.
+
 ### Getting Exception Details
 
 Getting the exception name:
@@ -172,7 +207,7 @@ Sometimes you will need to add more information to the exception page. This is w
 
 If you use a framework like Masonite you might want to see information related to your Service Providers. If you use a framework like django you might want to see a list of your installed apps.
 
-On the left side of the page below the stack trace you will fidn the context menu. Context is organised into blocks.
+On the left side of the page below the stack trace you will find the context menu. Context is organised into blocks.
 
 1. You can register new contexts quickly by supplying a dictionary or a callable providing a dictionary:
 
@@ -200,9 +235,72 @@ class SystemVarsBlock(Block):
 handler.renderer("web").tab("context").add_blocks(SystemVarsBlock)
 ```
 
-The second method allows more customization of the block (such as defining the Vue component to use
-, the icon and if the block has content).
+The second method allows to customize the block.
 
+
+## Hiding Sensitive Data
+
+`exceptionite` is configured by default to scrub data displayed in tab and blocks. This allows hiding sensitive data, by replacing it with `*****`.
+
+Hiding sensitive data can be disabled globally in handler options with `options.hide_sensitive_data`.
+
+It can also be disabled per block by setting `disable_scrubbing = True`.
+
+The keywords defined to find sensitive data can be edited:
+
+```python
+# define a new set of keywords
+handler.set_scrub_keywords(["app_secret", "pwd"])
+# add new keywords
+handler.add_scrub_keywords(["app_secret", "pwd"])
+```
+
+You can see the default keywords by accessing `handler.scrub_keywords`.
+
+
+## API
+
+### Tab
+
+A tab is defined with the following attributes:
+- `id (str)`: slug of the tab that should be unique, and used to access it from handler
+- `name (str)`: name of the tab displayed in the error page
+- `icon (str)`: icon of the tab displayed in the error page (available icons are defined [here](https://heroicons.com/). The name should be converted to UpperCamelCase.)
+- `advertise_content (bool)`: if `True` a animated dot will be displayed in error page navbar, if `has_content()` method returns `True`
+- `disable_scrubbing (bool)`: if `True`, data won't be scrubbed, meaning that [sensitive data](#hiding-sensitive-data) won't be hidden.
+
+and with the following methods (that can be overriden):
+- `has_content()`: should returns a `bool` that indicates if tab has content.
+
+
+### Block
+
+A block is located in a tab. A tab can have many blocks. Blocks are added to tab in the following manner:
+```python
+class ContextTab(Tab):
+
+    name = "Context"
+    id = "context"
+    icon = "ViewListIcon"
+
+    def __init__(self, handler):
+        super().__init__(handler)
+        self.add_blocks(Environment, Packages, Git)
+# OR
+handler.renderer("web").tab("context").add_blocks(Environment, Packages, Git)
+```
+
+A block is defined with the following attributes:
+- `id (str)`: slug of the block that should be unique, and used to access it from handler
+- `name (str)`: name of the block displayed in the error page
+- `icon (str)`: icon of the block displayed in the error page (available icons are defined [here](https://heroicons.com/). The name should be converted to UpperCamelCase.)
+- `disable_scrubbing (bool)`: if `True`, data won't be scrubbed, meaning that [sensitive data](#hiding-sensitive-data) won't be hidden.
+- `empty_msg` (str): message that will be displayed if block data is empty.
+
+and with the following methods:
+
+- `build()`: must be implemented and should returns data that can be serialized. This data will be provided to the Vue block component.
+- `has_content()`: should returns a `bool` that indicates if tab has content.
 
 
 # Contributing
