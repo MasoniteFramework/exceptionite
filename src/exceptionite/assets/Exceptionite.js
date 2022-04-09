@@ -12,14 +12,13 @@ import KeyValBlockWithSections from "./components/blocks/KeyValBlockWithSections
 import CopyButton from "./components/CopyButton.vue"
 import hljs from 'highlight.js'
 import axios from "axios"
+// tooltips
 import tippy from "tippy.js"
-import 'tippy.js/dist/tippy.css'; // optional for styling
+import 'tippy.js/dist/tippy.css';
+
 // tabs
 import BaseTab from "./components/tabs/BaseTab.vue"
 import DumpsTab from "./components/tabs/DumpsTab.vue"
-// support
-import MasoniteSupport from "./components/supports/MasoniteSupport.vue"
-import GitHubSupport from "./components/supports/GitHubSupport.vue"
 // icons
 import * as outlineIcons from "@heroicons/vue/outline"
 import * as solidIcons from "@heroicons/vue/solid"
@@ -54,10 +53,6 @@ export default class Exceptionite {
   registerBuiltinTabs() {
     this.app.component('BaseTab', BaseTab)
     this.app.component('DumpsTab', DumpsTab)
-  }
-  registerBuiltinSupports() {
-    this.app.component('MasoniteSupport', MasoniteSupport)
-    this.app.component('GitHubSupport', GitHubSupport)
   }
   registerCustomTabs() {
     this.tabCallbacks.forEach(callback => callback(this.app, this.data));
@@ -136,7 +131,6 @@ export default class Exceptionite {
     this.registerIcons()
     this.registerSharedComponents()
     this.registerBuiltinTabs()
-    this.registerBuiltinSupports()
     this.registerCustomTabs()
 
     app.mount('#app')
