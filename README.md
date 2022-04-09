@@ -135,7 +135,96 @@ except Exception as e:
 
 Once you have the handler class theres a whole bunch of things we can now do!
 
-### Configuration
+### Getting Exception Details
+
+Getting the exception name:
+
+```python
+handler.exception() #== ZeroDivisionError
+```
+
+Getting the exception message:
+
+```python
+handler.message() #== cannot divide by 0
+```
+
+Getting the exception namespace:
+
+```python
+handler.namespace() #== builtins.ZeroDivisionError
+```
+
+### Rendering an HTML page
+
+You can render an elegant exception page by using the `render` method with the [WebRenderer](#renderers):
+
+```python
+handler.render("web") #== <html> ... </html>
+```
+
+If you have a framework or an application you can swap the exception handler out with this handler
+and then call this method.
+
+### Adding Context
+
+Sometimes you will need to add more information to the exception page. This is where contexts come into play. Contexts are the ability to add any information you need to help you debug information.
+
+If you use a framework like Masonite you might want to see information related to your Service Providers. If you use a framework like django you might want to see a list of your installed apps.
+
+On the left side of the page below the stack trace you will find the context menu. Context is organised into blocks.
+
+1. You can register new contexts quickly by supplying a dictionary or a callable providing a dictionary:
+
+```python
+import sys
+
+handler.renderer("web").context("System Variables", {"sys argv": sys.argv})
+```
+
+2. Or you [can create custom blocks](#block) and add them to the `Context` tab:
+
+```python
+import sys
+from exceptionite import Block
+
+class SystemVarsBlock(Block):
+    id = "system_vars"
+    name= "System Variables"
+
+    def build(self):
+        return {
+           "sys argv": sys.argv
+        }
+
+handler.renderer("web").tab("context").add_blocks(SystemVarsBlock)
+```
+
+The second method allows to customize the block.
+
+### Hiding Sensitive Data
+
+`exceptionite` is configured by default to scrub data displayed in tab and blocks. This allows hiding sensitive data, by replacing it with `*****`.
+
+Hiding sensitive data can be disabled globally in handler options with `options.hide_sensitive_data`.
+
+It can also be disabled per block by setting `disable_scrubbing = True`.
+
+The keywords defined to find sensitive data can be edited:
+
+```python
+# define a new set of keywords
+handler.set_scrub_keywords(["app_secret", "pwd"])
+# add new keywords
+handler.add_scrub_keywords(["app_secret", "pwd"])
+```
+
+You can see the default keywords by accessing `handler.scrub_keywords`.
+
+
+# Configuration
+
+## Options
 
 The `exceptionite` handler comes with the default options below:
 ```python
@@ -170,97 +259,59 @@ handler.set_options(options)
 
 For Masonite, options are defined in `exceptions.py` configuration file.
 
-### Getting Exception Details
+## Renderers
 
-Getting the exception name:
+When an error is caught by Exceptionite, it can be rendered in many ways through configured renderers. Available renderers are:
+- WebRenderer (enabled): renders the exception as a beautiful HTML error page
+- TerminalRenderer (enabled): renders the exception nicely in the console
+- JSONRenderer (disabled): renders the exception as a JSON payload (useful for API errors handling)
 
+A renderer is a simple Python class having `build()` and `render()` method.
 ```python
-handler.exception() #== ZeroDivisionError
-```
-
-Getting the exception message:
-
-```python
-handler.message() #== cannot divide by 0
-```
-
-Getting the exception namespace:
-
-```python
-handler.namespace() #== builtins.ZeroDivisionError
-```
-
-## Rendering an HTML page
-
-You can render an elegant exception page by using the `render` method with the `WebRenderer`:
-
-```python
-handler.render("web") #== <html> ... </html>
-```
-
-If you have a framework or an application you can swap the exception handler out with this handler
-and then call this method.
-
-## Contexts
-
-Sometimes you will need to add more information to the exception page. This is where contexts come into play. Contexts are the ability to add any information you need to help you debug information.
-
-If you use a framework like Masonite you might want to see information related to your Service Providers. If you use a framework like django you might want to see a list of your installed apps.
-
-On the left side of the page below the stack trace you will find the context menu. Context is organised into blocks.
-
-1. You can register new contexts quickly by supplying a dictionary or a callable providing a dictionary:
-
-```python
-import sys
-
-handler.renderer("web").context("System Variables", {"sys argv": sys.argv})
-```
-
-2. Or you can create custom blocks and add them to the `Context` tab:
-
-```python
-import sys
-from exceptionite import Block
-
-class SystemVarsBlock(Block):
-    id = "system_vars"
-    name= "System Variables"
+class CustomRenderer:
+    def __init__(self, handler: "Handler"):
+        self.handler = handler
+        self.data = None
 
     def build(self):
-        return {
-           "sys argv": sys.argv
-        }
+        exception = self.handler.exception()
+        stack = self.handler.stacktrace()
+        # build data from exception here...
+        data = ...
+        return data
 
-handler.renderer("web").tab("context").add_blocks(SystemVarsBlock)
+    def render(self) -> str:
+        self.data = self.build()
+        # render the data as you want
+        return
 ```
 
-The second method allows to customize the block.
-
-
-## Hiding Sensitive Data
-
-`exceptionite` is configured by default to scrub data displayed in tab and blocks. This allows hiding sensitive data, by replacing it with `*****`.
-
-Hiding sensitive data can be disabled globally in handler options with `options.hide_sensitive_data`.
-
-It can also be disabled per block by setting `disable_scrubbing = True`.
-
-The keywords defined to find sensitive data can be edited:
-
+To add a renderer:
 ```python
-# define a new set of keywords
-handler.set_scrub_keywords(["app_secret", "pwd"])
-# add new keywords
-handler.add_scrub_keywords(["app_secret", "pwd"])
+handler.add_renderer("json", JSONRenderer)
 ```
 
-You can see the default keywords by accessing `handler.scrub_keywords`.
+Then to render the exception using the renderer:
+```python
+handler.render("json") #== [{"exception": ...}]
+```
+
+You can of course create custom renderers.
+
+## Web Renderer Specific Options
+
+The HTML exception page created with the WebRenderer is highly configurable:
+
+TODO
+Links can be customized
+Editor can be customized
+Tabs can be customized
+Blocks can be customized
 
 
-## API
+### API
 
-### Tab
+#### Tab
 
 A tab is defined with the following attributes:
 - `id (str)`: slug of the tab that should be unique, and used to access it from handler
@@ -273,7 +324,7 @@ and with the following methods (that can be overriden):
 - `has_content()`: should returns a `bool` that indicates if tab has content.
 
 
-### Block
+#### Block
 
 A block is located in a tab. A tab can have many blocks. Blocks are added to tab in the following manner:
 ```python
