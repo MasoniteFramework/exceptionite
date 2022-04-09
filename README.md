@@ -385,7 +385,8 @@ A block is defined with the following attributes:
 - `name (str)`: name of the block displayed in the error page
 - `icon (str)`: icon of the block displayed in the error page (available icons are defined [here](https://heroicons.com/). The name should be converted to UpperCamelCase.)
 - `disable_scrubbing (bool)`: if `True`, data won't be scrubbed, meaning that [sensitive data](#hiding-sensitive-data) won't be hidden.
-- `empty_msg` (str): message that will be displayed if block data is empty.
+- `empty_msg (str)`: message that will be displayed if block data is empty.
+- `has_sections (bool)`: enable this to render dict as sections, where each root key is a section title and value is a nested dict.
 
 and with the following methods:
 

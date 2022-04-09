@@ -9,9 +9,7 @@ MARKER = "site-packages/"
 class StackFrame:
     """Model a frame in the stack trace."""
 
-    def __init__(
-        self, index, frame_summary, variables={}, offset=5, shorten=False, absolute_path=""
-    ):
+    def __init__(self, index, frame_summary, variables={}, offset=5, shorten=False):
         self.index = index
         self.file = frame_summary[0]
         self.relative_file = None

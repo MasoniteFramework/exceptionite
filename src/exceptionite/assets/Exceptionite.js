@@ -1,25 +1,27 @@
 import { createApp, h } from "vue"
-import App from "./App.vue"
-import Badge from "./components/Badge.vue"
-import AppButton from "./components/AppButton.vue"
-import KeyValList from "./components/blocks/KeyValList.vue"
-import KeyValItem from "./components/blocks/KeyValItem.vue"
-import KeyValBlock from "./components/blocks/KeyValBlock.vue"
-import StackOverflowBlock from "./components/blocks/StackOverflowBlock.vue"
-import PossibleSolutionsBlock from "./components/blocks/PossibleSolutionsBlock.vue"
-import PackagesUpdatesBlock from "./components/blocks/PackagesUpdatesBlock.vue"
-import KeyValBlockWithSections from "./components/blocks/KeyValBlockWithSections.vue"
-import CopyButton from "./components/CopyButton.vue"
 import hljs from 'highlight.js'
 import axios from "axios"
-// tooltips
+import App from "./App.vue"
+
+// UI
+import Badge from "./components/Badge.vue"
+import AppButton from "@/components/AppButton.vue"
+import CopyButton from "./components/CopyButton.vue"
 import tippy from "tippy.js"
 import 'tippy.js/dist/tippy.css';
 
-// tabs
-import BaseTab from "./components/tabs/BaseTab.vue"
-import DumpsTab from "./components/tabs/DumpsTab.vue"
-// icons
+// Blocks
+import {
+  BasicBlock,
+  PackagesUpdatesBlock,
+  PossibleSolutionsBlock,
+  StackOverflowBlock
+} from "@/components/blocks"
+
+// Tabs
+import { BasicTab, DumpsTab } from "@/components/tabs"
+
+// Icons
 import * as outlineIcons from "@heroicons/vue/outline"
 import * as solidIcons from "@heroicons/vue/solid"
 
@@ -41,17 +43,14 @@ export default class Exceptionite {
   registerSharedComponents() {
     this.app.component('AppButton', AppButton)
     this.app.component('Badge', Badge)
-    this.app.component('KeyValItem', KeyValItem)
-    this.app.component('KeyValList', KeyValList)
-    this.app.component('KeyValBlock', KeyValBlock)
-    this.app.component('KeyValBlockWithSections', KeyValBlockWithSections)
+    this.app.component('CopyButton', CopyButton)
+    this.app.component('BasicBlock', BasicBlock)
     this.app.component('StackOverflowBlock', StackOverflowBlock)
     this.app.component('PossibleSolutionsBlock', PossibleSolutionsBlock)
     this.app.component('PackagesUpdatesBlock', PackagesUpdatesBlock)
-    this.app.component('CopyButton', CopyButton)
   }
   registerBuiltinTabs() {
-    this.app.component('BaseTab', BaseTab)
+    this.app.component('BasicTab', BasicTab)
     this.app.component('DumpsTab', DumpsTab)
   }
   registerCustomTabs() {

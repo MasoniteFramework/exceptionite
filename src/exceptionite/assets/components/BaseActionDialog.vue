@@ -33,7 +33,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@headlessui/vue"
-import { ref, computed } from "vue"
+import { ref } from "vue"
 export default {
   name: "BaseActionDialog",
   components: {

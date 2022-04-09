@@ -2,9 +2,10 @@ class Block:
     id = ""
     name = "Block Name"
     icon = ""
-    component = "KeyValBlock"
+    component = "BasicBlock"
     disable_scrubbing = False
     empty_msg = "No content."
+    has_sections = False
 
     def __init__(self, tab, handler, options={}):
         # tab which holds the block
@@ -25,6 +26,7 @@ class Block:
             "data": self.data,
             "empty_msg": self.empty_msg,
             "has_content": self.has_content(),
+            "has_sections": self.has_sections,
         }
 
     def build(self):

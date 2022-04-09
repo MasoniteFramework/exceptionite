@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "BaseTab",
+  name: "Basic",
   props:{
     data: {
       type: Object,

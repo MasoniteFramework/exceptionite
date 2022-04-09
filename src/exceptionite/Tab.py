@@ -10,11 +10,9 @@ class Tab:
     name = "Tab Name"
     icon = ""
     id = ""
-    component = "BaseTab"
+    component = "BasicTab"
     advertise_content = False
     disable_scrubbing = False
-    styles = []
-    scripts = []
 
     def __init__(self, handler) -> None:
         self.handler = handler
