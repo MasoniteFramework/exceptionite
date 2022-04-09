@@ -204,11 +204,11 @@ The second method allows to customize the block.
 
 ### Hiding Sensitive Data
 
-`exceptionite` is configured by default to scrub data displayed in tab and blocks. This allows hiding sensitive data, by replacing it with `*****`.
+Exceptionite is configured by default to scrub data displayed in tab and blocks. This allows hiding sensitive data, by replacing it with `*****`.
 
 Hiding sensitive data can be disabled globally in handler options with `options.hide_sensitive_data`.
 
-It can also be disabled per block by setting `disable_scrubbing = True`.
+It can also be disabled per block by setting `disable_scrubbing = True` in [block class](#block).
 
 The keywords defined to find sensitive data can be edited:
 
@@ -266,7 +266,8 @@ When an error is caught by Exceptionite, it can be rendered in many ways through
 - TerminalRenderer (enabled): renders the exception nicely in the console
 - JSONRenderer (disabled): renders the exception as a JSON payload (useful for API errors handling)
 
-A renderer is a simple Python class having `build()` and `render()` method.
+A renderer is a simple Python class with `build()` and `render()` methods. Feel free to create
+your own one if needed !
 ```python
 class CustomRenderer:
     def __init__(self, handler: "Handler"):
@@ -296,20 +297,53 @@ Then to render the exception using the renderer:
 handler.render("json") #== [{"exception": ...}]
 ```
 
-You can of course create custom renderers.
 
 ## Web Renderer Specific Options
 
 The HTML exception page created with the WebRenderer is highly configurable:
 
-TODO
-Links can be customized
-Editor can be customized
-Tabs can be customized
-Blocks can be customized
+- Search engine used to search the error message on the web:
+```python
+"options": {
+    "search_url": "https://www.google.com/search?q="
+    # ...
+}
+```
+- Editor used to open the line on the stack trace at click:
+
+```python
+"options": {
+    "editor": "sublime"
+    # ...
+}
+
+Available editors are `vscode`, `pycharm`, `idea`, `sublime`, `atom`, `textmate`, `emacs`, `macvim`, `vscodium`.
+
+- Navbar links to documentation and repository can be customized:
+
+```python
+"options": {
+    "links": {
+        "doc": "https://docs.masoniteproject.com",
+        "repo": "https://github.com/MasoniteFramework/exceptionite",
+    },
+}
+```
+
+- Tabs can be disabled:
+```python
+"handlers": {
+    "solutions": False
+}
+```
+
+- New tabs can be added:
+```python
+handler.renderer("web").add_tabs(DumpsTab)
+```
 
 
-### API
+### Blocks and Tabs API
 
 #### Tab
 
