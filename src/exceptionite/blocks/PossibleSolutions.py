@@ -37,7 +37,6 @@ class PossibleSolutions(Block):
         possible_solutions = []
         for solution in self.registered_solutions:
             r = re.compile(solution.regex())
-            print(r)
             if r.match(self.handler.message()):
                 description = solution.description()
                 title = solution.title()
