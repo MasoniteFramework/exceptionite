@@ -23,7 +23,31 @@ class ClassMethodExists:
         )
 
     def regex(self):
-        return r"^class \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+        return r"^class  \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+class ClassModelMethodExists:
+    def title(self):
+        return "Model method does not exist"
+
+    def description(self):
+        return (
+            "Could not find the ':method' method on the model class. Please check spelling. If this is a method you expect to be on the builder class then check the ORM documentation"
+        )
+
+    def regex(self):
+        return r"^class model \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+
+class QueryDefaultValue:
+    def title(self):
+        return "Missing default value for ':field'" 
+
+    def description(self):
+        return (
+            "Default values are typically set on the database level. "
+            "You can either add a default value on the :field table column in a migration or you should pass a value when creating this record"
+        )
+
+    def regex(self):
+        return r"\(1364\, \"Field \'(?P<field>([\w]*))\' doesn't have a default value\"\)"
 
 
 class GetAttributeObject:

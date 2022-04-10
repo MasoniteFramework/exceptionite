@@ -21,6 +21,7 @@
 
     <!-- page content -->
     <div class="container mx-auto py-4 lg:p-4">
+      <sponsor />
       <div ref="exceptioniteBlock">
         <exception :exception="exception" />
       </div>
@@ -72,6 +73,7 @@
 import { ref, computed, provide } from 'vue'
 import { useElementVisibility, useStorage } from '@vueuse/core'
 import Navbar from "@/components/Navbar.vue"
+import Sponsor from "@/components/Sponsor.vue"
 import Exception from '@/components/Exception.vue'
 import Stack from '@/components/Stack.vue'
 import ContextMenu from '@/components/ContextMenu.vue'
@@ -84,6 +86,7 @@ export default {
   components: {
     Exception,
     Stack,
+    Sponsor,
     ContextMenu,
     Navbar,
     ShareDialog,

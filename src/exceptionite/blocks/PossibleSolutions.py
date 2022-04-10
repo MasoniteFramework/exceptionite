@@ -20,6 +20,8 @@ class PossibleSolutions(Block):
         self.register(
             solutions.DictionaryUpdateSequence(),
             solutions.ClassMethodExists(),
+            solutions.ClassModelMethodExists(),
+            solutions.QueryDefaultValue(),
             solutions.GetAttributeObject(),
             solutions.NoModuleNamed(),
             solutions.Syntax(),
@@ -35,13 +37,16 @@ class PossibleSolutions(Block):
         possible_solutions = []
         for solution in self.registered_solutions:
             r = re.compile(solution.regex())
+            print(r)
             if r.match(self.handler.message()):
                 description = solution.description()
+                title = solution.title()
                 matches = [m.groupdict() for m in r.finditer(self.handler.message())]
                 for code, replacement in matches[0].items():
                     description = description.replace(":" + code, replacement)
+                    title = title.replace(":" + code, replacement)
 
-                possible_solutions.append({"title": solution.title(), "description": description})
+                possible_solutions.append({"title": title, "description": description})
 
         return {
             "first": possible_solutions[0] if len(possible_solutions) > 0 else None,

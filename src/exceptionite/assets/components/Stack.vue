@@ -10,7 +10,7 @@
           v-tooltip="`Show/Hide vendor frames in stack trace`"
         >
           <SolidSelectorIcon class="-ml-0.5 mr-2 h-4 w-4" />
-          {{ showVendors ? "Hide" : "Show" }} Vendor ({{ vendorsFrameCount }})
+          {{ showVendors ? "Hide" : "Show" }} Vendor Stacks ({{ vendorsFrameCount }})
         </button>
         <button
           @click="copyStack"
@@ -132,7 +132,7 @@ export default {
     toggleVendor() {
       // if we were showing vendors frame and current is vendor
       // set current as first non vendor
-      if (this.showVendors && this.currentFrame.is_vendor) {
+      if (this.showVendors && this.currentFrame?.is_vendor) {
         this.currentFrame = this.stack.filter(frame => !frame.is_vendor)[0]
       }
 
