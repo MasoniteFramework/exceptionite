@@ -1,0 +1,37 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          make init
+      - name: Publish only packages passing test
+        run: |
+          make test
+      - name: Set up Node.js 14
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14.x"
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+      - name: Build package (python and assets) and publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          npm run production
+          ls -lh
+          ls -lh src/exceptionite/
+          npm run production
+          make publish

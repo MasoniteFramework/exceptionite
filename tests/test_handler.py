@@ -1,33 +1,38 @@
-from masonite.testing import TestCase
-from src.exceptionite.errors import Handler
+import unittest
+
+from src.exceptionite import Handler, Tab
+from src.exceptionite.exceptions import ConfigurationException
 
 
-class TestPackage(TestCase):
+class OtherContextTab(Tab):
+    id = "context"
+    name = "An other context tab"
 
-    def setUp(self):
+
+class TestHandler(unittest.TestCase):
+    def setUp(self) -> None:
         super().setUp()
+        self.handler = Handler()
 
-    def test_returns_error_message(self):
+    def test_handler_can_provide_basic_exception_data(self):
         try:
-            2/0
-        except Exception as e:
-            handler = Handler(e)
+            raise ValueError("Custom message")
+        except Exception as exception:
+            self.handler.start(exception)
 
-        self.assertEqual(handler.message(), 'division by zero')
-        self.assertEqual(handler.exception(), 'ZeroDivisionError')
+        assert self.handler.message() == "Custom message"
+        assert self.handler.exception() == "ValueError"
+        assert self.handler.namespace() == "builtins.ValueError"
+        assert self.handler.count() > 0
 
-    def test_returns_true_when_has_exception(self):
-        try:
-            2/0
-        except Exception as e:
-            handler = Handler(e)
+        frame = self.handler.stacktrace()[0]
+        assert frame.index == 0
+        assert frame.relative_file == "tests/test_handler.py"
+        assert not frame.is_vendor
+        assert frame.lineno == 19
+        assert frame.offending_line == 19
+        assert frame.method == "test_handler_can_provide_basic_exception_data"
 
-        self.assertTrue(handler.any())
-
-    def test_returns_correct_exception_count_trace(self):
-        try:
-            2/0
-        except Exception as e:
-            handler = Handler(e)
-
-        self.assertEqual(handler.count(), 1)
+    def test_cannot_override_tab_context(self):
+        with self.assertRaises(ConfigurationException):
+            self.handler.renderer("web").add_tabs(OtherContextTab)
