@@ -28048,7 +28048,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $setup.vendorsFrameCount == 0
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SolidSelectorIcon, {
     "class": "-ml-0.5 mr-2 h-4 w-4"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.showVendors ? "Hide" : "Show") + " Vendorrr (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.vendorsFrameCount) + ") ", 1
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.showVendors ? "Hide" : "Show") + " Vendor Stack Traces (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.vendorsFrameCount) + ") ", 1
   /* TEXT */
   )], 10
   /* CLASS, PROPS */
