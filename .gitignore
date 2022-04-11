@@ -5,6 +5,8 @@ package.db
 .env
 dist/*
 src/exceptionite.egg-info
+src/exceptionite/templates/*.js
+src/exceptionite/templates/*.css
 build/
 node_modules/
 **/mix-manifest.json
