@@ -16,7 +16,10 @@
         :key="solution.title"
       >
         <template #title>{{ solution.title }}</template>
-        {{ solution.description }}
+        <div>{{ solution.description }}</div>
+        <div class="text-sm text-green-700 dark:text-gray-300 underline pt-2" v-if="solution.doc_link">
+          Related Documentation: <a target="_blank" :href="solution.doc_link"> {{ solution.doc_link }} </a>
+        </div>
       </alert>
       <p v-if="!block.has_content" class="text-black dark:text-gray-400">{{ block.empty_msg || "No content." }}</p>
     </DisclosurePanel>
