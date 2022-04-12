@@ -31,7 +31,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           npm run production
-          ls -lh
-          ls -lh src/exceptionite/
-          npm run production
           make publish
