@@ -125,6 +125,8 @@ class Handler:
         if not self.options.get("options.hide_sensitive_data") or disable:
             return data
         scrubbed_data = {}
+        if not data:
+            return scrubbed_data
         for key, val in data.items():
             if not val:
                 scrubbed_data[key] = val

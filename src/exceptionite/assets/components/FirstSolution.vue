@@ -14,6 +14,9 @@
       <p class="text-sm text-green-700 dark:text-gray-300">
         {{ solution.description }}
       </p>
+      <div class="text-sm text-green-700 dark:text-gray-300 underline pt-2" v-if="solution.doc_link">
+        Related Documentation: <a target="_blank" :href="solution.doc_link"> {{ solution.doc_link }} </a>
+      </div>
     </div>
   </div>
 </template>
