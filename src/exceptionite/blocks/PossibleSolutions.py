@@ -32,7 +32,7 @@ class PossibleSolutions(Block):
             solutions.IncorrectlyDefinedRoute(),
             solutions.RouteNameNotFound(),
             solutions.IncludedTemplateNotFound(),
-            solutions.UnexpectedEndBlock(),            
+            solutions.UnexpectedEndBlock(),
             solutions.QueryDefaultValue(),
             solutions.NoColumnExistsOnWhere(),
             solutions.NoColumnExistsOnWhereSQLite(),
@@ -66,7 +66,9 @@ class PossibleSolutions(Block):
                     description = description.replace(":" + code, replacement)
                     title = title.replace(":" + code, replacement)
 
-                possible_solutions.append({"title": title, "description": description, "doc_link": doc_link})
+                possible_solutions.append(
+                    {"title": title, "description": description, "doc_link": doc_link}
+                )
 
         return {
             "first": possible_solutions[0] if len(possible_solutions) > 0 else None,
