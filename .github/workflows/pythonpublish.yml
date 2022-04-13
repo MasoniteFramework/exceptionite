@@ -44,7 +44,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: ${{ github.event.release.target_commitish }}
           # override the tag created by GitHub release, now this tag will contains the compiled assets
           tags: true
           force: true
