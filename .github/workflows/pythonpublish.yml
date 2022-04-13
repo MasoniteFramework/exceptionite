@@ -29,6 +29,7 @@ jobs:
       - name: Publish only packages passing test
         run: |
           make test
+      # we need to use --allow-empty when compiled assets don't change from one version to the next
       - name: Bump version with compiled assets
         shell: bash
         env:
@@ -38,7 +39,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -f src/exceptionite/templates/exceptionite.js
           git add -f src/exceptionite/templates/exceptionite.css
-          git commit -m"Release $RELEASE_VERSION"
+          git commit -m"Release $RELEASE_VERSION" --allow-empty
       - name: Push compiled assets
         uses: ad-m/github-push-action@master
         with:
