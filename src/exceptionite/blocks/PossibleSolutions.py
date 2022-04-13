@@ -1,7 +1,5 @@
 import re
 
-from attr import has
-
 from ..Block import Block
 from .. import solutions
 
