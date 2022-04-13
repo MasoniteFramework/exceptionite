@@ -25,13 +25,12 @@ jobs:
           node-version: "14.x"
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
-      - name: Build package (python and assets) and publish
+      - name: Compile frontend assets
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           npm run production
-      # make publish, for testing
       - name: Bump version with compiled assets
         shell: bash
         env:
@@ -39,10 +38,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          ls  src/exceptionite/templates/
-          git add -f src/exceptionite/templates/
-          git commit -m"release $RELEASE_VERSION"
-      - name: Push changes
+          git add -f src/exceptionite/templates/exceptionite.js
+          git add -f src/exceptionite/templates/exceptionite.css
+          git commit -m"Release $RELEASE_VERSION"
+      - name: Push compiled assets
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,3 +49,9 @@ jobs:
           # override the tag created by GitHub release, now this tag will contains the compiled assets
           tags: true
           force: true
+      - name: Publish package
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          make publish
