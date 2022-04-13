@@ -16,9 +16,6 @@ jobs:
       - name: Install dependencies
         run: |
           make init
-      - name: Publish only packages passing test
-        run: |
-          make test
       - name: Set up Node.js 14
         uses: actions/setup-node@v3
         with:
@@ -26,11 +23,12 @@ jobs:
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
       - name: Compile frontend assets
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           npm run production
+      # here we run tests after having compiled the assets, because tests can use it
+      - name: Publish only packages passing test
+        run: |
+          make test
       - name: Bump version with compiled assets
         shell: bash
         env:
