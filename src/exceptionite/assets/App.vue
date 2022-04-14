@@ -27,6 +27,7 @@
       </div>
 
       <first-solution v-if="firstSolution" :solution="firstSolution" class="mt-4" />
+      <no-solution v-else-if="!firstSolution && showSolutionRequest" class="mt-4" :link="requestLink" @click="showSolutionRequest = false" />
 
       <stack id="stack" class="mt-4 mb-10" :exception="exception" />
 
@@ -78,6 +79,7 @@ import Exception from '@/components/Exception.vue'
 import Stack from '@/components/Stack.vue'
 import ContextMenu from '@/components/ContextMenu.vue'
 import FirstSolution from '@/components/FirstSolution.vue'
+import NoSolution from '@/components/NoSolution.vue'
 import Pulse from '@/components/Pulse.vue'
 import ShareDialog from '@/components/ShareDialog.vue'
 import BaseActionDialog from '@/components/BaseActionDialog.vue'
@@ -93,6 +95,7 @@ export default {
     BaseActionDialog,
     Pulse,
     FirstSolution,
+    NoSolution,
   },
   props: {
     config: { required: true },
@@ -125,16 +128,16 @@ export default {
     const selectedAction = ref(null)
 
     // solutions enabled ?
+    const solutionsTab = props.tabs.find(tab => tab.id == "solutions")
+    const possibleSolutions = solutionsTab !== undefined && solutionsTab.blocks.find(block => block.id === "possible_solutions")
+    const requestLink = ref(possibleSolutions?.data?.request_link || "#")
     const firstSolution = computed(() => {
-      const solutionsTab = props.tabs.find(tab => tab.id == "solutions")
-      if (solutionsTab !== undefined) {
-        const possibleSolutions = solutionsTab.blocks.find(block => block.id === "possible_solutions")
-        if (possibleSolutions !== undefined) {
-          return possibleSolutions.data.first
-        }
+      if (possibleSolutions !== undefined) {
+        return possibleSolutions.data.first
       }
       return false
     })
+    const showSolutionRequest = ref(true)
 
     // prepare default sharing settings
     const shareOptions = ref({
@@ -169,6 +172,8 @@ export default {
       // action handling
       selectedAction,
       firstSolution,
+      showSolutionRequest,
+      requestLink,
     }
   },
   methods: {
