@@ -20,7 +20,7 @@
     </div>
     <div>
       <p class="text-sm text-yellow-700 dark:text-yellow-900">
-        It looks like we have not found a solution for this error. You can request as solution for this
+        It looks like we have not found a solution for this error. You can request to display a solution for this
         error if you want by clicking the button below.
       </p>
       <a
