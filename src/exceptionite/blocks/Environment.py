@@ -3,7 +3,6 @@ import platform
 import socket
 import os
 
-from ..exceptions import ContextParsingException
 from ..Block import Block
 
 
@@ -27,7 +26,8 @@ class Environment(Block):
             ip = socket.gethostbyname(socket.gethostname())
         except socket.gaierror:
             print(
-                """Exceptionite did not manage to fetch the IP address. Disable you VPN or add '127.0.0.1 YOUR_HOSTNAME' line in /etc/hosts file."""
+                "Exceptionite did not manage to fetch the IP address. Disable you VPN or add "
+                + "'127.0.0.1 YOUR_HOSTNAME' line in /etc/hosts file."
             )
             ip = "Error fetching the IP address (open your terminal)"
 
