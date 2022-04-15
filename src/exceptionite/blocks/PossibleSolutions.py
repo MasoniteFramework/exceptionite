@@ -1,6 +1,5 @@
 import re
 
-from attr import has
 
 from ..Block import Block
 from .. import solutions
@@ -23,6 +22,7 @@ class PossibleSolutions(Block):
             solutions.DictionaryUpdateSequence(),
             solutions.DictionaryUpdateSequenceWithList(),
             solutions.UnsupportedOperand(),
+            solutions.DivisionByZeroError(),
             solutions.ContainerKeyNotFoundServiceProvider(),
             solutions.ContainerKeyNotFoundRegister(),
             solutions.ClassMethodExists(),
