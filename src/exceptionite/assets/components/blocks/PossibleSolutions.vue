@@ -17,9 +17,16 @@
       >
         <template #title>{{ solution.title }}</template>
         <div>{{ solution.description }}</div>
-        <div class="text-sm text-green-700 dark:text-gray-300 underline pt-2" v-if="solution.doc_link">
-          Related Documentation: <a target="_blank" :href="solution.doc_link"> {{ solution.doc_link }} </a>
-        </div>
+        <a
+          v-if="solution.doc_link"
+          target="_blank"
+          :href="solution.doc_link"
+          class="btn btn-solution mt-2"
+          v-tooltip="`Open Masonite documentation related to this issue`"
+        >
+          <SolidInformationCircleIcon class="-ml-0.5 mr-2 h-4 w-4" />
+          Open Related Documentation
+        </a>
       </alert>
       <p v-if="!block.has_content" class="text-black dark:text-gray-400">{{ block.empty_msg || "No content." }}</p>
     </DisclosurePanel>

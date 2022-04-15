@@ -247,6 +247,14 @@
   @apply cursor-not-allowed text-gray-300 dark:text-gray-700 dark:border-gray-700 dark:hover:text-gray-700 dark:hover:border-gray-700 hover:bg-transparent dark:hover:bg-gray-900;
 }
 
+.btn-solution {
+  @apply bg-transparent dark:bg-transparent border-green-700 text-green-700 dark:text-white dark:border-white dark:hover:bg-blue-900 hover:bg-green-300 hover:border-green-700 hover:text-green-700;
+}
+
+.btn-no-solution {
+  @apply bg-transparent dark:bg-transparent border-yellow-700 text-yellow-700 dark:text-yellow-900 dark:border-yellow-900 dark:hover:bg-yellow-700 hover:bg-yellow-100 hover:border-yellow-700 hover:text-yellow-700;
+}
+
 /* lists */
 .definition-list {
   @apply grid;
