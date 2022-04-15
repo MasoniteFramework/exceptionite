@@ -16,19 +16,41 @@ jobs:
       - name: Install dependencies
         run: |
           make init
-      - name: Publish only packages passing test
-        run: |
-          make test
       - name: Set up Node.js 14
         uses: actions/setup-node@v3
         with:
           node-version: "14.x"
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
-      - name: Build package (python and assets) and publish
+      - name: Compile frontend assets
+        run: |
+          npm run production
+      # here we run tests after having compiled the assets, because tests can use it
+      - name: Publish only packages passing test
+        run: |
+          make test
+      # we need to use --allow-empty when compiled assets don't change from one version to the next
+      - name: Bump version with compiled assets
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -f src/exceptionite/templates/exceptionite.js
+          git add -f src/exceptionite/templates/exceptionite.css
+          git commit -m"Release $RELEASE_VERSION" --allow-empty
+      - name: Push compiled assets
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.event.release.target_commitish }}
+          # override the tag created by GitHub release, now this tag will contains the compiled assets
+          tags: true
+          force: true
+      - name: Publish package
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
-          npm run production
           make publish

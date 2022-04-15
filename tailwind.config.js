@@ -2,7 +2,7 @@ module.exports = {
   content: [
     "src/exceptionite/assets/**/*.vue",
     "src/exceptionite/assets/**/*.js",
-    "src/exceptionite/templates/**.html"
+    "src/exceptionite/templates/exception.html"
   ],
   safelist: [
     {

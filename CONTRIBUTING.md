@@ -15,6 +15,19 @@ Then install from the requirements file
 pip install -r requirements.txt
 ```
 
+Finally you need to compile install frontend dependencies and compile assets:
+
+```
+npm install
+npm run dev
+```
+
+Note that in development, you can compile assets at each change with:
+
+```
+npm run watch
+```
+
 This will install `exceptionite` and development related packages.
 
 ## Running tests
@@ -22,3 +35,4 @@ This will install `exceptionite` and development related packages.
 ```
 python -m pytest
 ```
+

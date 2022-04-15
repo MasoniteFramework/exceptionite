@@ -1,4 +1,5 @@
 import re
+
 import urllib.parse
 
 from ..Block import Block
