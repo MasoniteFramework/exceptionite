@@ -1,4 +1,5 @@
 from .. import Handler, Block
+from .options import OPTIONS
 
 
 class ContextBlock(Block):
@@ -36,4 +37,5 @@ class ExceptioniteReporter:
         handler.render("terminal")
         handler.request = self.request
         handler.renderer("web").tab("context").add_blocks(ContextBlock)
+        handler.set_options(OPTIONS)
         return handler.render("web")
