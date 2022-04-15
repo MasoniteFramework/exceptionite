@@ -1,6 +1,4 @@
-from .. import Handler, Block 
-
-
+from .. import Handler, Block
 
 
 class ContextBlock(Block):
@@ -9,9 +7,9 @@ class ContextBlock(Block):
     icon = "DesktopComputerIcon"
     has_sections = True
 
-
     def build(self):
         from django.utils.version import get_version
+
         return {
             "Django": {
                 "Version": get_version(),
@@ -26,8 +24,8 @@ class ContextBlock(Block):
             },
         }
 
-class ExceptioniteReporter:
 
+class ExceptioniteReporter:
     def __init__(self, request, exc_type, exc_value, tb):
         self.request = request
         self.exception = exc_value
