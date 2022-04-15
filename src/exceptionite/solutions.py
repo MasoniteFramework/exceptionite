@@ -192,6 +192,16 @@ class UnsupportedOperand:
     def regex(self):
         return r"unsupported operand type\(s\) for \+\: '(?P<type1>([\w\.]*))' and '(?P<type2>([\w\.]*))'"
 
+class DivisionByZeroError:
+    def title(self):
+        return "Check variables for any values that could be 0"
+
+    def description(self):
+        return "Check any place you are doing division. You cannot divide by a zero."
+
+    def regex(self):
+        return r"division by zero"
+
 
 class ContainerKeyNotFoundRegister:
     def title(self):

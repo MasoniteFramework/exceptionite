@@ -23,6 +23,7 @@ class PossibleSolutions(Block):
             solutions.DictionaryUpdateSequence(),
             solutions.DictionaryUpdateSequenceWithList(),
             solutions.UnsupportedOperand(),
+            solutions.DivisionByZeroError(),
             solutions.ContainerKeyNotFoundServiceProvider(),
             solutions.ContainerKeyNotFoundRegister(),
             solutions.ClassMethodExists(),
@@ -87,7 +88,7 @@ class PossibleSolutions(Block):
             "body": f"A solution is missing:\nException namespace: `{self.handler.namespace()}`\nError message:\n```\n{self.handler.message()}\n```",  # noqa: E501
             "label": "solution-request",
         }
-        return f"https://github.com/MasoniteFramework/masonite/issues/new/?{urllib.parse.urlencode(params)}"  # noqa: E501
+        return f"https://github.com/MasoniteFramework/exceptionite/issues/new/?{urllib.parse.urlencode(params)}"  # noqa: E501
 
     def register(self, *solutions):
         self.registered_solutions += solutions
