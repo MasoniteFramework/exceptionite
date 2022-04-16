@@ -28,7 +28,8 @@ class PythonSolutions:
 
 class MasoniteSolutions:
 
-    def get(self):
+    @classmethod
+    def get(cls):
         return [
             ClassModelMethodExists(),
             ImportIssueWithController(),
