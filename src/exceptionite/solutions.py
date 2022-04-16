@@ -1,7 +1,7 @@
 # flake8: noqa: E501
 
-class PythonSolutions:
 
+class PythonSolutions:
     @classmethod
     def get(cls):
         return [
@@ -26,8 +26,8 @@ class PythonSolutions:
             SubscriptableIssue(),
         ]
 
-class MasoniteSolutions:
 
+class MasoniteSolutions:
     @classmethod
     def get(cls):
         return [
@@ -43,8 +43,8 @@ class MasoniteSolutions:
             InvalidRouteMethodType(),
         ]
 
-class DjangoSolutions:
 
+class DjangoSolutions:
     @classmethod
     def get(cls):
         return [
@@ -52,6 +52,8 @@ class DjangoSolutions:
             ContextShouldBeList(),
             RenderArgumentsOutOfOrder(),
         ]
+
+
 class DictionaryUpdateSequence:
     def title(self):
         return "Updating a dictionary with a set. "
@@ -92,6 +94,7 @@ class ClassMethodExists:
 
     def regex(self):
         return r"^class  \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+
 
 class ClassModelMethodExists:
     def title(self):
@@ -172,6 +175,7 @@ class IncludedTemplateNotFound:
         return (
             r"One of the included templates in the \'(?P<name>([\w]*))\' view could not be found"
         )
+
 
 class UnexpectedEndBlock:
     def title(self):
@@ -391,6 +395,7 @@ class WrongConstructorParameterCount:
     def regex(self):
         return r"^(?P<object>(\w*))\(\) takes no parameters "
 
+
 class ObjectNotCallable:
     def title(self):
         return "Objects Cannot Be Called"
@@ -405,6 +410,7 @@ class ObjectNotCallable:
     def regex(self):
         return r"^'(?P<object>(\w*))' object is not callable"
 
+
 class SubscriptableIssue:
     def title(self):
         return "Object Not Subscriptable"
@@ -415,8 +421,8 @@ class SubscriptableIssue:
     def regex(self):
         return r"^'(?P<object>(\w+))' object is not subscriptable"
 
-class DjangoTemplateNotFound:
 
+class DjangoTemplateNotFound:
     def title(self):
         return "Check template exists in your apps 'templates' directory"
 
@@ -426,8 +432,8 @@ class DjangoTemplateNotFound:
     def regex(self):
         return r"^(^(?P<path>(^(.+)\/([^\/]+)$)))"
 
-class ContextShouldBeList:
 
+class ContextShouldBeList:
     def title(self):
         return "Check the arguments to the template loader method."
 
@@ -437,8 +443,8 @@ class ContextShouldBeList:
     def regex(self):
         return r"^context must be a dict rather than list"
 
-class RenderArgumentsOutOfOrder:
 
+class RenderArgumentsOutOfOrder:
     def title(self):
         return "Check the arguments to the template render method."
 
@@ -447,4 +453,3 @@ class RenderArgumentsOutOfOrder:
 
     def regex(self):
         return r"^join\(\) argument must be str\, bytes\, or os.PathLike object\, not \'dict\'"
-

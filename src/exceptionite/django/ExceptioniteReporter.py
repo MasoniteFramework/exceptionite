@@ -2,6 +2,7 @@ from .. import Handler, Block
 from .options import OPTIONS
 from ..solutions import DjangoSolutions
 
+
 class ContextBlock(Block):
     id = "django-request"
     name = "Context"
