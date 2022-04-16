@@ -12,9 +12,9 @@ ci: ## [CI] Run package tests and lint
 	make test
 	make lint
 lint: ## Run code linting
-	python -m flake8 .
+	python -m flake8 src/exceptionite --ignore=E501,F401,E203,E128,E402,E731,F821,E712,W503,F811
 format: ## Format code with Black
-	black src/exceptionite
+	black src/exceptionite 
 coverage: ## Run package tests and upload coverage reports
 	python -m pytest --cov-report term --cov-report xml --cov=src/masonite/exceptionite tests
 publish: ## Publish package to pypi
