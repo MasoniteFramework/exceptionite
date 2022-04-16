@@ -14,7 +14,7 @@ ci: ## [CI] Run package tests and lint
 lint: ## Run code linting
 	python -m flake8 .
 format: ## Format code with Black
-	black .
+	black src/exceptionite
 coverage: ## Run package tests and upload coverage reports
 	python -m pytest --cov-report term --cov-report xml --cov=src/masonite/exceptionite tests
 publish: ## Publish package to pypi
