@@ -20,35 +20,7 @@ class PossibleSolutions(Block):
         super().__init__(tab, handler, options)
         self.registered_solutions = []
         self.register(
-            solutions.DictionaryUpdateSequence(),
-            solutions.DictionaryUpdateSequenceWithList(),
-            solutions.UnsupportedOperand(),
-            solutions.DivisionByZeroError(),
-            solutions.ContainerKeyNotFoundServiceProvider(),
-            solutions.ContainerKeyNotFoundRegister(),
-            solutions.ClassMethodExists(),
-            solutions.ClassModelMethodExists(),
-            solutions.ImportIssueWithController(),
-            solutions.IncorrectControllerName(),
-            solutions.IncorrectlyDefinedRoute(),
-            solutions.RouteNameNotFound(),
-            solutions.IncludedTemplateNotFound(),
-            solutions.UnexpectedEndBlock(),
-            solutions.QueryDefaultValue(),
-            solutions.NoColumnExistsOnWhere(),
-            solutions.NoColumnExistsOnWhereSQLite(),
-            solutions.NoColumnExistsOnSelect(),
-            solutions.GetAttributeObject(),
-            solutions.NoModuleNamed(),
-            solutions.Syntax(),
-            solutions.ImportIssue(),
-            solutions.Undefined(),
-            solutions.WrongParameterCount(),
-            solutions.WrongConstructorParameterCount(),
-            solutions.ObjectNotCallable(),
-            solutions.SubscriptableIssue(),
-            solutions.NotFound404(),
-            solutions.InvalidRouteMethodType(),
+            *solutions.PythonSolutions.get(),
         )
 
     def build(self):

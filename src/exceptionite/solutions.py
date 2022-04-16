@@ -1,6 +1,56 @@
 # flake8: noqa: E501
 
+class PythonSolutions:
 
+    @classmethod
+    def get(cls):
+        return [
+            DictionaryUpdateSequence(),
+            DictionaryUpdateSequenceWithList(),
+            ClassMethodExists(),
+            UnexpectedEndBlock(),
+            QueryDefaultValue(),
+            NoColumnExistsOnWhere(),
+            NoColumnExistsOnWhereSQLite(),
+            NoColumnExistsOnSelect(),
+            UnsupportedOperand(),
+            DivisionByZeroError(),
+            GetAttributeObject(),
+            NoModuleNamed(),
+            Syntax(),
+            ImportIssue(),
+            Undefined(),
+            WrongParameterCount(),
+            WrongConstructorParameterCount(),
+            ObjectNotCallable(),
+            SubscriptableIssue(),
+        ]
+
+class MasoniteSolutions:
+
+    def get(self):
+        return [
+            ClassModelMethodExists(),
+            ImportIssueWithController(),
+            IncorrectControllerName(),
+            IncorrectlyDefinedRoute(),
+            RouteNameNotFound(),
+            IncludedTemplateNotFound(),
+            ContainerKeyNotFoundRegister(),
+            ContainerKeyNotFoundServiceProvider(),
+            NotFound404(),
+            InvalidRouteMethodType(),
+        ]
+
+class DjangoSolutions:
+
+    @classmethod
+    def get(cls):
+        return [
+            DjangoTemplateNotFound(),
+            ContextShouldBeList(),
+            RenderArgumentsOutOfOrder(),
+        ]
 class DictionaryUpdateSequence:
     def title(self):
         return "Updating a dictionary with a set. "
@@ -17,12 +67,12 @@ class DictionaryUpdateSequence:
 
 class DictionaryUpdateSequenceWithList:
     def title(self):
-        return "Updating a dictionary with a list. "
+        return "Updating a dictionary with a list or set. "
 
     def description(self):
         return (
-            "Looks like you are trying to update a dictionary but are actually using a list. "
-            "Double check what you are passing into the update method"
+            "Looks like you are trying to update a dictionary but are actually using a list or a set. "
+            "Double check what you are passing into the dictionaries update method"
         )
 
     def regex(self):
@@ -41,7 +91,6 @@ class ClassMethodExists:
 
     def regex(self):
         return r"^class  \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
-
 
 class ClassModelMethodExists:
     def title(self):
@@ -122,7 +171,6 @@ class IncludedTemplateNotFound:
         return (
             r"One of the included templates in the \'(?P<name>([\w]*))\' view could not be found"
         )
-
 
 class UnexpectedEndBlock:
     def title(self):
@@ -342,7 +390,6 @@ class WrongConstructorParameterCount:
     def regex(self):
         return r"^(?P<object>(\w*))\(\) takes no parameters "
 
-
 class ObjectNotCallable:
     def title(self):
         return "Objects Cannot Be Called"
@@ -357,7 +404,6 @@ class ObjectNotCallable:
     def regex(self):
         return r"^'(?P<object>(\w*))' object is not callable"
 
-
 class SubscriptableIssue:
     def title(self):
         return "Object Not Subscriptable"
@@ -367,3 +413,37 @@ class SubscriptableIssue:
 
     def regex(self):
         return r"^'(?P<object>(\w+))' object is not subscriptable"
+
+class DjangoTemplateNotFound:
+
+    def title(self):
+        return "Check template exists in your apps 'templates' directory"
+
+    def description(self):
+        return "Check for a ':path' file inside the 'templates' directory of your app."
+
+    def regex(self):
+        return r"^(^(?P<path>(^(.+)\/([^\/]+)$)))"
+
+class ContextShouldBeList:
+
+    def title(self):
+        return "Check the arguments to the template loader method."
+
+    def description(self):
+        return "Change the argument passed to the template loader from a list to a dictionary"
+
+    def regex(self):
+        return r"^context must be a dict rather than list"
+
+class RenderArgumentsOutOfOrder:
+
+    def title(self):
+        return "Check the arguments to the template render method."
+
+    def description(self):
+        return "If trying to load a template, check the order of the arguments. The order should be (request, template, context). Context here is a dictionary."
+
+    def regex(self):
+        return r"^join\(\) argument must be str\, bytes\, or os.PathLike object\, not \'dict\'"
+
