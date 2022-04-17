@@ -42,7 +42,7 @@ class StackFrame:
         self.variables = variables
         self.method = frame_summary.name if frame_summary.name != "<module>" else "__main__"
 
-        with open(self.file) as fp:
+        with open(self.file, "r", encoding="utf-8") as fp:
             printer = pprint.PrettyPrinter(indent=4)
 
             self.file_contents = printer.pformat(fp.read()).split("\\n")[

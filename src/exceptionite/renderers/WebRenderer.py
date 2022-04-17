@@ -56,7 +56,7 @@ class WebRenderer:
         path = os.path.join(
             os.path.dirname(os.path.dirname(__file__)), "templates", "exceptionite.js"
         )
-        with open(path, "r") as f:
+        with open(path, "r", encoding="utf-8") as f:
             script = f.read()
 
         env = Environment(loader=PackageLoader("exceptionite", "templates"))
