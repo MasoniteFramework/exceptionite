@@ -4,8 +4,6 @@ import os
 from typing import List
 import sys
 
-MARKERS = ["site-packages/", "src/masonite/"]
-
 
 class StackFrame:
     """Model a frame in the stack trace."""
