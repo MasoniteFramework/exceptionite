@@ -25,9 +25,9 @@ class StackFrame:
             if rel_path.startswith(sys.base_prefix):
                 self.is_vendor = True
                 self.relative_file = "~/" + rel_path.lstrip(sys.base_prefix)
-            elif rel_path.find("src/masonite") != -1:
+            elif rel_path.find("src/masonite/") != -1:
                 self.is_vendor = True
-                cut_index = rel_path.find("src/masonite/") + len("src/masonite/")
+                cut_index = rel_path.find("src/masonite/") + len("src/")
                 self.relative_file = "~/" + rel_path[cut_index:]
             else:  # it's located in project
                 self.relative_file = rel_path
