@@ -95,29 +95,21 @@ You'll now see this beautiful exception page:
 ## Usage for Django
 
 You can customize error reports in Django in `DEBUG` mode as explained in the [docs](https://docs.djangoproject.com/en/3.2/howto/error-reporting/#custom-error-reports).
-You need to write a custom `ExceptionReporter`:
+
+Install the package if you haven't done so yet
 
 ```python
 # settings.py
-DEFAULT_EXCEPTION_REPORTER = "my_app.handler.ExceptioniteReporter"
-
-# my_app/handler.py
-from exceptionite import Handler
-
-handler = Handler()
-
-class ExceptioniteReporter:
-
-    def __init__(self, request, exc_type, exc_value, tb):
-        self.request = request
-        self.exception = exc_value
-
-    def get_traceback_html(self):
-        handler.start(self.exception)
-        handler.render("terminal")
-        return handler.render("web")
+$ pip install exceptionite
 ```
 
+Then simple set a default exception reporter to the exceptionite one:
+
+```python
+# myapp/settings.py
+
+DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
+```
 
 ## Usage for Python
 
