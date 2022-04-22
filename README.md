@@ -90,12 +90,27 @@ Install the package if you haven't done so yet
 $ pip install exceptionite
 ```
 
-Then simple set a default exception reporter to the exceptionite one:
+Then simple set a default exception reporter to the exceptionite one. Be careful this reporter
+should only be used for local development with `DEBUG=True`:
 
 ```python
 # myapp/settings.py
+if DEBUG:
+    DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
+```
 
-DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
+If you want Django 404 to be also handled by exceptionite you should add an other reporter:
+
+```python
+# myapp/settings.py
+if DEBUG:
+    # handle 404 errors
+    from exceptionite.django import Exceptionite404Reporter
+
+    Exceptionite404Reporter()
+
+    # handle all other errors
+    DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
 ```
 
 ## Usage for Python

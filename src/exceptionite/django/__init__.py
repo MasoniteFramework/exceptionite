@@ -1,1 +1,1 @@
-from .ExceptioniteReporter import ExceptioniteReporter
+from .ExceptioniteReporter import ExceptioniteReporter, Exceptionite404Reporter
