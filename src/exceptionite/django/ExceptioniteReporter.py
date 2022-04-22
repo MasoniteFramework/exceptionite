@@ -33,6 +33,8 @@ class ExceptioniteReporter:
         self.exception = exc_value
 
     def get_traceback_html(self):
+        from django.http.response import HttpResponse
+
         handler = Handler()
         handler.start(self.exception)
         handler.render("terminal")
@@ -42,4 +44,12 @@ class ExceptioniteReporter:
             *DjangoSolutions().get()
         )
         handler.set_options(OPTIONS)
-        return handler.render("web")
+        return HttpResponse(handler.render("web"))
+
+    def get_traceback_json(self):
+        from django.http.response import JsonResponse
+
+        handler = Handler()
+        handler.start(self.exception)
+        handler.render("terminal")
+        return JsonResponse(handler.render("json"))
