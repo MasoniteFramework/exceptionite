@@ -171,7 +171,7 @@ def custom_handler(exc, context):
 # myapp/settings.py
 
 REST_FRAMEWORK = {
-    "EXCEPTION_HANDLER": "myapp.settings.custom_handler"
+    "EXCEPTION_HANDLER": "myapp.exception_handler.custom_handler"
 }
 ```
 
