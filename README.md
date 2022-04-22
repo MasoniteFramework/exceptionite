@@ -37,6 +37,7 @@ Then you can follow instruction for your use case:
 - [Masonite](#usage-for-masonite)
 - [Flask](#usage-for-flask)
 - [Django](#usage-for-django)
+- [Django REST framework](#usage-for-django-rest-framework)
 - [Basic Python](#usage-for-python)
 
 ## Usage for Masonite
@@ -109,6 +110,46 @@ Then simple set a default exception reporter to the exceptionite one:
 # myapp/settings.py
 
 DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
+```
+
+## Usage for Django REST framework
+
+You can also customize error reports when using Django REST framework package in `DEBUG` mode as explained in the [docs](https://www.django-rest-framework.org/api-guide/exceptions/).
+
+Install the package if you haven't done so yet
+
+```python
+# settings.py
+$ pip install exceptionite
+```
+
+Then simple set the REST default exception reporter to the exceptionite one:
+
+```python
+# myapp/settings.py
+
+REST_FRAMEWORK = {
+    "EXCEPTION_HANDLER": "exceptionite.django.drf_exception_handler"
+}
+```
+
+Now when doing API requests accepting `application/json` a JSON debug error page
+will be returned. When using the Django REST framework browsable API or accessing a GET endpoint from your browser (`text/html`) the HTML exceptionite page will be
+displayed !
+
+Note that this handler will change exception handling only when DEBUG mode is enabled. If you want to customize exception handling in production and still benefit from exceptionite error handling in DEBUG mode you can do:
+
+```python
+# app/exception_handler.py
+from exceptionite.django import drf_exception_handler
+
+def custom_handler(exc, context):
+    # do what you want here
+
+    response = drf_exception_handler(exc, context)
+
+    # do what you want here
+    return response
 ```
 
 ## Usage for Python
