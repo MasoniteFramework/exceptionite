@@ -55,7 +55,6 @@ class ExceptioniteReporter:
         return JsonResponse(handler.render("json"))
 
 
-
 class Exceptionite404Reporter:
     """Handle Django 404 errors specifically in debug mode."""
 
