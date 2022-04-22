@@ -115,7 +115,7 @@ DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
 
 ## Usage for Pyramid
 
-If you are using `Pyramid` you can also use this package! You just need to add register two handlers
+If you are using `Pyramid` you can also use this package! You just need to register two handlers
 function to handle 404 and any other errors.
 
 Here is an example for a simple pyramid application:
