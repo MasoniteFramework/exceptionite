@@ -51,39 +51,26 @@ If you are using `Flask` you can also use this package! Here is an example for a
 
 ```python
 from flask import Flask, request
-from exceptionite import Handler, Block
+from exceptionite.flask import ExceptioniteReporter
 
 app = Flask(__name__)
-handler = Handler()
-
-class FlaskContextBlock(Block):
-    id = "flask"
-    name = "Flask"
-    icon = "DesktopComputerIcon"
-
-    def build(self):
-        return {
-            "Path": request.path,
-            "Input": dict(request.args),
-            "Request Method": request.method,
-        }
-
-handler.renderer("web").tab("context").add_blocks(FlaskContextBlock)
 
 
 @app.errorhandler(Exception)
-def handle_exception(e):
-    handler.start(e)
-    return handler.render("web")
+def handle_exception(exception):
+    handler = ExceptioniteReporter(exception, request)
+    # display exception stack trace nicely in console
+    handler.terminal()
+    return handler.html()
 
 
-@app.route('/<world>')
+@app.route("/<world>")
 def hello(world):
-    test = 'Hello World'
-    return 2/0
+    test = "Hello World"
+    return 2 / 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
 ```
 
