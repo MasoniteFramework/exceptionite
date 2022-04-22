@@ -152,7 +152,7 @@ Now when doing API requests accepting `application/json` a JSON debug error page
 will be returned. When using the Django REST framework browsable API or accessing a GET endpoint from your browser (`text/html`) the HTML exceptionite page will be
 displayed !
 
-Note that this handler will change exception handling behaviour and should be only used when DEBUG mode is enabled.
+:warning: Note that this handler will change exception handling behaviour and should be only used when DEBUG mode is enabled.
 
 If you want to customize exception handling for other cases you can do:
 
