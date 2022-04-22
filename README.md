@@ -37,6 +37,7 @@ Then you can follow instruction for your use case:
 - [Masonite](#usage-for-masonite)
 - [Flask](#usage-for-flask)
 - [Django](#usage-for-django)
+- [Pyramid](#usage-for-pyramid)
 - [Basic Python](#usage-for-python)
 
 ## Usage for Masonite
@@ -74,6 +75,7 @@ handler.renderer("web").tab("context").add_blocks(FlaskContextBlock)
 @app.errorhandler(Exception)
 def handle_exception(e):
     handler.start(e)
+    handler.render("terminal")
     return handler.render("web")
 
 
@@ -109,6 +111,57 @@ Then simple set a default exception reporter to the exceptionite one:
 # myapp/settings.py
 
 DEFAULT_EXCEPTION_REPORTER = "exceptionite.django.ExceptioniteReporter"
+```
+
+## Usage for Pyramid
+
+If you are using `Pyramid` you can also use this package! You just need to add register two handlers
+function to handle 404 and any other errors.
+
+Here is an example for a simple pyramid application:
+
+```python
+from wsgiref.simple_server import make_server
+from pyramid.config import Configurator
+from pyramid.response import Response
+from pyramid.view import exception_view_config, notfound_view_config
+
+from exceptionite import Handler
+
+handler = Handler()
+
+
+@exception_view_config(Exception)
+def handle_all_exceptions(exc, request):
+    handler.start(exc)
+    handler.render("terminal")
+    response = Response(handler.render("web"))
+    response.status_int = 500
+    return response
+
+
+@notfound_view_config()
+def handle_404(exc, request):
+    handler.start(exc)
+    handler.render("terminal")
+    response = Response(handler.render("web"))
+    response.status_int = 404
+    return response
+
+def hello_world(request):
+    1 / 0
+    return Response("Hello World!")
+
+
+if __name__ == "__main__":
+    with Configurator() as config:
+        config.add_route("hello", "/")
+        config.add_view(hello_world, route_name="hello")
+        # this line below is very important to scan our decorated error handlers
+        config.scan()
+        app = config.make_wsgi_app()
+    server = make_server("127.0.0.1", 8000, app)
+    server.serve_forever()
 ```
 
 ## Usage for Python
