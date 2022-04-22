@@ -53,3 +53,20 @@ class ExceptioniteReporter:
         handler.start(self.exception)
         handler.render("terminal")
         return JsonResponse(handler.render("json"))
+
+
+
+class Exceptionite404Reporter:
+    """Handle Django 404 errors specifically in debug mode."""
+
+    def __init__(self):
+        from mock import patch
+        from django.http import HttpResponseNotFound
+
+        patcher = patch(
+            "django.views.debug.technical_404_response",
+            lambda request, exception: HttpResponseNotFound(
+                ExceptioniteReporter(request, None, exception, None).get_traceback_html()
+            ),
+        )
+        patcher.start()
