@@ -41,6 +41,7 @@ class MasoniteSolutions:
             ContainerKeyNotFoundServiceProvider(),
             NotFound404(),
             InvalidRouteMethodType(),
+            ModelNotFound(),
         ]
 
 
@@ -293,6 +294,18 @@ class NotFound404:
 
     def regex(self):
         return r"(?P<route>([\w]*)) \: 404 Not Found"
+
+
+class ModelNotFound:
+    def title(self):
+        return "No record found when using find_or_fail()"
+
+    def description(self):
+        return """You probably used 'find_or_fail()' method on a Model, and no record has been found with the given primary key, a ModelNotFound exception has then been raised with a 404 error code.
+        If you want this error to be silent you can use 'find()' method instead."""
+
+    def regex(self):
+        return r"No record found with the given primary key"
 
 
 class InvalidRouteMethodType:
