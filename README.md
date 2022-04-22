@@ -142,17 +142,19 @@ Then simple set the REST default exception reporter to the exceptionite one:
 
 ```python
 # myapp/settings.py
-
-REST_FRAMEWORK = {
-    "EXCEPTION_HANDLER": "exceptionite.django.drf_exception_handler"
-}
+if DEBUG:
+    REST_FRAMEWORK = {
+        "EXCEPTION_HANDLER": "exceptionite.django.drf_exception_handler"
+    }
 ```
 
 Now when doing API requests accepting `application/json` a JSON debug error page
 will be returned. When using the Django REST framework browsable API or accessing a GET endpoint from your browser (`text/html`) the HTML exceptionite page will be
 displayed !
 
-Note that this handler will change exception handling behaviour only when DEBUG mode is enabled. If you want to customize exception handling in production and still benefit from exceptionite error handling in DEBUG mode you can do:
+Note that this handler will change exception handling behaviour and should be only used when DEBUG mode is enabled.
+
+If you want to customize exception handling for other cases you can do:
 
 ```python
 # app/exception_handler.py
