@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 
 from .StackTrace import StackTrace
-from .renderers import WebRenderer, TerminalRenderer
+from .renderers import WebRenderer, TerminalRenderer, JSONRenderer
 from .options import DEFAULT_OPTIONS as DefaultOptions
 
 
@@ -46,6 +46,7 @@ class Handler:
         self.context = {}
         self.add_renderer("web", WebRenderer)
         self.add_renderer("terminal", TerminalRenderer)
+        self.add_renderer("json", JSONRenderer)
 
     def set_options(self, options: dict) -> "Handler":
         """Configure exceptionite handler with given options."""
