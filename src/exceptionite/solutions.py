@@ -266,18 +266,18 @@ class UnsupportedOperand:
 
 class MySQLConnectionRefused:
     def title(self):
-        return "Could not connect to MySQL server"
+        return "Check database is running and connection details are correct"
 
     def description(self):
-        return "Check that MySQL server is running and that MySQL configuration is correct (check that port, hostname, username and host are set correctly, and that environment variables are correctly defined)."
+        return "Check that MySQL server is running and that MySQL configuration is correct (check that port, hostname, username and password are set correctly, and that environment variables are correctly defined)."
 
     def regex(self):
-        return r"Can't connect to MySQL server"
+        return r"Can\'t connect to MySQL server"
 
 
 class PostgresConnectionRefused:
     def title(self):
-        return "Could not connect to PostgresSQL server"
+        return "Check database is running and connection details are correct"
 
     def description(self):
         return "Check that PostgresSQL server is running and that PostgresSQL configuration is correct (check that port=:port, hostname=:host, username and host are set correctly, and that environment variables are correctly defined)."
@@ -288,7 +288,7 @@ class PostgresConnectionRefused:
 
 class PostgresConnectionFailed:
     def title(self):
-        return "Could not connect to PostgresSQL server"
+        return "Check database is running and connection details are correct"
 
     def description(self):
         return "Check that PostgresSQL server is running and that PostgresSQL configuration is correct (check that port, hostname, username and host are set correctly, and that environment variables are correctly defined)."
