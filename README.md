@@ -163,6 +163,7 @@ def custom_handler(exc, context):
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "myapp.exception_handler.custom_handler"
 }
+```
 
 ## Usage for Pyramid
 
