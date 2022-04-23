@@ -10,6 +10,7 @@ class PythonSolutions:
             ClassMethodExists(),
             UnexpectedEndBlock(),
             QueryDefaultValue(),
+            NoRelationExistsInDatabase(),
             NoColumnExistsOnWhere(),
             NoColumnExistsOnWhereSQLite(),
             NoColumnExistsOnSelect(),
@@ -24,6 +25,11 @@ class PythonSolutions:
             WrongConstructorParameterCount(),
             ObjectNotCallable(),
             SubscriptableIssue(),
+            MySQLConnectionRefused(),
+            PostgresConnectionRefused(),
+            PostgresConnectionFailed(),
+            DatabaseDoesNotExist(),
+            DatabaseUserDoesNotExist(),
         ]
 
 
@@ -41,6 +47,7 @@ class MasoniteSolutions:
             ContainerKeyNotFoundServiceProvider(),
             NotFound404(),
             InvalidRouteMethodType(),
+            ModelNotFound(),
         ]
 
 
@@ -213,6 +220,17 @@ class NoColumnExistsOnWhere:
         return r"Unknown column \'(?P<field>([\w\.]*))\' in \'where clause\'"
 
 
+class NoRelationExistsInDatabase:
+    def title(self):
+        return "The table ':table' does not exist in database"
+
+    def description(self):
+        return "Could not find the table ':table' in the database. Did you run the migrations yet? Maybe the table was not spelled correctly?"
+
+    def regex(self):
+        return r"relation \"(?P<table>([\w\.]*))\" does not exist"
+
+
 class NoColumnExistsOnWhereSQLite:
     def title(self):
         return "Check the table for the :field column"
@@ -244,6 +262,61 @@ class UnsupportedOperand:
 
     def regex(self):
         return r"unsupported operand type\(s\) for \+\: '(?P<type1>([\w\.]*))' and '(?P<type2>([\w\.]*))'"
+
+
+class MySQLConnectionRefused:
+    def title(self):
+        return "Could not connect to MySQL server"
+
+    def description(self):
+        return "Check that MySQL server is running and that MySQL configuration is correct (check that port, hostname, username and host are set correctly, and that environment variables are correctly defined)."
+
+    def regex(self):
+        return r"Can't connect to MySQL server"
+
+
+class PostgresConnectionRefused:
+    def title(self):
+        return "Could not connect to PostgresSQL server"
+
+    def description(self):
+        return "Check that PostgresSQL server is running and that PostgresSQL configuration is correct (check that port=:port, hostname=:host, username and host are set correctly, and that environment variables are correctly defined)."
+
+    def regex(self):
+        return r"connection to server at \"(?P<host>([\w\.]*))\", port (?P<port>([\d]*)) failed"
+
+
+class PostgresConnectionFailed:
+    def title(self):
+        return "Could not connect to PostgresSQL server"
+
+    def description(self):
+        return "Check that PostgresSQL server is running and that PostgresSQL configuration is correct (check that port, hostname, username and host are set correctly, and that environment variables are correctly defined)."
+
+    def regex(self):
+        return r"connection to server on socket \"(?P<socket>(.*))\" failed"
+
+
+class DatabaseDoesNotExist:
+    def title(self):
+        return "The database ':database' is not created on the database server"
+
+    def description(self):
+        return "The application is trying to connect to the database ':database' but it looks like it has not been created."
+
+    def regex(self):
+        return r"database \"(?P<database>([\w\.]*))\" does not exist"
+
+
+class DatabaseUserDoesNotExist:
+    def title(self):
+        return "The database user ':user' is not created on the database server"
+
+    def description(self):
+        return "The application is trying to connect with the user ':user' but it looks like it has not been created."
+
+    def regex(self):
+        return r"role \"(?P<user>([\w\.]*))\" does not exist"
 
 
 class DivisionByZeroError:
@@ -293,6 +366,18 @@ class NotFound404:
 
     def regex(self):
         return r"(?P<route>([\w]*)) \: 404 Not Found"
+
+
+class ModelNotFound:
+    def title(self):
+        return "No record found when using find_or_fail()"
+
+    def description(self):
+        return """You probably used 'find_or_fail()' method on a Model, and no record has been found with the given primary key, a ModelNotFound exception has then been raised with a 404 error code.
+        If you want this error to be silent you can use 'find()' method instead."""
+
+    def regex(self):
+        return r"No record found with the given primary key"
 
 
 class InvalidRouteMethodType:
