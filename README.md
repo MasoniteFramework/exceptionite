@@ -38,6 +38,7 @@ Then you can follow instruction for your use case:
 - [Flask](#usage-for-flask)
 - [Django](#usage-for-django)
 - [Django REST framework](#usage-for-django-rest-framework)
+- [Pyramid](#usage-for-pyramid)
 - [Basic Python](#usage-for-python)
 
 ## Usage for Masonite
@@ -52,39 +53,26 @@ If you are using `Flask` you can also use this package! Here is an example for a
 
 ```python
 from flask import Flask, request
-from exceptionite import Handler, Block
+from exceptionite.flask import ExceptioniteReporter
 
 app = Flask(__name__)
-handler = Handler()
-
-class FlaskContextBlock(Block):
-    id = "flask"
-    name = "Flask"
-    icon = "DesktopComputerIcon"
-
-    def build(self):
-        return {
-            "Path": request.path,
-            "Input": dict(request.args),
-            "Request Method": request.method,
-        }
-
-handler.renderer("web").tab("context").add_blocks(FlaskContextBlock)
 
 
 @app.errorhandler(Exception)
-def handle_exception(e):
-    handler.start(e)
-    return handler.render("web")
+def handle_exception(exception):
+    handler = ExceptioniteReporter(exception, request)
+    # display exception stack trace nicely in console
+    handler.terminal()
+    return handler.html()
 
 
-@app.route('/<world>')
+@app.route("/<world>")
 def hello(world):
-    test = 'Hello World'
-    return 2/0
+    test = "Hello World"
+    return 2 / 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
 ```
 
@@ -175,6 +163,56 @@ def custom_handler(exc, context):
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "myapp.exception_handler.custom_handler"
 }
+
+## Usage for Pyramid
+
+If you are using `Pyramid` you can also use this package! You just need to register two handlers
+function to handle 404 and any other errors.
+
+Here is an example for a simple pyramid application:
+
+```python
+from wsgiref.simple_server import make_server
+from pyramid.config import Configurator
+from pyramid.response import Response
+from pyramid.view import exception_view_config, notfound_view_config
+
+from exceptionite import Handler
+
+handler = Handler()
+
+
+@exception_view_config(Exception)
+def handle_all_exceptions(exc, request):
+    handler.start(exc)
+    handler.render("terminal")
+    response = Response(handler.render("web"))
+    response.status_int = 500
+    return response
+
+
+@notfound_view_config()
+def handle_404(exc, request):
+    handler.start(exc)
+    handler.render("terminal")
+    response = Response(handler.render("web"))
+    response.status_int = 404
+    return response
+
+def hello_world(request):
+    1 / 0
+    return Response("Hello World!")
+
+
+if __name__ == "__main__":
+    with Configurator() as config:
+        config.add_route("hello", "/")
+        config.add_view(hello_world, route_name="hello")
+        # this line below is very important to scan our decorated error handlers
+        config.scan()
+        app = config.make_wsgi_app()
+    server = make_server("127.0.0.1", 8000, app)
+    server.serve_forever()
 ```
 
 ## Usage for Python
