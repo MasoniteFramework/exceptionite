@@ -1,9 +1,8 @@
-import pprint
 import inspect
+import pprint
 import os
 from typing import List
-
-MARKERS = ["site-packages/", "src/masonite/"]
+import sys
 
 
 class StackFrame:
@@ -14,20 +13,21 @@ class StackFrame:
         self.file = frame_summary[0]
         self.relative_file = None
         self.is_vendor = False
+
+        # frame filename string should be shorten
         if shorten:
             rel_path = self.file.replace(f"{os.getcwd()}/", "")
+
             # check if frame is a vendor frame (from an external python package or masonite package
             # in development)
-            for marker in MARKERS:
-                index = rel_path.find(marker)
-                if index != -1:
-                    break
-
-            if index != -1:
+            if rel_path.startswith(sys.base_prefix):
                 self.is_vendor = True
-                end_index = len("src/") if marker == "src/masonite/" else len(marker)
-                self.relative_file = "~/" + rel_path[index + end_index :]  # noqa: E203
-            else:
+                self.relative_file = "~/" + rel_path.lstrip(sys.base_prefix)
+            elif rel_path.find("src/masonite/") != -1:
+                self.is_vendor = True
+                cut_index = rel_path.find("src/masonite/") + len("src/")
+                self.relative_file = "~/" + rel_path[cut_index:]
+            else:  # it's located in project
                 self.relative_file = rel_path
 
         self.language = self.get_language(self.file)
