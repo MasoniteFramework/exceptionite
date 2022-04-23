@@ -363,9 +363,9 @@ For Masonite, options are defined in `exceptions.py` configuration file.
 ## Renderers
 
 When an error is caught by Exceptionite, it can be rendered in many ways through configured renderers. Available renderers are:
-- WebRenderer (enabled): renders the exception as a beautiful HTML error page
-- TerminalRenderer (enabled): renders the exception nicely in the console
-- JSONRenderer (disabled): renders the exception as a JSON payload (useful for API errors handling)
+- WebRenderer: renders the exception as a beautiful HTML error page
+- TerminalRenderer: renders the exception nicely in the console
+- JSONRenderer: renders the exception as a JSON payload (useful for API errors handling)
 
 A renderer is a simple Python class with `build()` and `render()` methods. Feel free to create
 your own one if needed !
