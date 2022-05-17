@@ -51,6 +51,8 @@ class MasoniteSolutions:
             NotFound404(),
             InvalidRouteMethodType(),
             ModelNotFound(),
+            DatabaseDriverNotFound(),
+            DriverNotFound(),
         ]
 
 
@@ -381,6 +383,28 @@ class ModelNotFound:
 
     def regex(self):
         return r"No record found with the given primary key"
+
+
+class DriverNotFound:
+    def title(self):
+        return "Driver Is Not Installed"
+
+    def description(self):
+        return ":package is required by the driver. You should install it with 'pip install :package' and refresh the page."
+
+    def regex(self):
+        return r"^Could not find the '(?P<package>([\w]*))' library"
+
+
+class DatabaseDriverNotFound:
+    def title(self):
+        return "Database Driver Is Not Installed"
+
+    def description(self):
+        return ":package is required by the database driver. You should install it with 'pip install :package' and refresh the page."
+
+    def regex(self):
+        return r"^You must have the '(?P<package>([\w]*))' package installed"
 
 
 class InvalidRouteMethodType:
