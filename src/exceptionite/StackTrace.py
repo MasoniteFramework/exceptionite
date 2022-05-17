@@ -20,7 +20,7 @@ class StackFrame:
 
             # check if frame is a vendor frame (from an external python package or masonite package
             # in development)
-            if rel_path.startswith(sys.base_prefix):
+            if rel_path.startswith(sys.base_prefix) or rel_path.startswith(sys.exec_prefix):
                 self.is_vendor = True
                 self.relative_file = "~/" + rel_path.lstrip(sys.base_prefix)
             elif rel_path.find("src/masonite/") != -1:
