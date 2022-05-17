@@ -17,6 +17,8 @@ class PythonSolutions:
             UnsupportedOperand(),
             DivisionByZeroError(),
             GetAttributeObject(),
+            ModuleHasNoAttribute(),
+            ModuleNotCallable(),
             NoModuleNamed(),
             Syntax(),
             ImportIssue(),
@@ -100,7 +102,7 @@ class ClassMethodExists:
         )
 
     def regex(self):
-        return r"^class  \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+        return r"^class \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
 
 
 class ClassModelMethodExists:
@@ -407,6 +409,34 @@ class GetAttributeObject:
         return r"^'(?P<object>(\w+))' object has no attribute '(?P<attribute>(\w+))'"
 
 
+class ModuleHasNoAttribute:
+    def title(self):
+        return "Check Class Import"
+
+    def description(self):
+        return """You might have expected to import the class when doing 'from :module import ...' but instead you have imported the module causing this AttributeError exception.
+
+        Please check that the python module exports the class you want (e.g. through a __init__.py file) else you can write the import "from my.module.MyClass import MyClass"
+        """
+
+    def regex(self):
+        return r"^module '(?P<module>(\w.+))' has no attribute 'find_or_fail'"
+
+
+class ModuleNotCallable:
+    def title(self):
+        return "Check Class Import"
+
+    def description(self):
+        return """You might have expected to import the class when doing 'from :module import ...' but instead you have imported the module causing this TypeError exception when trying to instantiate the class.
+
+        Please check that the python module exports the class you want (e.g. through a __init__.py file) else you can write the import "from my.module.MyClass import MyClass"
+        """
+
+    def regex(self):
+        return r"'module' object is not callable"
+
+
 class NoModuleNamed:
     def title(self):
         return "Module Not Found Error"
@@ -415,7 +445,7 @@ class NoModuleNamed:
         return "This is an import error. Check the file where you imported the ': module' module. Make sure its spelled right and make sure you pip installed this module correctly if this is supposed to come from a PYPI package."
 
     def regex(self):
-        return r"No module named '(?P<module>(\w+))'"
+        return r"No module named '(?P<module>(\w.+))'"
 
 
 class Syntax:
@@ -487,7 +517,7 @@ class ObjectNotCallable:
 
     def description(self):
         return (
-            "You cannot call objects. The ':object' object has already been instiatiated. "
+            "You cannot call objects. The ':object' object has already been instantiated. "
             "Once an object is instantiated it cannot be called directly anymore. "
             "Check if the ':object' is instantiated already."
         )
