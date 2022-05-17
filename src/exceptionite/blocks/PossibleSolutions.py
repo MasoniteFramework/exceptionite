@@ -58,7 +58,7 @@ class PossibleSolutions(Block):
         params = {
             "title": f"Add exceptionite solution for `{self.handler.exception()}`",
             "body": f"A solution is missing:\nException namespace: `{self.handler.namespace()}`\nError message:\n```\n{self.handler.message()}\n```",  # noqa: E501
-            "label": "solution-request",
+            "labels": "solution-request",
         }
         return f"https://github.com/MasoniteFramework/exceptionite/issues/new/?{urllib.parse.urlencode(params)}"  # noqa: E501
 
