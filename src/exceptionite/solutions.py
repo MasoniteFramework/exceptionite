@@ -27,6 +27,7 @@ class PythonSolutions:
             WrongConstructorParameterCount(),
             ObjectNotCallable(),
             SubscriptableIssue(),
+            StringIndicesMustBeIntegers(),
             MySQLConnectionRefused(),
             PostgresConnectionRefused(),
             PostgresConnectionFailed(),
@@ -531,10 +532,25 @@ class SubscriptableIssue:
         return "Object Not Subscriptable"
 
     def description(self):
-        return "Looks like you expected ':object' to be an iterable but it is not. You can only use subscrptions, like x[0], on iterable type objects (like lists, dicts, and strings) but not ':object' in this case."
+        return "Looks like you expected ':object' to be an iterable but it is not. You can only use subscriptions, like x[0], on iterable type objects (like lists, dicts, and strings) but not ':object' in this case."
 
     def regex(self):
         return r"^'(?P<object>(\w+))' object is not subscriptable"
+
+
+class StringIndicesMustBeIntegers:
+    def title(self):
+        return "Check Variable Type"
+
+    def description(self):
+        return (
+            "This errors might occur when using subscriptions [] on an object. The most likely cause is that you expected the object to be a dict and wanted to access a key on it. "
+            "Let's take the example of accessing 'some_key' on the dict named `my_var`: my_var['some_key'] will fail if 'my_var' happens to be a string ! You cannot access 'some_key' on it, you can only access indexes of the string with integers. "
+            "Check that the variable is a dictionary and not a string."
+        )
+
+    def regex(self):
+        return r"string indices must be integers"
 
 
 class DjangoTemplateNotFound:
