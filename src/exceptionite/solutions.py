@@ -53,6 +53,7 @@ class MasoniteSolutions:
             ModelNotFound(),
             DatabaseDriverNotFound(),
             DriverNotFound(),
+            MethodNotAllowed(),
         ]
 
 
@@ -394,6 +395,18 @@ class DriverNotFound:
 
     def regex(self):
         return r"^Could not find the '(?P<package>([\w]*))' library"
+
+
+class MethodNotAllowed:
+    def title(self):
+        return "HTTP Method Not Allowed"
+
+    def description(self):
+        return "You tried to make a :method request on this URL but only :allowed_methods methods are allowed. If you want to use this method, update your routes file else use the allowed methods for making the request to this URL."
+
+    def regex(self):
+        return r"^(?P<method>([\w]*)) method not allowed for this route. Supported methods are: (?P<allowed_methods>(\w+\,?\s?)*)."
+        # return r"^(?P<method>([\w+])) method not allowed for this route. Supported methods are: (?P<allowed_methods>(\w,+))."
 
 
 class DatabaseDriverNotFound:
