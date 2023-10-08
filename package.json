@@ -16,7 +16,7 @@
     "@vue/compiler-sfc": "^3.2.29",
     "autoprefixer": "^10.4.2",
     "laravel-mix": "^6.0.43",
-    "postcss": "^8.4.5",
+    "postcss": "^8.4.31",
     "tailwindcss": "^3.0.16",
     "vue": "^3.2.29",
     "vue-loader": "^16.8.3"
