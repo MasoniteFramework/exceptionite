@@ -1,4 +1,4 @@
-import pkg_resources
+import importlib.metadata
 
 from ..Block import Block
 
@@ -11,8 +11,8 @@ class Packages(Block):
 
     def build(self):
         packages = {}
-        for package in pkg_resources.working_set:
-            packages.update({package.key: package.version})
+        for dist in importlib.metadata.distributions():
+            packages.update({dist.metadata["Name"]: dist.version})
         return packages
 
     def has_content(self):

@@ -1,7 +1,7 @@
 import unittest
 from dotty_dict import dotty
 
-from src.exceptionite import Handler, Tab
+from exceptionite import Handler, Tab
 
 
 class CustomTestTab(Tab):
