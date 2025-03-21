@@ -1,7 +1,7 @@
 import unittest
 from dotty_dict import dotty
 
-from exceptionite import Handler, Tab
+from src.exceptionite import Handler, Tab
 
 
 class CustomTestTab(Tab):
@@ -57,6 +57,7 @@ class TestWebRenderer(unittest.TestCase):
     def test_can_display_error_page(self):
         exception = ValueError("Custom message")
         self.handler.start(exception)
+        self.handler.renderer("web").change_base_package("src.exceptionite")
 
         assert "Custom message" in self.handler.render("web")
         assert "ValueError" in self.handler.render("web")

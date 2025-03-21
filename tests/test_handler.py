@@ -1,7 +1,7 @@
 import unittest
 
-from exceptionite import Handler, Tab
-from exceptionite.exceptions import ConfigurationException
+from src.exceptionite import Handler, Tab
+from src.exceptionite.exceptions import ConfigurationException
 
 
 class OtherContextTab(Tab):
