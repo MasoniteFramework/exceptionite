@@ -1,4 +1,4 @@
-import pkg_resources
+import importlib.metadata
 import requests
 
 from ..Block import Block
@@ -22,7 +22,7 @@ class PackagesUpdates(Block):
 
     def build(self):
         installed_packages = {
-            package.key: package.version for package in pkg_resources.working_set
+            dist.metadata["Name"]: dist.version for dist in importlib.metadata.distributions()
         }
 
         packages_to_check = self.options.get("list", ["exceptionite"])

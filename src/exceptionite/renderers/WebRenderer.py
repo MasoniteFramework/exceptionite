@@ -26,8 +26,14 @@ class WebRenderer:
         self.tabs: dict = OrderedDict()
         self.actions: dict = {}
         self.context: dict = {}
+        self.base_package = "exceptionite"
         # setup base interface
         self.add_tabs(ContextTab, SolutionsTab, RecommendationsTab)
+
+    def change_base_package(self, base_package: str) -> "WebRenderer":
+        """Change the base package used to load templates."""
+        self.base_package = base_package
+        return self
 
     def build(self) -> dict:
         """Build the handled exception context to inject into the error page."""
@@ -59,7 +65,7 @@ class WebRenderer:
         with open(path, "r", encoding="utf-8") as f:
             script = f.read()
 
-        env = Environment(loader=PackageLoader("exceptionite", "templates"))
+        env = Environment(loader=PackageLoader(self.base_package, "templates"))
 
         template = env.get_template("exception.html")
         return template.render({"data": self.data, "script": script})

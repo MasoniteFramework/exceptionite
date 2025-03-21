@@ -17,6 +17,8 @@ class PythonSolutions:
             UnsupportedOperand(),
             DivisionByZeroError(),
             GetAttributeObject(),
+            ModuleHasNoAttribute(),
+            ModuleNotCallable(),
             NoModuleNamed(),
             Syntax(),
             ImportIssue(),
@@ -25,6 +27,7 @@ class PythonSolutions:
             WrongConstructorParameterCount(),
             ObjectNotCallable(),
             SubscriptableIssue(),
+            StringIndicesMustBeIntegers(),
             MySQLConnectionRefused(),
             PostgresConnectionRefused(),
             PostgresConnectionFailed(),
@@ -49,6 +52,9 @@ class MasoniteSolutions:
             NotFound404(),
             InvalidRouteMethodType(),
             ModelNotFound(),
+            DatabaseDriverNotFound(),
+            DriverNotFound(),
+            MethodNotAllowed(),
         ]
 
 
@@ -101,7 +107,7 @@ class ClassMethodExists:
         )
 
     def regex(self):
-        return r"^class  \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+        return r"^class \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
 
 
 class ClassModelMethodExists:
@@ -391,6 +397,40 @@ class ModelNotFound:
         return r"No record found with the given primary key"
 
 
+class DriverNotFound:
+    def title(self):
+        return "Driver Is Not Installed"
+
+    def description(self):
+        return ":package is required by the driver. You should install it with 'pip install :package' and refresh the page."
+
+    def regex(self):
+        return r"^Could not find the '(?P<package>([\w]*))' library"
+
+
+class MethodNotAllowed:
+    def title(self):
+        return "HTTP Method Not Allowed"
+
+    def description(self):
+        return "You tried to make a :method request on this URL but only :allowed_methods methods are allowed. If you want to use this method, update your routes file else use the allowed methods for making the request to this URL."
+
+    def regex(self):
+        return r"^(?P<method>([\w]*)) method not allowed for this route. Supported methods are: (?P<allowed_methods>(\w+\,?\s?)*)."
+        # return r"^(?P<method>([\w+])) method not allowed for this route. Supported methods are: (?P<allowed_methods>(\w,+))."
+
+
+class DatabaseDriverNotFound:
+    def title(self):
+        return "Database Driver Is Not Installed"
+
+    def description(self):
+        return ":package is required by the database driver. You should install it with 'pip install :package' and refresh the page."
+
+    def regex(self):
+        return r"^You must have the '(?P<package>([\w]*))' package installed"
+
+
 class InvalidRouteMethodType:
     def title(self):
         return "The method type is incorrect"
@@ -418,6 +458,34 @@ class GetAttributeObject:
         return r"^'(?P<object>(\w+))' object has no attribute '(?P<attribute>(\w+))'"
 
 
+class ModuleHasNoAttribute:
+    def title(self):
+        return "Check Class Import"
+
+    def description(self):
+        return """You might have expected to import the class when doing 'from :module import ...' but instead you have imported the module causing this AttributeError exception.
+
+        Please check that the python module exports the class you want (e.g. through a __init__.py file) else you can write the import "from my.module.MyClass import MyClass"
+        """
+
+    def regex(self):
+        return r"^module '(?P<module>(\w.+))' has no attribute 'find_or_fail'"
+
+
+class ModuleNotCallable:
+    def title(self):
+        return "Check Class Import"
+
+    def description(self):
+        return """You might have expected to import the class when doing 'from :module import ...' but instead you have imported the module causing this TypeError exception when trying to instantiate the class.
+
+        Please check that the python module exports the class you want (e.g. through a __init__.py file) else you can write the import "from my.module.MyClass import MyClass"
+        """
+
+    def regex(self):
+        return r"'module' object is not callable"
+
+
 class NoModuleNamed:
     def title(self):
         return "Module Not Found Error"
@@ -426,7 +494,7 @@ class NoModuleNamed:
         return "This is an import error. Check the file where you imported the ': module' module. Make sure its spelled right and make sure you pip installed this module correctly if this is supposed to come from a PYPI package."
 
     def regex(self):
-        return r"No module named '(?P<module>(\w+))'"
+        return r"No module named '(?P<module>(\w.+))'"
 
 
 class Syntax:
@@ -498,7 +566,7 @@ class ObjectNotCallable:
 
     def description(self):
         return (
-            "You cannot call objects. The ':object' object has already been instiatiated. "
+            "You cannot call objects. The ':object' object has already been instantiated. "
             "Once an object is instantiated it cannot be called directly anymore. "
             "Check if the ':object' is instantiated already."
         )
@@ -512,10 +580,25 @@ class SubscriptableIssue:
         return "Object Not Subscriptable"
 
     def description(self):
-        return "Looks like you expected ':object' to be an iterable but it is not. You can only use subscrptions, like x[0], on iterable type objects (like lists, dicts, and strings) but not ':object' in this case."
+        return "Looks like you expected ':object' to be an iterable but it is not. You can only use subscriptions, like x[0], on iterable type objects (like lists, dicts, and strings) but not ':object' in this case."
 
     def regex(self):
         return r"^'(?P<object>(\w+))' object is not subscriptable"
+
+
+class StringIndicesMustBeIntegers:
+    def title(self):
+        return "Check Variable Type"
+
+    def description(self):
+        return (
+            "This errors might occur when using subscriptions [] on an object. The most likely cause is that you expected the object to be a dict and wanted to access a key on it. "
+            "Let's take the example of accessing 'some_key' on the dict named `my_var`: my_var['some_key'] will fail if 'my_var' happens to be a string ! You cannot access 'some_key' on it, you can only access indexes of the string with integers. "
+            "Check that the variable is a dictionary and not a string."
+        )
+
+    def regex(self):
+        return r"string indices must be integers"
 
 
 class DjangoTemplateNotFound:
