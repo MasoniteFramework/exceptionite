@@ -38,6 +38,7 @@ class MasoniteSolutions:
     def get(cls):
         return [
             ClassModelMethodExists(),
+            ClassModelNotCreatedYet(),
             ImportIssueWithController(),
             IncorrectControllerName(),
             IncorrectlyDefinedRoute(),
@@ -109,6 +110,16 @@ class ClassModelMethodExists:
 
     def description(self):
         return "Could not find the ':method' method on the model class. Please check spelling. If this is a method you expect to be on the builder class then check the ORM documentation"
+
+    def regex(self):
+        return r"^class model \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
+
+class ClassModelNotCreatedYet:
+    def title(self):
+        return "Model not created yet"
+
+    def description(self):
+        return "The model may not be created yet"
 
     def regex(self):
         return r"^class model \'(?P<class>([\w]*))\' has no attribute (?P<method>(\w+))"
