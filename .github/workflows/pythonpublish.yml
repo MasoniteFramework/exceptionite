@@ -18,8 +18,8 @@ jobs:
         # are committed in the repository, so no npm build is needed for a
         # notice-only post release.
         env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
