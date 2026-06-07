@@ -1,3 +1,13 @@
+# ⚠️ This repository is no longer maintained
+
+> **Exceptionite development continues at [masonitedev/exceptionite](https://github.com/masonitedev/exceptionite)** as part of Masonite 5 (a new PyPI package name is coming soon).
+> This repository covers `exceptionite` ≤ 3.0.0, which will receive **no further updates** (including security fixes).
+>
+> - 📖 Masonite documentation: <https://docs.masonite.dev>
+>
+> ❤️ In memory of [Joseph "Joe" Mancuso](https://github.com/josephmancuso), creator of Masonite.
+
+---
 
 # Exceptionite
 
